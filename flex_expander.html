@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>SnailsStons - Flex-Expander Pro v3.0</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root { --gold: #d4af37; --bg: #000; --card: #111; --danger: #ff4444; --success: #28a745; }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body { font-family: 'Inter', sans-serif; background: var(--bg); color: #eee; margin: 0; padding: 20px; background-image: url('blatt_textur.jpg'); background-size: cover; background-blend-mode: multiply; }
+  .app-container { max-width: 500px; margin: 0 auto; }
+  h1 { font-weight: 900; color: var(--gold); text-align: center; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; }
+  .card { background: var(--card); border: 1px solid #222; border-radius: 15px; padding: 20px; margin-bottom: 15px; }
+  label { font-weight: 900; color: var(--gold); display: block; margin-bottom: 5px; font-size: 0.7rem; text-transform: uppercase; }
+  input { width: 100%; padding: 12px; background: #000; border: 1px solid #333; color: var(--gold); border-radius: 10px; font-size: 1.2rem; font-weight: 900; text-align: center; margin-bottom: 10px; }
+  .btn { width: 100%; border: none; padding: 18px; border-radius: 12px; font-weight: 900; cursor: pointer; text-transform: uppercase; font-size: 0.9rem; margin-bottom: 10px; }
+  .btn-load { background: #333; color: #fff; border: 1px solid #444; }
+  .btn-gold { background: var(--gold); color: #000; display: none; }
+  #info-box { background: #1a1a1a; border-left: 4px solid var(--gold); padding: 15px; border-radius: 8px; margin-bottom: 15px; display: none; font-size: 0.85rem; line-height: 1.8; }
+  #status { padding: 15px; border-radius: 10px; display: none; font-size: 0.85rem; font-weight: 700; }
+  .success { background: var(--success); display: block !important; }
+  .error { background: var(--danger); display: block !important; }
+  .stat-val { color: var(--gold); font-weight: 900; }
+  .section-label { font-size: 0.6rem; font-weight: 900; color: #555; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; display: block; }
+  hr { border: none; border-top: 1px solid #222; margin: 5px 0 15px; }
+</style>
+</head>
+<body>
+<div class="app-container">
+  <h1>Flex<span style="color:#fff;">Expander</span> <span style="color:#555;font-size:0.5em;font-weight:400;">v3.0</span></h1>
+
+  <div class="card">
+    <label>Heft ID</label>
+    <input type="number" id="heftIdInput" value="1" min="0">
+    <button id="loadBtn" class="btn btn-load">🔍 Heft-Daten prüfen</button>
+  </div>
+
+  <div id="info-box">
+    <div>Titel: <span id="info-titel" class="stat-val">-</span></div>
+    <div>Seiten aktuell: <span id="info-seiten" class="stat-val">-</span></div>
+    <div>Panels pro Seite: <span id="info-panels" class="stat-val">-</span></div>
+  </div>
+
+  <div id="modify-box" style="display:none;">
+    <div class="card">
+      <span class="section-label">📄 Seiten-Anzahl ändern</span>
+      <label>Neue Seiten-Anzahl</label>
+      <input type="number" id="targetSeiten" value="7" min="1">
+      <button id="seitenBtn" class="btn btn-gold">📄 Seiten anpassen & Speichern</button>
+    </div>
+    <hr>
+    <div class="card">
+      <span class="section-label">📦 Panel-Anzahl pro Seite ändern</span>
+      <label>Neue Panel-Anzahl pro Seite</label>
+      <input type="number" id="targetPanels" value="7" min="1">
+      <button id="processBtn" class="btn btn-gold">📦 Panels anpassen & Speichern</button>
+    </div>
+  </div>
+
+  <div id="status"></div>
+</div>
+
+<script>
+let currentData = null;
+
+async function fetchHeft(id) {
+    return new Promise((resolve) => {
+        if(!window.hefte) window.hefte = {};
+        const script = document.createElement('script');
+        script.src = 'data/heft' + id + '.js?v=' + Date.now();
+        script.onload = () => resolve(window.hefte[id] || null);
+        script.onerror = () => resolve(null);
+        document.head.appendChild(script);
+    });
+}
+
+function updateInfoBox() {
+    document.getElementById('info-titel').innerText = currentData.titel || 'Kein Titel';
+    document.getElementById('info-seiten').innerText = currentData.seiten ? currentData.seiten.length : 0;
+    if (currentData.seiten && currentData.seiten.length > 0) {
+        const firstCount = currentData.seiten[0].panels.length;
+        const allSame = currentData.seiten.every(s => s.panels.length === firstCount);
+        document.getElementById('info-panels').innerText = allSame ? firstCount : 'Gemischt';
+        document.getElementById('targetPanels').value = firstCount;
+    }
+    const seitenCount = currentData.seiten ? currentData.seiten.length : 0;
+    document.getElementById('targetSeiten').value = Math.max(1, seitenCount);
+}
+
+function downloadHeft(hId) {
+    const output = 'hefte["' + hId + '"] = ' + JSON.stringify(currentData, null, 2) + ';';
+    const blob = new Blob([output], { type: 'application/javascript' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'heft' + hId + '.js';
+    a.click();
+}
+
+document.getElementById('loadBtn').addEventListener('click', async function() {
+    const hId = document.getElementById('heftIdInput').value;
+    this.innerText = 'Lade...';
+    currentData = await fetchHeft(hId);
+    this.innerText = '🔍 Heft-Daten prüfen';
+    if (currentData) {
+        updateInfoBox();
+        document.getElementById('info-box').style.display = 'block';
+        document.getElementById('modify-box').style.display = 'block';
+        document.getElementById('seitenBtn').style.display = 'block';
+        document.getElementById('processBtn').style.display = 'block';
+        document.getElementById('status').style.display = 'none';
+    } else {
+        alert('Heft ' + hId + ' nicht gefunden in /data/');
+    }
+});
+
+document.getElementById('seitenBtn').addEventListener('click', function() {
+    const hId = document.getElementById('heftIdInput').value;
+    const targetSeiten = parseInt(document.getElementById('targetSeiten').value);
+    const currentSeiten = currentData.seiten ? currentData.seiten.length : 0;
+    const statusDiv = document.getElementById('status');
+
+    if (targetSeiten < 1 || targetSeiten > 99) {
+        statusDiv.className = 'error';
+        statusDiv.innerText = targetSeiten < 1 ? 'Mindestens 1 Seite erforderlich.' : 'Maximum 99 Seiten.';
+        statusDiv.style.display = 'block';
+        return;
+    }
+    if (targetSeiten === currentSeiten) {
+        statusDiv.className = 'error';
+        statusDiv.innerText = 'Keine Änderung – Seiten-Anzahl ist bereits ' + currentSeiten + '.';
+        statusDiv.style.display = 'block';
+        return;
+    }
+
+    if (targetSeiten > currentSeiten) {
+        const panelsProSeite = currentData.seiten && currentData.seiten.length > 0 ? currentData.seiten[0].panels.length : 7;
+        for (let s = currentSeiten + 1; s <= targetSeiten; s++) {
+            const panels = [];
+            for (let p = 1; p <= panelsProSeite; p++) {
+                panels.push({ bild: hId + '_' + s + '_P' + p + '.jpg', wide: p === 1, tall: false, format: p === 1 ? '16:9' : '1:1', locDna: '', story: '', skript: '', caption: '' });
+            }
+            currentData.seiten.push({ nummer: s, panels: panels });
+        }
+        const added = targetSeiten - currentSeiten;
+        updateInfoBox();
+        downloadHeft(hId);
+        statusDiv.className = 'success';
+        statusDiv.innerText = '+' + added + ' Seiten hinzugefügt. heft' + hId + '.js heruntergeladen.';
+    } else {
+        const contentLoss = [];
+        for (let s = targetSeiten; s < currentSeiten; s++) {
+            currentData.seiten[s].panels.forEach(function(p, pIdx) {
+                if (p.locDna || p.story || p.skript || p.caption) {
+                    contentLoss.push('Seite ' + (s + 1) + ' / Panel ' + (pIdx + 1));
+                }
+            });
+        }
+        if (contentLoss.length > 0) {
+            if (!confirm('ACHTUNG – Diese Panels haben Inhalt und werden GELOESCHT:\n\n' + contentLoss.join('\n') + '\n\nTrotzdem fortfahren?')) return;
+        }
+        const removed = currentSeiten - targetSeiten;
+        currentData.seiten.splice(targetSeiten, removed);
+        updateInfoBox();
+        downloadHeft(hId);
+        statusDiv.className = 'success';
+        statusDiv.innerText = '-' + removed + ' Seiten entfernt. heft' + hId + '.js heruntergeladen.';
+    }
+    statusDiv.style.display = 'block';
+});
+
+document.getElementById('processBtn').addEventListener('click', function() {
+    const hId = document.getElementById('heftIdInput').value;
+    const target = parseInt(document.getElementById('targetPanels').value);
+    const statusDiv = document.getElementById('status');
+    if (target < 1 || target > 20) {
+        statusDiv.className = 'error';
+        statusDiv.innerText = target < 1 ? 'Mindestens 1 Panel erforderlich.' : 'Maximum 20 Panels pro Seite.';
+        statusDiv.style.display = 'block';
+        return;
+    }
+    let added = 0, removed = 0;
+    const contentLoss = [];
+
+    currentData.seiten.forEach(function(seite, sIdx) {
+        const currentCount = seite.panels.length;
+        const pageNum = seite.nummer || (sIdx + 1);
+        if (currentCount > target) {
+            for (let i = target; i < currentCount; i++) {
+                const p = seite.panels[i];
+                if (p.locDna || p.story || p.skript || p.caption) {
+                    contentLoss.push('Seite ' + pageNum + ' / Panel ' + (i + 1));
+                }
+            }
+        }
+    });
+
+    if (contentLoss.length > 0) {
+        if (!confirm('ACHTUNG – Diese Panels haben Inhalt und werden GELOESCHT:\n\n' + contentLoss.join('\n') + '\n\nTrotzdem fortfahren?')) return;
+    }
+
+    currentData.seiten.forEach(function(seite, sIdx) {
+        const currentCount = seite.panels.length;
+        const pageNum = seite.nummer || (sIdx + 1);
+        if (currentCount < target) {
+            for (let i = currentCount + 1; i <= target; i++) {
+                seite.panels.push({ bild: hId + '_' + pageNum + '_P' + i + '.jpg', locDna: '', story: '', skript: '', caption: '' });
+                added++;
+            }
+        } else if (currentCount > target) {
+            seite.panels.splice(target, currentCount - target);
+            removed += (currentCount - target);
+        }
+    });
+
+    updateInfoBox();
+    downloadHeft(hId);
+    statusDiv.className = 'success';
+    statusDiv.innerText = '+' + added + ' / -' + removed + ' Panels. heft' + hId + '.js heruntergeladen.';
+    statusDiv.style.display = 'block';
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+{
+  "name": "SnailsAdmin",
+  "short_name": "SnailsAdmin",
+  "description": "SnailsStons Studio – Admin",
+  "start_url": "/admin-v1.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#000000",
+  "theme_color": "#d4af37",
+  "icons": [
+    {
+      "src": "pwa_admin_192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "pwa_admin_512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

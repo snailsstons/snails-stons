@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>SnailsStons | Smart Pacer v3.0</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@900&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root { --gold: #d4af37; --header-h: 110px; --gap: 12px;
+                --cinematic: #5b8dd9; --burst: #e06c3a; --short: #7ac47f;
+                --klassisch: #d4af37; --doppel: #b87cc4; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        body { 
+            margin: 0; padding: 0; color: #fff; background: #000;
+            height: 100vh; width: 100vw; overflow: hidden; font-family: 'Inter', sans-serif;
+            background-image: url('blatt_textur.jpg'); background-size: cover; 
+            background-attachment: fixed; background-blend-mode: multiply;
+            overscroll-behavior-y: contain; 
+        }
+
+        header { 
+            position: fixed; top: 0; left: 0; right: 0; height: var(--header-h);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.98) 70%, rgba(0,0,0,0) 100%);
+            z-index: 10; pointer-events: none; gap: 4px;
+        }
+        h1 { font-family: 'Playfair Display', serif; font-size: 1.4rem; margin: 0; color: var(--gold); text-transform: uppercase; letter-spacing: 3px; }
+        .page-counter { font-size: 0.55rem; color: #aaa; font-weight: 900; letter-spacing: 2px; margin-top: 2px; text-transform: uppercase; }
+
+        /* Rhythmus-Score Bar im Header */
+        .rhythm-bar {
+            display: none; align-items: center; gap: 8px; pointer-events: auto;
+            margin-top: 2px;
+        }
+        .rhythm-bar.visible { display: flex; }
+        .rhythm-label { font-size: 0.5rem; font-weight: 900; color: #666; text-transform: uppercase; letter-spacing: 1px; }
+        .rhythm-track { width: 120px; height: 6px; background: #222; border-radius: 3px; overflow: hidden; }
+        .rhythm-fill { height: 100%; border-radius: 3px; transition: width 0.5s ease; }
+        .rhythm-score { font-size: 0.6rem; font-weight: 900; }
+
+        #viewport { 
+            display: flex; width: 100vw; height: 100vh; 
+            overflow-x: auto; scroll-snap-type: x mandatory;
+            scrollbar-width: none; overscroll-behavior-y: contain;
+        }
+        #viewport::-webkit-scrollbar { display: none; }
+
+        /* HEFT-MAP SLIDE */
+        .map-slide {
+            flex: 0 0 100vw; width: 100vw; height: 100vh; scroll-snap-align: start;
+            display: flex; flex-direction: column; align-items: center;
+            padding: 0 16px; overflow-y: auto;
+        }
+        .map-content {
+            margin-top: calc(var(--header-h) + 10px);
+            width: 100%; max-width: 600px;
+            padding-bottom: 100px;
+        }
+        .map-title { font-size: 0.6rem; font-weight: 900; color: var(--gold); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px; }
+        .map-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+        .map-page {
+            width: 60px; border-radius: 8px; overflow: hidden;
+            border: 1.5px solid #333; cursor: pointer; transition: 0.2s;
+        }
+        .map-page:hover { transform: scale(1.05); border-color: var(--gold); }
+        .map-page-num { font-size: 0.45rem; font-weight: 900; color: #666; text-align: center; padding: 3px 0; background: #111; }
+        .map-panels { display: flex; flex-direction: column; gap: 1px; padding: 3px; }
+        .map-panel { border-radius: 2px; height: 8px; }
+        .map-panel.wide { height: 5px; }
+        .map-panel.tall { height: 14px; }
+        .map-type-badge {
+            font-size: 0.4rem; font-weight: 900; text-align: center;
+            padding: 2px 0; text-transform: uppercase; letter-spacing: 0.5px;
+        }
+
+        /* WARNUNG wenn Muster wiederholt */
+        .map-warning {
+            background: rgba(255, 77, 77, 0.1); border: 1px solid rgba(255, 77, 77, 0.3);
+            border-radius: 10px; padding: 12px 15px; margin-bottom: 16px;
+            font-size: 0.7rem; line-height: 1.5;
+        }
+        .map-warning strong { color: #ff6b6b; }
+
+        /* EMPFEHLUNGS-KARTE */
+        .rec-card {
+            background: rgba(255,255,255,0.04); border-radius: 10px;
+            padding: 12px 15px; margin-bottom: 10px;
+            border-left: 3px solid #333;
+        }
+        .rec-card.cinematic { border-color: var(--cinematic); }
+        .rec-card.burst { border-color: var(--burst); }
+        .rec-card.short { border-color: var(--short); }
+        .rec-card.klassisch { border-color: var(--klassisch); }
+        .rec-card.doppel { border-color: var(--doppel); }
+        .rec-page-num { font-size: 0.5rem; font-weight: 900; color: #555; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+        .rec-type { font-size: 0.65rem; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+        .rec-reason { font-size: 0.65rem; color: #888; line-height: 1.4; }
+
+        /* PANEL SLIDES */
+        .slide { 
+            flex: 0 0 100vw; width: 100vw; height: 100vh; scroll-snap-align: start; 
+            display: flex; flex-direction: column; align-items: center;
+            padding: 0 var(--gap);
+        }
+        .page-content { 
+            margin-top: var(--header-h);
+            width: 100%; max-width: 600px;
+            height: calc(100vh - var(--header-h) - 40px);
+            display: grid; grid-template-columns: repeat(2, 1fr); 
+            grid-auto-rows: min-content;
+            gap: var(--gap); align-content: start; align-items: start;
+            overflow-y: auto; padding-bottom: 120px;
+            scrollbar-width: none; overscroll-behavior-y: contain;
+        }
+        .page-content::-webkit-scrollbar { display: none; }
+
+        /* SEITEN-HEADER mit Typ-Badge */
+        .page-header {
+            grid-column: 1 / -1; display: flex; align-items: center;
+            justify-content: space-between; padding: 4px 0 8px;
+        }
+        .page-type-tag {
+            font-size: 0.5rem; font-weight: 900; padding: 3px 8px;
+            border-radius: 20px; text-transform: uppercase; letter-spacing: 1px;
+        }
+        .page-type-tag.klassisch { background: rgba(212,175,55,0.15); color: var(--klassisch); border: 1px solid rgba(212,175,55,0.3); }
+        .page-type-tag.cinematic { background: rgba(91,141,217,0.15); color: var(--cinematic); border: 1px solid rgba(91,141,217,0.3); }
+        .page-type-tag.burst     { background: rgba(224,108,58,0.15); color: var(--burst);     border: 1px solid rgba(224,108,58,0.3); }
+        .page-type-tag.short     { background: rgba(122,196,127,0.15); color: var(--short);    border: 1px solid rgba(122,196,127,0.3); }
+        .page-type-tag.doppel    { background: rgba(184,124,196,0.15); color: var(--doppel);   border: 1px solid rgba(184,124,196,0.3); }
+
+        .repeat-warning {
+            font-size: 0.5rem; color: #ff6b6b; font-weight: 900;
+            display: flex; align-items: center; gap: 4px;
+        }
+
+        /* PANELS */
+        .wire-panel { 
+            position: relative; border-radius: 12px; border: 1.5px dashed rgba(212, 175, 55, 0.4);
+            background: rgba(15, 15, 15, 0.9); padding: 12px;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            text-align: center; width: 100%; transition: 0.3s;
+            min-width: 0; overflow: hidden; box-sizing: border-box;
+            height: 160px; flex-shrink: 0;
+        }
+        .wire-panel.cliffhanger {
+            border: 2px solid var(--gold);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
+        }
+        .wire-panel.cliffhanger::after {
+            content: "CLIFFHANGER"; position: absolute; top: -8px; right: 10px;
+            background: var(--gold); color: #000; font-size: 0.4rem; font-weight: 900;
+            padding: 2px 5px; border-radius: 3px;
+        }
+        .full-width { grid-column: 1 / -1; }
+        .media-icon { position: absolute; top: 10px; left: 10px; font-size: 0.8rem; opacity: 0.6; }
+        .format-1-1  { height: 160px; }
+        .format-16-9 { height: 180px; }
+        .format-9-16 { height: 260px; }
+        .format-3-5  { height: 180px; }
+        .badge-row { display: flex; gap: 5px; margin-bottom: 8px; flex-wrap: wrap; justify-content: center; }
+        .wire-label { color: var(--gold); font-weight: 900; font-size: 0.5rem; text-transform: uppercase; border: 1px solid var(--gold); padding: 1px 5px; border-radius: 3px; }
+        .word-count { font-size: 0.5rem; padding: 1px 5px; border-radius: 3px; background: rgba(255,255,255,0.1); color: #fff; }
+        .wire-story { font-size: 0.65rem; color: #ccc; line-height: 1.2; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; }
+        .wire-skript { font-family: 'Playfair Display', serif; font-size: 0.9rem; color: #fff; margin-top: 8px; font-style: italic; }
+
+        /* UI */
+        .pacer-ui {
+            position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%);
+            z-index: 100; display: flex; gap: 10px; background: rgba(0,0,0,0.95);
+            padding: 10px 20px; border-radius: 50px; border: 1px solid var(--gold);
+            backdrop-filter: blur(10px);
+        }
+        .btn { background: none; border: none; color: #fff; font-weight: 900; font-size: 0.65rem; text-transform: uppercase; cursor: pointer; letter-spacing: 1px; }
+        .btn.active { color: var(--gold); }
+        #file-input { display: none; }
+
+        /* Legende */
+        .legend { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+        .legend-item { display: flex; align-items: center; gap: 5px; font-size: 0.55rem; font-weight: 900; text-transform: uppercase; }
+        .legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Snails<span style="color:#fff">Stons</span> Pacer v3.4</h1>
+        <div id="info-display" class="page-counter">STORYBOARD LADEN</div>
+        <div class="rhythm-bar" id="rhythm-bar">
+            <span class="rhythm-label">Rhythmus</span>
+            <div class="rhythm-track"><div class="rhythm-fill" id="rhythm-fill"></div></div>
+            <span class="rhythm-score" id="rhythm-score"></span>
+        </div>
+    </header>
+
+    <div class="pacer-ui">
+        <button class="btn" onclick="document.getElementById('file-input').click()">Öffnen</button>
+        <input type="file" id="file-input" accept=".md,.txt">
+        <button class="btn" id="map-btn" onclick="goToMap()" style="display:none;">🗺 Map</button>
+        <button class="btn" onclick="confirmReset()">Reset</button>
+    </div>
+
+    <div id="viewport">
+        <div class="slide" style="justify-content:center; opacity:0.3;">
+            <p style="text-align:center; font-weight:900; color:var(--gold);">DATEI WÄHLEN</p>
+        </div>
+    </div>
+
+    <script>
+        const fileInput = document.getElementById('file-input');
+        const viewport = document.getElementById('viewport');
+        let hasData = false;
+        let allPages = []; // Analysierte Seiten
+
+        window.onbeforeunload = function() { if (hasData) return "Datenverlust droht!"; };
+        function confirmReset() { if (confirm("Wirklich alles zurücksetzen?")) { hasData = false; window.location.reload(); } }
+
+        // =====================================================
+        // INTELLIGENZ-MODUL
+        // =====================================================
+
+        // Schlüsselwörter für Szenen-Analyse
+        const KEYWORDS = {
+            action:   ['rennt','läuft','springt','kämpft','tanzt','dreht','stürzt','fliegt','explodiert','hetzt','eilt','rast','schlägt','gleitet','bewegt','posiert','wirbelt','schwingt','klettert','stürmt'],
+            still:    ['schweigt','wartet','blickt','lächelt','meditiert','schaut','beobachtet','ruht','sitzt','schläft','nickt','atmet','verweilt','starrt','steht','hält inne','betrachtet','lauscht'],
+            dialog:   ['sagt','fragt','antwortet','ruft','flüstert','erklärt','berichtet','erzählt','unterbricht','lacht','schreit','meint','antwortet','reagiert','spricht','verkündet','gesteht'],
+            emotional:['weint','strahlt','erschrickt','staunt','trauert','jubelt','wundert','begeistert','erschüttert','berührt','glänzt','bewundert','stolz','beeindruckt','gerührt','enttäuscht','überrascht','fasziniert'],
+            location: ['weitblick','panorama','skyline','horizont','sonnenuntergang','sonnenaufgang','stadtansicht','küste','hafen','strand','plaza','kloster','burg','gasse','café','bar','markt','meer','welle','bucht']
+        };
+
+        // Rhythmus-Typen
+        const TYPES = {
+            SHORT:      { name: 'SHORT',      color: 'short',     icon: '◻',  desc: '1–2 Panels · Eine Szene, ein Moment' },
+            CINEMATIC:  { name: 'CINEMATIC',  color: 'cinematic', icon: '▬',  desc: '3–4 Panels · Grosse Bilder, viel Luft' },
+            KLASSISCH:  { name: 'KLASSISCH',  color: 'klassisch', icon: '▦',  desc: '5–7 Panels · Standard-Mix' },
+            BURST:      { name: 'BURST',      color: 'burst',     icon: '⣿',  desc: '8+ Panels · Schnelle Schnitte, Action' },
+            DOPPELSEITE:{ name: 'DOPPEL',     color: 'doppel',    icon: '▬▬', desc: '2 Seiten · Zusammenhängende Szene' }
+        };
+
+        function analyzeScene(text) {
+            if (!text) return { type: 'neutral', score: {} };
+            const t = text.toLowerCase();
+            const score = { action: 0, still: 0, dialog: 0, emotional: 0, location: 0 };
+            Object.keys(KEYWORDS).forEach(cat => {
+                KEYWORDS[cat].forEach(kw => { if (t.includes(kw)) score[cat]++; });
+            });
+            const dominant = Object.keys(score).reduce((a, b) => score[a] > score[b] ? a : b);
+            return { type: dominant, score };
+        }
+
+        function detectPageType(panels) {
+            const count = panels.length;
+            const wideCount = panels.filter(p => p.format && (p.format.includes('16:9') || p.format.includes('9:16'))).length;
+            // Effektive Panel-Zahl: breite Panels zählen doppelt (visuell schwergewichtiger)
+            const effectiveCount = count - wideCount; // breite rausnehmen da sie viel Platz nehmen
+            if (count <= 2) return TYPES.SHORT;
+            if (count <= 4 || effectiveCount <= 2) return TYPES.CINEMATIC;
+            if (count <= 7) return TYPES.KLASSISCH;
+            return TYPES.BURST;
+        }
+
+        function recommendType(panels, sceneAnalysis) {
+            const count = panels.length;
+            const dominant = sceneAnalysis.type;
+            const dialogCount = panels.filter(p => p.skript && p.skript.length > 10).length;
+            const hasWidePanel = panels.some(p => p.format && p.format.includes('16:9'));
+
+            // Empfehlung basierend auf Szenen-Analyse
+            if (dominant === 'still' && count > 4) {
+                return { type: TYPES.CINEMATIC, reason: 'Stille Szene – weniger Panels würden mehr Gewicht geben.' };
+            }
+            if (dominant === 'action' && count < 6) {
+                return { type: TYPES.BURST, reason: 'Action-Szene – mehr Panels erzeugen schnelleres Tempo.' };
+            }
+            if (dominant === 'location' && count > 3) {
+                return { type: TYPES.CINEMATIC, reason: 'Establishing Shot – ein grosses Panel wirkt stärker.' };
+            }
+            if (dialogCount >= count * 0.8 && count < 5) {
+                return { type: TYPES.KLASSISCH, reason: 'Viel Dialog – mehr Panels für Sprecherwechsel empfohlen.' };
+            }
+            if (dominant === 'emotional' && count > 5) {
+                return { type: TYPES.SHORT, reason: 'Emotionaler Moment – weniger Panels, mehr Fokus.' };
+            }
+            return null; // Keine Empfehlung nötig
+        }
+
+        function calcRhythmScore(pages) {
+            if (pages.length < 2) return 100;
+            let score = 100;
+
+            // 1. Layout-Typ Wiederholungen (weniger streng – 7er Hefte haben fast immer KLASSISCH)
+            const typeHistory = pages.map(p => p.detectedType.name);
+            for (let i = 2; i < typeHistory.length; i++) {
+                if (typeHistory[i] === typeHistory[i-1] && typeHistory[i] === typeHistory[i-2]) {
+                    score -= 8; // war 15 – reduziert weil Panel-Anzahl oft fix ist
+                }
+            }
+
+            // 2. Szenen-Typ Vielfalt (das wichtigere Signal)
+            const sceneHistory = pages.map(p => p.sceneAnalysis.type);
+            let sceneChanges = 0;
+            for (let i = 1; i < sceneHistory.length; i++) {
+                if (sceneHistory[i] !== sceneHistory[i-1]) sceneChanges++;
+            }
+            // Bonus für Szenen-Wechsel (bis zu +40 Punkte)
+            score += Math.min(sceneChanges * 8, 40);
+
+            // 3. Szenen-Typ Wiederholungen bestrafen
+            for (let i = 2; i < sceneHistory.length; i++) {
+                if (sceneHistory[i] === sceneHistory[i-1] && sceneHistory[i] === sceneHistory[i-2]) {
+                    score -= 12;
+                }
+            }
+
+            // 4. Bonus für verschiedene Layout-Typen
+            const uniqueTypes = new Set(typeHistory).size;
+            score += Math.min(uniqueTypes * 5, 20);
+
+            // 5. Penalty wenn ALLE Seiten gleiche Szene
+            const uniqueScenes = new Set(sceneHistory).size;
+            if (uniqueScenes === 1) score -= 20;
+
+            return Math.max(0, Math.min(100, score));
+        }
+
+        function findRepeatWarnings(pages) {
+            const warnings = [];
+
+            // Layout-Typ Wiederholungen
+            const typeHistory = pages.map(p => p.detectedType.name);
+            let streak = 1, streakStart = 0;
+            for (let i = 1; i <= typeHistory.length; i++) {
+                if (i < typeHistory.length && typeHistory[i] === typeHistory[i-1]) {
+                    streak++;
+                } else {
+                    if (streak >= 4) { // war 3 – erhöht damit KLASSISCH-Hefte nicht sofort warnen
+                        warnings.push({ start: streakStart + 1, end: i, type: typeHistory[i-1], count: streak });
+                    }
+                    streak = 1; streakStart = i;
+                }
+            }
+
+            // Szenen-Typ Wiederholungen (separater Check)
+            const sceneHistory = pages.map(p => p.sceneAnalysis.type);
+            let sStreak = 1, sStreakStart = 0;
+            for (let i = 1; i <= sceneHistory.length; i++) {
+                if (i < sceneHistory.length && sceneHistory[i] === sceneHistory[i-1]) {
+                    sStreak++;
+                } else {
+                    if (sStreak >= 3) {
+                        warnings.push({ start: sStreakStart + 1, end: i, type: 'Szene: ' + sceneHistory[i-1], count: sStreak, sceneWarn: true });
+                    }
+                    sStreak = 1; sStreakStart = i;
+                }
+            }
+
+            return warnings;
+        }
+
+        // =====================================================
+        // MARKDOWN PARSER
+        // =====================================================
+
+        fileInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (e) => processMD(e.target.result);
+            reader.readAsText(file);
+        });
+
+        function detectFormat(text) {
+            // Erkennt ob Admin-Format (## S1_P1) oder altes Pacer-Format (S1:)
+            return text.includes('## S') ? 'admin' : 'pacer';
+        }
+
+        function processMD(content) {
+            viewport.innerHTML = '';
+            allPages = [];
+            hasData = true;
+
+            const format = detectFormat(content);
+
+            if (format === 'admin') {
+                parseAdminFormat(content);
+            } else {
+                parsePacerFormat(content);
+            }
+
+            // Rhythmus berechnen
+            const rhythmScore = calcRhythmScore(allPages);
+            const warnings = findRepeatWarnings(allPages);
+
+            showRhythmBar(rhythmScore);
+            buildMapSlide(allPages, warnings, rhythmScore);
+            allPages.forEach(page => buildPageSlide(page, warnings));
+
+            document.getElementById('map-btn').style.display = 'block';
+
+            const updateCounter = () => {
+                const cur = Math.round(viewport.scrollLeft / window.innerWidth);
+                if (cur === 0) {
+                    document.getElementById('info-display').innerText = `HEFT-MAP | ${allPages.length} SEITEN`;
+                } else {
+                    document.getElementById('info-display').innerText = `SEITE ${cur} VON ${allPages.length}`;
+                }
+            };
+            viewport.addEventListener('scroll', updateCounter);
+            updateCounter();
+        }
+
+        // =====================================================
+        // ADMIN FORMAT PARSER  (## S1_P1 / F: / L: / S: / K: / B:)
+        // =====================================================
+        function parseAdminFormat(content) {
+            const lines = content.split('\n').map(l => l.trim());
+            let pageMap = {}; // { sIdx: { panels: [] } }
+            let currentS = -1, currentP = -1;
+
+            lines.forEach(line => {
+                if (line.startsWith('## S')) {
+                    const match = line.match(/## S(\d+)_P(\d+)/);
+                    if (match) {
+                        currentS = parseInt(match[1], 10) - 1;
+                        currentP = parseInt(match[2], 10) - 1;
+                        if (!pageMap[currentS]) pageMap[currentS] = { panels: [] };
+                        while (pageMap[currentS].panels.length <= currentP) {
+                            pageMap[currentS].panels.push({ format: '1:1', story: '', skript: '', locDna: '', caption: '', wide: false, tall: false });
+                        }
+                    }
+                } else if (currentS >= 0 && currentP >= 0) {
+                    const p = pageMap[currentS].panels[currentP];
+                    if (line.startsWith('F:')) {
+                        const fmt = line.substring(2).trim().toLowerCase();
+                        p.format = fmt;
+                        p.wide = fmt.includes('16:9');
+                        p.tall = fmt.includes('9:16');
+                    }
+                    else if (line.startsWith('L:')) p.locDna  = line.substring(2).trim();
+                    else if (line.startsWith('S:')) p.story   = line.substring(2).trim();
+                    else if (line.startsWith('K:')) p.skript  = line.substring(2).trim();
+                    else if (line.startsWith('B:')) p.caption = line.substring(2).trim();
+                }
+            });
+
+            // pageMap → allPages
+            Object.keys(pageMap).sort((a,b) => parseInt(a)-parseInt(b)).forEach((sIdx, i) => {
+                const panels = pageMap[sIdx].panels;
+                // Panel 1 immer 16:9 wenn kein F: gesetzt
+                if (panels.length > 0 && !panels[0].format || panels[0].format === '1:1') {
+                    panels[0].format = '16:9'; panels[0].wide = true;
+                }
+                const allText = panels.map(p => p.story + ' ' + p.skript).join(' ');
+                const sceneAnalysis = analyzeScene(allText);
+                const detectedType = detectPageType(panels);
+                const recommendation = recommendType(panels, sceneAnalysis);
+                allPages.push({ index: i + 1, panels, sceneAnalysis, detectedType, recommendation });
+            });
+        }
+
+        // =====================================================
+        // ALTES PACER FORMAT  (S1: / [16:9] Text / Dialog)
+        // =====================================================
+        function parsePacerFormat(content) {
+            const pageBlocks = content.split(/(?=S\d+:)/i).filter(p => p.trim() !== '');
+
+            pageBlocks.forEach((pageText, pageIdx) => {
+                const lines = pageText.split('\n').map(l => l.trim()).filter(l => l !== '');
+                lines.shift();
+
+                const panels = [];
+                lines.forEach((line, lineIdx) => {
+                    let formatMatch = line.match(/\[(.*?)\]/);
+                    if (!formatMatch) return;
+                    if (lineIdx === 0) { line = line.replace(formatMatch[0], '[16:9]'); formatMatch[1] = '16:9'; }
+                    const formatStr = formatMatch[1].toLowerCase();
+                    const rawText = line.replace(formatMatch[0], '').trim();
+                    const parts = rawText.split(' / ');
+                    panels.push({
+                        format: formatStr,
+                        wide: formatStr.includes('16:9'),
+                        tall: formatStr.includes('9:16'),
+                        story: parts[0] || '',
+                        skript: parts[1] || '',
+                        locDna: '', caption: ''
+                    });
+                });
+
+                const allText = panels.map(p => p.story + ' ' + p.skript).join(' ');
+                const sceneAnalysis = analyzeScene(allText);
+                const detectedType = detectPageType(panels);
+                const recommendation = recommendType(panels, sceneAnalysis);
+                allPages.push({ index: pageIdx + 1, panels, sceneAnalysis, detectedType, recommendation });
+            });
+        }
+
+        function showRhythmBar(score) {
+            const bar = document.getElementById('rhythm-bar');
+            const fill = document.getElementById('rhythm-fill');
+            const scoreEl = document.getElementById('rhythm-score');
+            bar.classList.add('visible');
+
+            const color = score >= 75 ? '#7ac47f' : score >= 50 ? '#d4af37' : '#ff6b6b';
+            fill.style.width = score + '%';
+            fill.style.background = color;
+            scoreEl.style.color = color;
+            scoreEl.innerText = score + '/100';
+        }
+
+        function goToMap() {
+            viewport.scrollTo({ left: 0, behavior: 'smooth' });
+        }
+
+        // =====================================================
+        // MAP SLIDE
+        // =====================================================
+
+        function buildMapSlide(pages, warnings, score) {
+            const slide = document.createElement('div');
+            slide.className = 'map-slide';
+
+            let html = `<div class="map-content">`;
+            html += `<div class="map-title">🗺 Heft-Map · Rhythmus-Analyse</div>`;
+
+            // Legende
+            html += `<div class="legend">`;
+            Object.values(TYPES).forEach(t => {
+                html += `<div class="legend-item"><div class="legend-dot" style="background:var(--${t.color})"></div>${t.name}</div>`;
+            });
+            html += `</div>`;
+
+            // Warnungen
+            if (warnings.length > 0) {
+                warnings.forEach(w => {
+                    html += `<div class="map-warning">⚠️ <strong>Seiten ${w.start}–${w.end}:</strong> ${w.count}× ${w.type} in Folge – Abwechslung empfohlen.</div>`;
+                });
+            } else {
+                html += `<div style="font-size:0.7rem; color:#7ac47f; margin-bottom:12px; font-weight:900;">✅ Guter Rhythmus – keine Wiederholungen erkannt.</div>`;
+            }
+
+            // Empfehlungen
+            const recs = pages.filter(p => p.recommendation);
+            if (recs.length > 0) {
+                html += `<div style="font-size:0.55rem; font-weight:900; color:#666; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">Empfehlungen</div>`;
+                recs.forEach(p => {
+                    html += `<div class="rec-card ${p.recommendation.type.color}">
+                        <div class="rec-page-num">Seite ${p.index}</div>
+                        <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+                            <span style="font-size:0.6rem; font-weight:900; color:#555; text-transform:uppercase; background:#1a1a1a; padding:2px 7px; border-radius:10px;">Aktuell: ${p.detectedType.name}</span>
+                            <span style="font-size:0.7rem; color:#555;">→</span>
+                            <span class="rec-type" style="color:var(--${p.recommendation.type.color}); margin:0;">${p.recommendation.type.icon} ${p.recommendation.type.name}</span>
+                        </div>
+                        <div class="rec-reason">${p.recommendation.reason}</div>
+                    </div>`;
+                });
+            }
+
+            // Mini-Map Grid
+            html += `<div style="font-size:0.55rem; font-weight:900; color:#666; text-transform:uppercase; letter-spacing:1px; margin:16px 0 8px;">Seiten-Übersicht</div>`;
+            html += `<div class="map-grid">`;
+            pages.forEach((page, idx) => {
+                const t = page.detectedType;
+                const hasWarning = warnings.some(w => idx + 1 >= w.start && idx + 1 <= w.end);
+                html += `<div class="map-page" onclick="goToPage(${idx + 1})" style="border-color:${hasWarning ? '#ff4d4d' : page.recommendation ? 'rgba(212,175,55,0.4)' : '#333'}">
+                    <div class="map-page-num">S${page.index}</div>
+                    <div class="map-panels">`;
+                page.panels.slice(0, 6).forEach(p => {
+                    const cls = p.wide ? 'wide' : p.tall ? 'tall' : '';
+                    html += `<div class="map-panel ${cls}" style="background:var(--${t.color}); opacity:0.7;"></div>`;
+                });
+                if (page.panels.length > 6) html += `<div style="font-size:0.4rem; color:#666; text-align:center;">+${page.panels.length - 6}</div>`;
+                html += `</div>`;
+                if (page.recommendation) {
+                    html += `<div class="map-type-badge" style="color:#555; background:rgba(0,0,0,0.5); font-size:0.35rem;">${t.name}</div>`;
+                    html += `<div class="map-type-badge" style="color:var(--${page.recommendation.type.color}); background:rgba(0,0,0,0.7);">→ ${page.recommendation.type.name}</div>`;
+                } else {
+                    html += `<div class="map-type-badge" style="color:var(--${t.color}); background:rgba(0,0,0,0.5)">${t.name}</div>`;
+                }
+                html += `</div>`;
+            });
+            html += `</div></div>`;
+
+            slide.innerHTML = html;
+            viewport.appendChild(slide);
+        }
+
+        function goToPage(pageNum) {
+            viewport.scrollTo({ left: pageNum * window.innerWidth, behavior: 'smooth' });
+        }
+
+        // =====================================================
+        // PAGE SLIDES
+        // =====================================================
+
+        function buildPageSlide(page, warnings) {
+            const slide = document.createElement('div');
+            slide.className = 'slide';
+            const grid = document.createElement('div');
+            grid.className = 'page-content';
+
+            // Page Header
+            const t = page.detectedType;
+            const isRepeated = warnings.some(w => page.index >= w.start && page.index <= w.end);
+            const headerEl = document.createElement('div');
+            headerEl.className = 'page-header';
+            headerEl.innerHTML = `
+                <span class="page-type-tag ${t.color}">${t.icon} ${t.name}</span>
+                ${isRepeated ? `<span class="repeat-warning">⚠️ Muster-Wiederholung</span>` : ''}
+                ${page.recommendation ? `<span style="font-size:0.45rem; color:#888;">→ ${page.recommendation.type.name} empfohlen</span>` : ''}
+            `;
+            grid.appendChild(headerEl);
+
+            // Panels
+            page.panels.forEach((p, lineIndex) => {
+                const formatStr = p.format || '1:1';
+                const wordCount = p.skript ? p.skript.split(/\s+/).filter(w => w.length > 0).length : 0;
+                let mediaIcon = '';
+                if (p.story.toUpperCase().includes('[VIDEO]')) mediaIcon = '🎬';
+                else if (p.story.toUpperCase().includes('[AUDIO]')) mediaIcon = '🔊';
+
+                const panel = document.createElement('div');
+                panel.className = 'wire-panel';
+
+                if (formatStr.includes('16:9')) panel.classList.add('format-16-9', 'full-width');
+                else if (formatStr.includes('9:16')) panel.classList.add('format-9-16', 'full-width');
+                else if (formatStr.includes('1:1')) panel.classList.add('format-1-1');
+                else panel.classList.add('format-3-5');
+
+                const isLast = lineIndex === page.panels.length - 1;
+                const isWide = formatStr.includes('16:9') || formatStr.includes('9:16');
+                if (isLast && isWide) panel.classList.add('cliffhanger');
+
+                // Szenen-Typ Icon
+                const sceneIcons = { action: '⚡', still: '🌙', dialog: '💬', emotional: '💫', location: '📍', neutral: '' };
+                const sceneIcon = sceneIcons[page.sceneAnalysis.type] || '';
+
+                panel.innerHTML = `
+                    ${mediaIcon ? `<div class="media-icon">${mediaIcon}</div>` : ''}
+                    <div class="badge-row">
+                        <div class="wire-label">${formatStr.toUpperCase()}</div>
+                        ${wordCount > 0 ? `<div class="word-count">${wordCount} Wörter</div>` : ''}
+                        ${sceneIcon ? `<div class="word-count">${sceneIcon}</div>` : ''}
+                    </div>
+                    <div class="wire-story">${p.story.replace(/\[VIDEO\]|\[AUDIO\]/gi, '').trim()}</div>
+                    ${p.skript ? `<div class="wire-skript">&raquo; ${p.skript}</div>` : ''}
+                `;
+                grid.appendChild(panel);
+            });
+
+            slide.appendChild(grid);
+            viewport.appendChild(slide);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Snails Stons Reader | v5.6</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@900&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* HIER IST DIE ÄNDERUNG: --gap von 15px auf 5px gesetzt */
+        :root { --gold: #d4af37; --header-h: 110px; --gap: 5px; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        html { background-color: #fff; }
+
+        body { 
+            margin: 0; padding: 0; color: #fff; 
+            height: 100vh; width: 100vw; overflow: hidden; font-family: 'Inter', sans-serif;
+            background: transparent; padding-top: env(safe-area-inset-top);
+        }
+
+        .master-background {
+            position: fixed; top: -10%; left: -10%; width: 120%; height: 120%;
+            background: #fff;
+            z-index: -2; pointer-events: none;
+        }
+
+        .overlay { display: none; }
+
+        #viewport { 
+            display: flex; width: 100vw; height: 100vh; 
+            overflow-x: auto; scroll-snap-type: x mandatory; background: transparent;
+        }
+        
+        .slide { 
+            flex: 0 0 100vw; width: 100vw; height: 100vh; scroll-snap-align: start; 
+            overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 0 var(--gap);
+        }
+
+        header { 
+            position: fixed; top: 0; left: 0; right: 0; height: var(--header-h);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.5) 70%, rgba(0,0,0,0) 100%);
+            z-index: 10; pointer-events: none;
+            padding-bottom: 6px;
+        }
+
+        h1 { font-family: 'Playfair Display', serif; font-size: 2rem; margin: 0; color: var(--gold); text-transform: uppercase; letter-spacing: 3px; }
+        .page-counter { font-size: 0.8rem; color: #fff; font-weight: 900; letter-spacing: 2px; margin-top: 4px; text-transform: uppercase; text-shadow: 0 1px 4px rgba(0,0,0,0.8); }
+
+        /* --- DAS STRIKTE COMIC GRID --- */
+        .page-content { 
+            padding-top: calc(var(--header-h) + 20px); padding-bottom: 90px; 
+            max-width: 900px; margin: 0 auto; 
+            display: grid; 
+            grid-template-columns: repeat(2, 1fr); /* Basis: 2 Spalten für 1:1 und 3:5 */
+            gap: var(--gap); align-content: start;
+        }
+
+        /* Wenn die Seite nur 1 Bild hat */
+        .layout-1 { grid-template-columns: 1fr; }
+        .layout-1 .panel-wrap { grid-column: 1 / -1; }
+
+        .panel-wrap { 
+            position: relative; 
+            overflow: hidden; 
+            height: fit-content; 
+        }
+        
+        .panel-mute-btn, .panel-play-btn {
+            position: absolute; z-index: 10;
+            background: rgba(0,0,0,0.6); color: #fff; border: none;
+            border-radius: 50%; width: 36px; height: 36px;
+            font-size: 16px; cursor: pointer; display: flex;
+            align-items: center; justify-content: center;
+            backdrop-filter: blur(4px);
+        }
+        .panel-mute-btn { bottom: 10px; right: 10px; }
+        .panel-play-btn { bottom: 10px; right: 54px; }
+        .panel-wrap video {
+            width: 100%; height: 100%; object-fit: contain; display: block;
+        }
+        .panel-wrap img { 
+            width: 100%; height: auto; display: block; 
+        }
+
+        /* --- DIE SPALTEN-REGELN AUS DEINEM WORKFLOW --- */
+        .page-content .panel-wrap:first-child { grid-column: 1 / -1; }
+        .panel-full-width { grid-column: 1 / -1 !important; }
+
+        /* --- BUTTONS --- */
+        .back-btn { position: fixed; top: 25px; left: 20px; color: #fff; text-decoration: none; font-size: 1.8rem; z-index: 20; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.5); border-radius: 50%; backdrop-filter: blur(5px); }
+        .skript-btn { position: fixed; bottom: 25px; right: 25px; background: var(--gold); color: #000; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 0.8rem; text-decoration: none; z-index: 20; box-shadow: 0 5px 20px rgba(0,0,0,0.8); }
+        
+        .audio-btn { 
+            position: fixed; bottom: 30px; right: 165px; 
+            background: rgba(0,0,0,0.8); color: #fff; width: 50px; height: 50px; 
+            border-radius: 50%; display: none; align-items: center; justify-content: center; 
+            font-size: 1.3rem; z-index: 20; box-shadow: 0 5px 20px rgba(0,0,0,0.8); 
+            border: 1px solid #333; cursor: pointer; 
+        }
+
+        .share-btn {
+            position: fixed; bottom: 31px; right: 100px;
+            background: rgba(20,20,20,0.85); color: #fff;
+            width: 48px; height: 48px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem; z-index: 20; cursor: pointer;
+            border: 1px solid #333;
+            backdrop-filter: blur(8px);
+            transition: border-color 0.2s, background 0.2s;
+        }
+        .share-btn:active { background: #222; border-color: var(--gold); }
+        
+        .share-toast {
+            position: fixed; bottom: 90px; right: 80px;
+            background: rgba(212,175,55,0.95); color: #000;
+            padding: 8px 14px; border-radius: 20px;
+            font-size: 0.65rem; font-weight: 900;
+            letter-spacing: 1px; z-index: 30;
+            opacity: 0; transition: opacity 0.3s;
+            pointer-events: none;
+        }
+        .share-toast.show { opacity: 1; }
+
+        /* --- LUPE / LIGHTBOX --- */
+        #lightbox {
+            display: none; position: fixed; inset: 0; z-index: 200;
+            background: rgba(0,0,0,0.97);
+            align-items: center; justify-content: center;
+            touch-action: none; cursor: zoom-out;
+        }
+        #lightbox.open { display: flex; }
+        #lightbox-img {
+            max-width: 100vw; max-height: 100vh;
+            object-fit: contain; display: block;
+            transform-origin: center center;
+            transition: transform 0.1s ease-out;
+            user-select: none; -webkit-user-drag: none;
+        }
+        #lightbox-close {
+            position: fixed; top: 20px; right: 20px;
+            width: 44px; height: 44px; border-radius: 50%;
+            background: rgba(0,0,0,0.7); border: 1px solid rgba(255,255,255,0.2);
+            color: #fff; font-size: 1.4rem; display: flex; align-items: center;
+            justify-content: center; cursor: pointer; z-index: 210;
+            backdrop-filter: blur(10px);
+        }
+        #lightbox-hint {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+            font-size: 0.55rem; color: rgba(255,255,255,0.3); font-weight: 900;
+            letter-spacing: 2px; text-transform: uppercase; pointer-events: none;
+            z-index: 210;
+        }
+        #lightbox-zoom-indicator {
+            position: fixed; bottom: 60px; left: 50%; transform: translateX(-50%);
+            font-size: 0.65rem; color: var(--gold); font-weight: 900;
+            letter-spacing: 1px; background: rgba(0,0,0,0.6);
+            padding: 4px 10px; border-radius: 20px; opacity: 0;
+            transition: opacity 0.3s; z-index: 210; pointer-events: none;
+        }
+
+        .panel-wrap img { -webkit-user-drag: none; -webkit-touch-callout: none; user-select: none; pointer-events: none; }
+        .panel-wrap { cursor: zoom-in; }
+        .panel-wrap::before {
+            content: '🔍';
+            position: absolute; bottom: 8px; right: 8px;
+            font-size: 1.8rem; opacity: 0.85;
+            transition: opacity 0.2s; z-index: 5;
+            pointer-events: none;
+            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.9));
+        }
+        .panel-wrap:hover::before { opacity: 1; }
+
+        /* --- STORY MODAL --- */
+        #modal {
+            display: none; position: fixed; inset: 0; z-index: 100;
+            background: rgba(0,0,0,0.0);
+            transition: background 0.3s;
+        }
+        #modal.open {
+            display: block;
+            background: rgba(0,0,0,0.92);
+            animation: modalFadeIn 0.3s forwards;
+        }
+        @keyframes modalFadeIn { to { background: rgba(0,0,0,0.92); } }
+
+        .modal-sheet {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            max-height: 88vh; overflow-y: auto;
+            background: linear-gradient(to bottom, #0a0a0a, #000);
+            border-top: 1px solid rgba(212,175,55,0.4);
+            border-radius: 24px 24px 0 0;
+            padding: 0 0 40px 0;
+            transform: translateY(100%);
+            animation: sheetUp 0.35s cubic-bezier(0.16,1,0.3,1) forwards;
+        }
+        @keyframes sheetUp { to { transform: translateY(0); } }
+
+        .modal-handle { width: 40px; height: 4px; background: #444; border-radius: 2px; margin: 14px auto 0; }
+        .modal-cover-area { position: relative; width: 100%; aspect-ratio: 16/7; overflow: hidden; margin-bottom: 0; }
+        .modal-cover-bg { position: absolute; inset: 0; background-size: cover; background-position: center top; filter: blur(18px) brightness(0.35) saturate(1.4); transform: scale(1.1); }
+        .modal-cover-content { position: relative; z-index: 2; padding: 20px 22px 16px; display: flex; flex-direction: column; justify-content: flex-end; height: 100%; }
+        .modal-heft-label { font-size: 0.5rem; font-weight: 900; letter-spacing: 3px; color: var(--gold); text-transform: uppercase; margin-bottom: 6px; opacity: 0.8; }
+        .modal-page-title { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: #fff; margin: 0; line-height: 1.15; text-shadow: 0 2px 12px rgba(0,0,0,0.8); }
+        .modal-loc-dna { font-size: 0.65rem; color: rgba(255,255,255,0.45); font-style: italic; margin-top: 8px; line-height: 1.4; }
+        .modal-divider { height: 1px; margin: 0 22px; background: linear-gradient(to right, var(--gold), transparent); opacity: 0.3; }
+        .modal-panels { padding: 20px 22px 0; }
+        .modal-panel-block { margin-bottom: 22px; padding-bottom: 18px; border-bottom: 1px dashed rgba(255,255,255,0.07); }
+        .modal-panel-block:last-child { border-bottom: none; }
+        .modal-panel-num { font-size: 0.5rem; font-weight: 900; letter-spacing: 2px; color: var(--gold); text-transform: uppercase; margin-bottom: 8px; }
+        .modal-story-text { font-size: 0.78rem; color: rgba(255,255,255,0.55); line-height: 1.55; margin-bottom: 8px; }
+        .modal-dialog { font-family: 'Playfair Display', serif; font-size: 0.95rem; color: #fff; line-height: 1.5; padding-left: 12px; border-left: 2px solid var(--gold); }
+        .modal-close-btn { position: sticky; bottom: 0; display: block; width: calc(100% - 44px); margin: 20px 22px 0; background: transparent; border: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.4); font-size: 0.6rem; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; padding: 14px; border-radius: 10px; cursor: pointer; }
+
+        /* ── PROGRESS BAR ─────────────────────────────── */
+        #progress-bar-wrap { position: fixed; top: 0; left: 0; right: 0; height: 4px; z-index: 500; background: #1a1a1a; }
+        #progress-bar { height: 100%; width: 0%; transition: width 0.3s ease, background 0.3s ease; background: #444; }
+        #progress-bar.yellow { background: var(--gold, #d4af37); }
+        #progress-bar.green  { background: #4caf50; }
+        #progress-label { position: fixed; top: 5px; right: 8px; font-size: 0.55rem; font-weight: 900; color: #555; z-index: 501; transition: color 0.3s ease; letter-spacing: 1px; }
+        #progress-label.yellow { color: var(--gold, #d4af37); }
+        #progress-label.green  { color: #4caf50; }
+
+        /* ── BONUS / MEMBERS PANELS ───────────────────────── */
+        .panel-bonus-lock { position: absolute; inset: 0; background: rgba(0,0,0,0.85); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; z-index: 10; border-radius: 8px; }
+        .panel-bonus-lock .lock-ico { font-size: 1.6rem; }
+        .panel-bonus-lock .lock-txt { font-size: 0.6rem; font-weight: 900; color: var(--gold); letter-spacing: 2px; text-transform: uppercase; text-align: center; }
+        .panel-bonus-lock .lock-btn { margin-top: 4px; padding: 8px 16px; background: var(--gold); color: #000; border: none; border-radius: 20px; font-size: 0.6rem; font-weight: 900; letter-spacing: 1px; cursor: pointer; }
+
+        /* ── SEITEN-SPERRE ─────────────────────────────── */
+        .slide-locked { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 40px 24px; text-align: center; gap: 16px; background: #050505; }
+        .slide-locked .lock-big { font-size: 3.5rem; }
+        .slide-locked .lock-headline { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--gold); line-height: 1.3; }
+        .slide-locked .lock-sub { font-size: 0.75rem; color: #555; line-height: 1.6; max-width: 280px; }
+        .slide-locked .lock-cta { margin-top: 8px; padding: 16px 32px; background: var(--gold); color: #000; border: none; border-radius: 30px; font-weight: 900; font-size: 0.85rem; letter-spacing: 1px; cursor: pointer; }
+        .slide-locked .lock-pages { font-size: 0.6rem; color: #333; letter-spacing: 1px; }
+
+    </style>
+
+    <meta property="og:type"        content="website">
+    <meta property="og:site_name"   content="Snails Stons × Dragons Chain">
+    <meta id="og-title"       property="og:title"       content="Snails Stons">
+    <meta id="og-description" property="og:description" content="Eine CGI Comic-Serie von der Costa de Valencia.">
+    <meta id="og-image"       property="og:image"       content="">
+    <meta id="og-url"         property="og:url"         content="">
+    <meta name="twitter:card"        content="summary_large_image">
+    <meta id="tw-title"       name="twitter:title"      content="Snails Stons">
+    <meta id="tw-description" name="twitter:description" content="Eine CGI Comic-Serie von der Costa de Valencia.">
+    <meta id="tw-image"       name="twitter:image"      content="">
+
+</head>
+<body>
+
+    <div class="master-background"></div>
+    <div class="overlay"></div>
+
+    <header>
+        <h1>Snails <span>Stons</span></h1>
+        <div id="info-display" class="page-counter">STORY WIRD GELADEN...</div>
+        <div id="seite-titel" style="font-size:0.65rem;color:rgba(255,255,255,0.7);letter-spacing:1px;text-transform:uppercase;margin-top:3px;min-height:0.8rem;text-shadow:0 1px 4px rgba(0,0,0,0.9);font-weight:700;"></div>
+    </header>
+    <div id="progress-bar-wrap"><div id="progress-bar"></div></div>
+    <div id="progress-label">0 %</div>
+
+    <a href="index.html" class="back-btn">×</a>
+
+    <div id="viewport"></div>
+
+    <div id="audio-btn" class="audio-btn" onclick="togglePageAudio()">🎵</div>
+    <div class="share-btn" onclick="shareHeft()" title="Teilen">↗</div>
+    <div id="share-toast" class="share-toast">LINK KOPIERT ✓</div>
+    <a href="#" class="skript-btn" onclick="openStoryModal()">STORY</a>
+
+    <div id="modal" onclick="closeStoryModal(event)">
+        <div class="modal-sheet" onclick="event.stopPropagation()">
+            <div class="modal-handle"></div>
+            <div class="modal-cover-area">
+                <div class="modal-cover-bg" id="modal-cover-bg"></div>
+                <div class="modal-cover-content">
+                    <div class="modal-heft-label" id="modal-heft-label">HEFT · SEITE</div>
+                    <h2 class="modal-page-title" id="modal-page-title">Die Legende</h2>
+                    <div class="modal-loc-dna" id="modal-loc-dna"></div>
+                </div>
+            </div>
+            <div class="modal-divider"></div>
+            <div class="modal-panels" id="modal-panels"></div>
+            <button class="modal-close-btn" onclick="closeStoryModal()">× SCHLIESSEN</button>
+        </div>
+    </div>
+
+    <div id="lightbox" onclick="closeLightbox()">
+        <div id="lightbox-close" onclick="closeLightbox()">×</div>
+        <img id="lightbox-img" src="" draggable="false">
+        <div id="lightbox-hint">PINCH ZUM ZOOMEN · TIPPEN ZUM SCHLIESSEN</div>
+        <div id="lightbox-zoom-indicator" id="zoom-indicator">100%</div>
+    </div>
+
+    <script>
+        // ===== LUPE / LIGHTBOX MIT PINCH-TO-ZOOM =====
+        const lb      = document.getElementById('lightbox');
+        const lbImg   = document.getElementById('lightbox-img');
+        const zoomInd = document.getElementById('lightbox-zoom-indicator');
+
+        let lbScale = 1, lbMinScale = 1, lbMaxScale = 5;
+        let lbOriginX = 0, lbOriginY = 0;
+        let lbTransX = 0, lbTransY = 0;
+        let isPinching = false, lastPinchDist = 0;
+        let isDragging = false, dragStartX = 0, dragStartY = 0;
+        let zoomTimeout;
+
+        // ===== VIDEO OBSERVER (Stoppt Videos auf inaktiven Seiten) =====
+        const videoObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                const v = entry.target;
+                const playBtn = v.parentElement.querySelector('.panel-play-btn');
+                
+                if (entry.isIntersecting) {
+                    // Video betritt den Bildschirm -> Abspielen
+                    v.play().catch(e => {}); 
+                    if (playBtn) playBtn.innerText = '⏸';
+                } else {
+                    // Video verlässt den Bildschirm (Seitenwechsel) -> Pausieren
+                    v.pause();
+                    if (playBtn) playBtn.innerText = '▶';
+                }
+            });
+        }, { threshold: 0.1 }); 
+
+        function renderVideoPanel(wrap, src) {
+            wrap.innerHTML = `
+                <video src="${src}" loop muted playsinline></video>
+                <div class="panel-play-btn" onclick="event.stopPropagation();const v=this.parentElement.querySelector('video');if(v.paused){v.play();this.innerText='⏸';}else{v.pause();this.innerText='▶';}">⏸</div>
+                <div class="panel-mute-btn" onclick="event.stopPropagation();const v=this.parentElement.querySelector('video');v.muted=!v.muted;this.innerText=v.muted?'🔇':'🔊';">🔇</div>`;
+            
+            // Video an den Observer übergeben
+            const vid = wrap.querySelector('video');
+            if (vid) videoObserver.observe(vid);
+        }
+
+        function checkAndReplaceWithVideo(wrap, imgSrc, vidSrc) {
+            const test = document.createElement('video');
+            test.preload = 'metadata';
+            test.onloadedmetadata = function() {
+                wrap.classList.add('panel-full-width');
+                renderVideoPanel(wrap, vidSrc);
+            };
+            test.src = vidSrc;
+        }
+
+        // =====================================================
+        // SEITEN-AUDIO
+        // =====================================================
+        let currentAudio = null;
+        let currentAudioPage = -1;
+
+        function stopPageAudio() {
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio.currentTime = 0;
+                currentAudio = null;
+            }
+            document.getElementById('audio-btn').innerText = '🎵';
+            document.getElementById('audio-btn').style.background = 'rgba(0,0,0,0.8)';
+        }
+
+        function checkPageAudio(pageIndex) {
+            stopPageAudio();
+            currentAudioPage = pageIndex;
+            const seite = pageIndex + 1;
+            const audioSrc = `heft${HEFT_ID}/${HEFT_ID}_${seite}_audio.mp3`;
+            const test = new Audio(audioSrc);
+            test.preload = 'metadata';
+            test.onloadedmetadata = function() {
+                currentAudio = test;
+                document.getElementById('audio-btn').style.display = 'flex';
+            };
+            test.onerror = function() {
+                document.getElementById('audio-btn').style.display = 'none';
+            };
+        }
+
+        function togglePageAudio() {
+            if (!currentAudio) return;
+            const btn = document.getElementById('audio-btn');
+
+            if (currentAudio.paused) {
+                document.querySelectorAll('.panel-wrap video').forEach(v => {
+                    v.pause();
+                    const playBtn = v.nextElementSibling;
+                    if (playBtn && playBtn.classList.contains('panel-play-btn')) playBtn.innerText = '▶';
+                });
+                currentAudio.loop = true;
+                currentAudio.volume = 0.7;
+                currentAudio.play();
+                btn.innerText = '⏸';
+                btn.style.background = 'rgba(212,175,55,0.9)';
+            } else {
+                currentAudio.pause();
+                btn.innerText = '🎵';
+                btn.style.background = 'rgba(0,0,0,0.8)';
+            }
+        }
+
+        function openLightbox(src) {
+            lbImg.src = src;
+            lbScale = 1; lbTransX = 0; lbTransY = 0;
+            applyTransform();
+            lb.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            lb.classList.remove('open');
+            document.body.style.overflow = '';
+            lbScale = 1; lbTransX = 0; lbTransY = 0;
+        }
+
+        function applyTransform() {
+            lbImg.style.transform = `translate(${lbTransX}px, ${lbTransY}px) scale(${lbScale})`;
+            showZoomIndicator();
+        }
+
+        function showZoomIndicator() {
+            zoomInd.innerText = Math.round(lbScale * 100) + '%';
+            zoomInd.style.opacity = lbScale > 1.05 ? '1' : '0';
+            clearTimeout(zoomTimeout);
+            zoomTimeout = setTimeout(() => { zoomInd.style.opacity = '0'; }, 1500);
+        }
+
+        function clampTranslation() {
+            const imgW = lbImg.naturalWidth  || window.innerWidth;
+            const imgH = lbImg.naturalHeight || window.innerHeight;
+            const scaleW = (window.innerWidth  / imgW)  * lbScale;
+            const scaleH = (window.innerHeight / imgH) * lbScale;
+            const displayW = imgW * Math.min(scaleW, scaleH);
+            const displayH = imgH * Math.min(scaleW, scaleH);
+            const maxX = Math.max(0, (displayW - window.innerWidth)  / 2);
+            const maxY = Math.max(0, (displayH - window.innerHeight) / 2);
+            lbTransX = Math.max(-maxX, Math.min(maxX, lbTransX));
+            lbTransY = Math.max(-maxY, Math.min(maxY, lbTransY));
+        }
+
+        function getDist(t) {
+            const dx = t[0].clientX - t[1].clientX;
+            const dy = t[0].clientY - t[1].clientY;
+            return Math.sqrt(dx*dx + dy*dy);
+        }
+        function getMid(t) {
+            return { x: (t[0].clientX + t[1].clientX) / 2, y: (t[0].clientY + t[1].clientY) / 2 };
+        }
+
+        lb.addEventListener('touchstart', (e) => {
+            if (e.target === lbImg || e.target === lb) {
+                if (e.touches.length === 2) {
+                    isPinching = true;
+                    lastPinchDist = getDist(e.touches);
+                    lbOriginX = getMid(e.touches).x - window.innerWidth / 2;
+                    lbOriginY = getMid(e.touches).y - window.innerHeight / 2;
+                    e.preventDefault();
+                } else if (e.touches.length === 1 && lbScale > 1) {
+                    isDragging = true;
+                    dragStartX = e.touches[0].clientX - lbTransX;
+                    dragStartY = e.touches[0].clientY - lbTransY;
+                    e.preventDefault();
+                }
+            }
+        }, { passive: false });
+
+        lb.addEventListener('touchmove', (e) => {
+            if (isPinching && e.touches.length === 2) {
+                const dist = getDist(e.touches);
+                const scaleChange = dist / lastPinchDist;
+                const newScale = Math.min(lbMaxScale, Math.max(lbMinScale, lbScale * scaleChange));
+                lbTransX += (lbOriginX) * (lbScale - newScale) / lbScale;
+                lbTransY += (lbOriginY) * (lbScale - newScale) / lbScale;
+                lbScale = newScale;
+                lastPinchDist = dist;
+                clampTranslation();
+                applyTransform();
+                e.preventDefault();
+            } else if (isDragging && e.touches.length === 1) {
+                lbTransX = e.touches[0].clientX - dragStartX;
+                lbTransY = e.touches[0].clientY - dragStartY;
+                clampTranslation();
+                applyTransform();
+                e.preventDefault();
+            }
+        }, { passive: false });
+
+        lb.addEventListener('touchend', (e) => {
+            if (e.touches.length < 2) isPinching = false;
+            if (e.touches.length === 0) {
+                isDragging = false;
+                if (lbScale < 1.1) {
+                    lbScale = 1; lbTransX = 0; lbTransY = 0;
+                    lbImg.style.transition = 'transform 0.25s ease-out';
+                    applyTransform();
+                    setTimeout(() => { lbImg.style.transition = 'transform 0.1s ease-out'; }, 250);
+                }
+            }
+        });
+
+        let lastTap = 0;
+        lb.addEventListener('touchend', (e) => {
+            if (e.target !== lbImg) return;
+            const now = Date.now();
+            if (now - lastTap < 300) {
+                e.preventDefault();
+                if (lbScale > 1.5) {
+                    lbScale = 1; lbTransX = 0; lbTransY = 0;
+                } else {
+                    lbScale = 2.5;
+                    lbTransX = -(e.changedTouches[0].clientX - window.innerWidth / 2) * (lbScale - 1) / lbScale;
+                    lbTransY = -(e.changedTouches[0].clientY - window.innerHeight / 2) * (lbScale - 1) / lbScale;
+                    clampTranslation();
+                }
+                lbImg.style.transition = 'transform 0.25s ease-out';
+                applyTransform();
+                setTimeout(() => { lbImg.style.transition = 'transform 0.1s ease-out'; }, 250);
+            }
+            lastTap = now;
+        });
+
+        lb.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            const delta = e.deltaY > 0 ? 0.85 : 1.18;
+            lbScale = Math.min(lbMaxScale, Math.max(lbMinScale, lbScale * delta));
+            if (lbScale <= 1) { lbTransX = 0; lbTransY = 0; }
+            clampTranslation();
+            lbImg.style.transition = 'none';
+            applyTransform();
+        }, { passive: false });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeLightbox();
+        });
+
+    </script>
+
+    <script>
+        window.hefte = window.hefte || {};
+
+        const pUrl = new URLSearchParams(window.location.search);
+        
+        const LEVEL_RANK = { 'bronze': 1, 'silver': 2, 'gold': 3 };
+
+        function getMemberLevel() {
+            const token = localStorage.getItem('ss_member_token');
+            const bis   = localStorage.getItem('ss_member_bis');
+            // Eingeloggt und gültig
+            if (token && bis && new Date().toISOString().split('T')[0] <= bis) {
+                return localStorage.getItem('ss_member_level') || 'bronze';
+            }
+            // Gast bekommt automatisch Bronze
+            return 'bronze';
+        }
+
+        function isMember() { return true; } // Alle sind "Member" – Level entscheidet was sichtbar ist
+
+        function hasLevel(required) {
+            return (LEVEL_RANK[getMemberLevel()] || 0) >= (LEVEL_RANK[required || 'bronze'] || 1);
+        }
+
+        const HEFT_ID = pUrl.get('heft') || '1';
+        const container = document.getElementById('viewport');
+        let currentData = null;
+
+        async function loadHeft() {
+            const s = document.createElement('script');
+            s.src = `data/heft${HEFT_ID}.js?v=` + Date.now();
+            s.onload = onHeftLoaded;
+            s.onerror = () => {
+                container.innerHTML = `<h2 style="color:red; text-align:center; margin-top:150px;">Fehler: Heft ${HEFT_ID} nicht gefunden.</h2>`;
+            };
+            document.head.appendChild(s);
+        }
+
+        loadHeft();
+
+        function updateStoryModal(pageIndex) {
+            if (!currentData || !currentData.seiten[pageIndex]) return;
+            const seite = currentData.seiten[pageIndex];
+            const firstPanel = seite.panels[0];
+
+            const heftLabel = HEFT_ID === '0' ? '✏️ SCHMIERHEFT' : `HEFT ${HEFT_ID}`; 
+            document.getElementById('modal-heft-label').innerText = `${heftLabel}  ·  SEITE ${pageIndex + 1} VON ${currentData.seiten.length}`;
+            document.getElementById('modal-page-title').innerText = currentData.titel || 'Die Legende';
+
+            const bgImg = firstPanel ? `heft${HEFT_ID}/${firstPanel.bild}` : '';
+            document.getElementById('modal-cover-bg').style.backgroundImage = bgImg ? `url('${bgImg}')` : '';
+
+            const locDna = firstPanel && firstPanel.locDna ? firstPanel.locDna : '';
+            document.getElementById('modal-loc-dna').innerText = locDna ? '📍 ' + locDna.substring(0, 120) + (locDna.length > 120 ? '…' : '') : '';
+
+            let html = '';
+            seite.panels.forEach((p, i) => {
+                html += `<div class="modal-panel-block">`;
+                html += `<div class="modal-panel-num">PANEL ${i + 1}</div>`;
+                if (p.story)  html += `<div class="modal-story-text">${p.story}</div>`;
+                if (p.skript) html += `<div class="modal-dialog">${p.skript}</div>`;
+                if (p.makingOf && hasLevel('silver')) {
+                    html += `
+                        <div style="margin-top:10px;padding:10px 12px;background:rgba(212,175,55,0.07);border-left:2px solid rgba(212,175,55,0.4);border-radius:4px;">
+                            <div style="font-size:0.45rem;font-weight:900;color:rgba(212,175,55,0.6);letter-spacing:2px;text-transform:uppercase;margin-bottom:5px;">🎬 Making Of</div>
+                            <div style="font-size:0.75rem;color:rgba(255,255,255,0.5);line-height:1.5;">${p.makingOf}</div>
+                        </div>`;
+                }
+                html += `</div>`;
+            });
+            document.getElementById('modal-panels').innerHTML = html || '<p style="color:#555;font-size:0.8rem;">Kein Text für diese Seite.</p>';
+        }
+
+        function openStoryModal() {
+            const modal = document.getElementById('modal');
+            modal.style.display = 'block';
+            requestAnimationFrame(() => modal.classList.add('open'));
+        }
+
+        function closeStoryModal(e) {
+            if (e && e.target !== document.getElementById('modal') && e.type !== 'click') return;
+            const modal = document.getElementById('modal');
+            modal.classList.remove('open');
+            setTimeout(() => { modal.style.display = 'none'; }, 300);
+        }
+
+        function onHeftLoaded() {
+            currentData = window.hefte[HEFT_ID];
+            
+            if (!currentData) {
+                document.getElementById('info-display').innerText = "FEHLER: DATEN LEER";
+                container.innerHTML = `<h3 style="color:var(--gold); text-align:center; margin-top:150px;">Das Heft ${HEFT_ID} hat noch keinen Inhalt.</h3>`;
+                return;
+            }
+
+            currentData.seiten.forEach((seite, sIndex) => {
+                const slide = document.createElement('div');
+                slide.className = 'slide';
+
+                if (seite.members === true && !hasLevel(seite.level || 'silver')) {
+                    const reqLevel = seite.level || 'silver';
+                    const lvlIcon = reqLevel==='gold'?'🥇':reqLevel==='silver'?'🥈':'🥉';
+                    const lockedDiv = document.createElement('div');
+                    lockedDiv.className = 'slide-locked';
+                    const remaining = currentData.seiten.length - sIndex;
+                    lockedDiv.innerHTML = `
+                        <div class="lock-big">${lvlIcon}</div>
+                        <div class="lock-headline">${reqLevel.toUpperCase()} Members Only</div>
+                        <div class="lock-sub">
+                            Diese und die folgenden <strong>${remaining}</strong> 
+                            Seite${remaining !== 1 ? 'n' : ''} sind exklusiv für ${reqLevel} Members.<br>
+                            <em style="font-size:0.75rem;color:#888;">Leseprobe endet hier.</em>
+                        </div>
+                        <button class="lock-cta" onclick="window.location.href='members.html'">
+                            🔓 JETZT FREISCHALTEN
+                        </button>
+                        <div class="lock-pages">AB SEITE ${sIndex + 1} – ${reqLevel.toUpperCase()} ONLY</div>
+                    `;
+                    slide.appendChild(lockedDiv);
+                    container.appendChild(slide);
+                    return; 
+                }
+                
+                const content = document.createElement('div');
+                content.className = 'page-content layout-' + seite.panels.length;
+                
+                seite.panels.forEach((p, pIndex) => {
+                    const wrap = document.createElement('div'); 
+                    wrap.className = 'panel-wrap';
+                    
+                    let form = (p.format || p.size || "").toString().toLowerCase().trim();
+                    
+                    if (p.wide === true || form.includes("16:9") || form.includes("9:16")) {
+                        wrap.classList.add('panel-full-width'); 
+                    }
+                    
+                    if ((p.bonus === true || p.members === true) && !hasLevel(p.level || 'silver')) {
+                        const reqLevel = p.level || 'silver';
+                        const lvlIcon = reqLevel==='gold'?'🥇':reqLevel==='silver'?'🥈':'🥉';
+                        wrap.classList.add('panel-full-width');
+                        wrap.style.position = 'relative';
+                        wrap.innerHTML = `
+                            <div class="panel-bonus-lock">
+                                <div class="lock-ico">${lvlIcon}</div>
+                                <div class="lock-txt">${reqLevel.toUpperCase()} Members<br>Bonus Panel</div>
+                                <button class="lock-btn" onclick="window.location.href='members.html'">JETZT FREISCHALTEN</button>
+                            </div>`;
+                        content.appendChild(wrap);
+                        return; 
+                    }
+                    const imgSrc = `heft${HEFT_ID}/${p.bild}`;
+                    const vidSrc = imgSrc.replace(/\.(jpg|jpeg|png|gif|webp)$/i, '.mp4');
+                    const isVideo = p.bild && p.bild.toLowerCase().endsWith('.mp4');
+                    
+                    if (isVideo) {
+                        wrap.classList.add('panel-full-width');
+                        renderVideoPanel(wrap, imgSrc);
+                    } else {
+                        wrap.innerHTML = `
+                            <img src="${imgSrc}" onerror="this.style.display='none'" style="-webkit-user-drag:none; pointer-events:none;">
+                            <div class="tap-overlay" 
+                                 style="position:absolute;inset:0;z-index:5;-webkit-user-select:none;user-select:none;"
+                                 oncontextmenu="return false;"
+                                 ontouchstart="this._tx=event.touches[0].clientX;this._ty=event.touches[0].clientY;"
+                                 ontouchend="const dx=Math.abs(event.changedTouches[0].clientX-this._tx),dy=Math.abs(event.changedTouches[0].clientY-this._ty);if(dx<10&&dy<10){event.preventDefault();event.stopPropagation();openLightbox('${imgSrc}');}"
+                                 onclick="event.stopPropagation();openLightbox('${imgSrc}');">
+                            </div>`;
+                        checkAndReplaceWithVideo(wrap, imgSrc, vidSrc);
+                    }
+                    content.appendChild(wrap);
+
+                    // Werbung nach Panel – nur für Bronze/Gäste
+                    if (p.werbung && p.werbung.bild && !hasLevel('silver')) {
+                        const adWrap = document.createElement('div');
+                        adWrap.className = 'panel-wrap panel-full-width';
+                        adWrap.style.cssText = 'margin-top:8px; border-top: 1px solid #222; padding-top:8px; cursor:pointer;';
+                        adWrap.onclick = () => window.open(p.werbung.link || '#', '_blank');
+                        adWrap.innerHTML = `
+                            <div style="font-size:0.45rem;color:#444;text-align:right;padding:0 4px 2px;letter-spacing:1px;text-transform:uppercase;">Anzeige</div>
+                            <img src="heft${HEFT_ID}/${p.werbung.bild}" 
+                                 alt="${p.werbung.alt || ''}" 
+                                 style="width:100%;height:auto;display:block;-webkit-user-drag:none;pointer-events:none;">
+                        `;
+                        content.appendChild(adWrap);
+                    }
+                });
+                
+                slide.appendChild(content);
+                container.appendChild(slide);
+            });
+
+            document.getElementById('info-display').innerText = `HEFT ${HEFT_ID} | SEITE 1 von ${currentData.seiten.length}`;
+            const s0 = currentData.seiten[0];
+            const titelEl0 = document.getElementById('seite-titel');
+            if (titelEl0) {
+                const parts0 = [];
+                if (s0 && s0.akt) parts0.push(s0.akt);
+                if (s0 && s0.titel) parts0.push(s0.titel);
+                titelEl0.textContent = parts0.join(' · ');
+            }
+            if (isMember()) {
+                const lvl = getMemberLevel();
+                const token = localStorage.getItem('ss_member_token');
+                const lvlIcon = lvl === 'gold' ? '🥇' : lvl === 'silver' ? '🥈' : '🥉';
+                const badge = document.createElement('div');
+                badge.style.cssText = 'position:fixed;top:8px;right:8px;font-size:0.5rem;font-weight:900;color:#000;background:var(--gold);padding:3px 8px;border-radius:10px;letter-spacing:1px;z-index:50;';
+                badge.textContent = token ? `${lvlIcon} ${lvl.toUpperCase()}` : `${lvlIcon} GAST`;
+                document.body.appendChild(badge);
+            }
+            updateOGTags(HEFT_ID, currentData);
+            updateProgress(0, currentData.seiten.length);
+            updateStoryModal(0);
+            checkPageAudio(0);
+
+            // Zur gespeicherten Seite springen wenn ?seite= in URL
+            const startSeite = parseInt(pUrl.get('seite') || '1') - 1;
+            if (startSeite > 0) {
+                setTimeout(() => {
+                    container.scrollTo({ left: startSeite * window.innerWidth, behavior: 'instant' });
+                    updateProgress(startSeite, currentData.seiten.length);
+                    updateStoryModal(startSeite);
+                }, 100);
+            }
+            
+            container.addEventListener('scroll', () => {
+                const curIndex = Math.round(container.scrollLeft / window.innerWidth);
+                if(currentData.seiten[curIndex]) {
+                    document.getElementById('info-display').innerText = `HEFT ${HEFT_ID} | SEITE ${curIndex + 1} von ${currentData.seiten.length}`;
+                    const s = currentData.seiten[curIndex];
+                    const titelEl = document.getElementById('seite-titel');
+                    if (titelEl) {
+                        const parts = [];
+                        if (s.akt) parts.push(s.akt);
+                        if (s.titel) parts.push(s.titel);
+                        titelEl.textContent = parts.join(' · ');
+                    }
+                    updateStoryModal(curIndex);
+                    if (curIndex !== currentAudioPage) checkPageAudio(curIndex);
+                    updateProgress(curIndex, currentData.seiten.length);
+                    // Lesezeichen ab Silver speichern
+                    if (hasLevel('silver')) {
+                        localStorage.setItem('ss_bookmark', JSON.stringify({
+                            heft: HEFT_ID,
+                            seite: curIndex + 1,
+                            titel: currentData.titel || `Heft ${HEFT_ID}`,
+                            ts: Date.now()
+                        }));
+                    }
+                }
+            }, {passive: true});
+        }
+
+        let touchStartX = 0;
+        let isPullingBack = false;
+
+        container.addEventListener('touchstart', (e) => {
+            if (container.scrollLeft <= 5) {
+                touchStartX = e.touches[0].clientX;
+                isPullingBack = true;
+                document.body.style.transition = 'none'; 
+            } else {
+                isPullingBack = false;
+            }
+        }, {passive: true});
+
+        container.addEventListener('touchmove', (e) => {
+            if (!isPullingBack) return;
+            let deltaX = e.touches[0].clientX - touchStartX;
+
+            if (deltaX > 0 && container.scrollLeft <= 0) {
+                let pull = Math.min(deltaX * 0.4, 150); 
+                document.body.style.transform = `translateX(${pull}px)`;
+                document.body.style.opacity = 1 - (pull / 300); 
+            }
+        }, {passive: true});
+
+        container.addEventListener('touchend', (e) => {
+            if (!isPullingBack) return;
+            let deltaX = e.changedTouches[0].clientX - touchStartX;
+
+            document.body.style.transition = 'all 0.3s ease-out'; 
+
+            if (deltaX > 100 && container.scrollLeft <= 0) {
+                document.body.style.transform = `translateX(100vw)`;
+                document.body.style.opacity = 0;
+                setTimeout(() => {
+                    window.location.href = 'index.html'; 
+                }, 300);
+            } else {
+                document.body.style.transform = `translateX(0)`;
+                document.body.style.opacity = 1;
+            }
+            isPullingBack = false;
+        });
+
+        function updateProgress(curIndex, total) {
+            const pct = total <= 1 ? 100 : Math.round((curIndex / (total - 1)) * 100);
+            const bar   = document.getElementById('progress-bar');
+            const label = document.getElementById('progress-label');
+            if (!bar || !label) return;
+            
+            bar.style.width = pct + '%';
+            label.innerText = pct + ' %';
+            
+            bar.classList.remove('yellow', 'green');
+            label.classList.remove('yellow', 'green');
+            if (pct >= 80) {
+                bar.classList.add('green');
+                label.classList.add('green');
+            } else if (pct > 0) {
+                bar.classList.add('yellow');
+                label.classList.add('yellow');
+            }
+            
+            try {
+                const key = 'progress_heft_' + HEFT_ID;
+                localStorage.setItem(key, pct);
+            } catch(e) {}
+        }
+
+        function updateOGTags(hId, heftData) {
+            const base = window.location.origin + window.location.pathname.replace('comic-reader.html','');
+            const url  = window.location.href;
+            const img  = base + 'heft' + hId + '/cover.jpg';
+            const title = 'Snails Stons – Heft ' + hId + (heftData && heftData.titel ? ': ' + heftData.titel : '');
+            const desc  = (heftData && heftData.teaser) ? heftData.teaser.substring(0, 150) : 'Eine CGI Comic-Serie von der Costa de Valencia. × Dragons Chain | SOUND & STEEL';
+
+            document.title = title + ' | SnailsStons';
+            const set = (id, attr, val) => { const el = document.getElementById(id); if(el) el.setAttribute(attr, val); };
+            set('og-title',       'content', title);
+            set('og-description', 'content', desc);
+            set('og-image',       'content', img);
+            set('og-url',         'content', url);
+            set('tw-title',       'content', title);
+            set('tw-description', 'content', desc);
+            set('tw-image',       'content', img);
+        }
+
+        function shareHeft() {
+            const url = window.location.href;
+            if (navigator.share) {
+                const hId = new URLSearchParams(window.location.search).get('heft') || '1';
+                const hd  = (typeof hefte !== 'undefined') ? hefte[hId] : null;
+                navigator.share({
+                    title: 'Snails Stons – Heft ' + hId + (hd && hd.titel ? ': ' + hd.titel : ''),
+                    text:  (hd && hd.teaser) ? hd.teaser.substring(0,120) + '…' : 'Snails Stons × Dragons Chain | SOUND & STEEL',
+                    url:   url
+                }).catch(() => {});
+            } else {
+                navigator.clipboard.writeText(url).then(() => {
+                    const t = document.getElementById('share-toast');
+                    t.classList.add('show');
+                    setTimeout(() => t.classList.remove('show'), 2000);
+                }).catch(() => {
+                    const ta = document.createElement('textarea');
+                    ta.value = url; ta.style.position = 'fixed'; ta.style.left = '-9999px';
+                    document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+                    document.body.removeChild(ta);
+                    const t = document.getElementById('share-toast');
+                    t.classList.add('show');
+                    setTimeout(() => t.classList.remove('show'), 2000);
+                });
+            }
+        }
+    </script>
+</body>
+</html>

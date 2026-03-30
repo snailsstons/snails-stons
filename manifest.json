@@ -1,0 +1,24 @@
+{
+  "name": "Snails Stons",
+  "short_name": "SnailsStons",
+  "description": "Snails Stons × Dragons Chain | SOUND & STEEL",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "icons": [
+    {
+      "src": "pwa_snailsstons_192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "pwa_snailsstons_512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

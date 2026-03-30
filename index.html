@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+
+    <title>Snails Stons | Intelligence Gallery</title>
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#000000">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="SnailsStons">
+    <link rel="apple-touch-icon" href="pwa_snailsstons_apple.png"> 
+
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@900&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <script>window.hefte = window.hefte || {};</script>
+
+    <script>
+        // --- DEINE PLAYLISTS (KATEGORIEN) ---
+        // Playlists werden aus playlists.js geladen
+        window.playlistMap = window.playlistMap || [
+            { titel: "Gandia und Umgebung", hefte: [18, 19, 20] },
+            { titel: "Die Borgia Route", hefte: [] },
+            { titel: "Valencia Vibes", hefte: [15] },
+            { titel: "Shorts", hefte: [23, 24, 25] },
+            { titel: "🖇️ Experimente, Schmierheft", hefte: [0] },
+            { titel: "⭐ Members Only", hefte: [], membersOnly: true }
+        ];
+
+        window.hasRendered = false;
+        window.activeFilter = null;
+
+        async function initGallery() {
+            // playlists.js laden
+            await new Promise(resolve => {
+                const s = document.createElement('script');
+                s.src = `playlists.js?v=` + Date.now();
+                s.onload = s.onerror = resolve;
+                document.head.appendChild(s);
+            });
+            // Hefte laden
+            const ids = [0, ...Array.from({length: 30}, (_, i) => i + 1)];
+            let loaded = 0;
+            await new Promise(resolve => {
+                ids.forEach(id => {
+                    const s = document.createElement('script');
+                    s.src = `data/heft${id}.js?v=` + Date.now();
+                    s.onload = s.onerror = () => { if (++loaded >= ids.length) resolve(); };
+                    document.head.appendChild(s);
+                });
+                setTimeout(resolve, 3000);
+            });
+            renderGallery();
+        }
+
+        const LEVEL_RANK = { 'bronze': 1, 'silver': 2, 'gold': 3 };
+        function getMemberLevel() {
+            const token = localStorage.getItem('ss_member_token');
+            const bis = localStorage.getItem('ss_member_bis');
+            if (token && bis && new Date().toISOString().split('T')[0] <= bis) {
+                return localStorage.getItem('ss_member_level') || 'bronze';
+            }
+            return 'bronze';
+        }
+        function hasLevel(required) {
+            return (LEVEL_RANK[getMemberLevel()] || 0) >= (LEVEL_RANK[required || 'bronze'] || 1);
+        }
+        function showBookmark() {
+            if (!hasLevel('silver')) return;
+            try {
+                const bm = JSON.parse(localStorage.getItem('ss_bookmark'));
+                if (!bm) return;
+                document.getElementById('bookmark-text').textContent = `${bm.titel} – Seite ${bm.seite}`;
+                document.getElementById('bookmark-banner').style.display = 'block';
+            } catch(e) {}
+        }
+        function goToBookmark() {
+            try {
+                const bm = JSON.parse(localStorage.getItem('ss_bookmark'));
+                if (bm) window.location.href = `comic-reader.html?heft=${bm.heft}&seite=${bm.seite}`;
+            } catch(e) {}
+        }
+
+        document.addEventListener('DOMContentLoaded', () => { showBookmark(); initGallery(); });
+
+        // NEU: Robuste Weiterleitungs-Funktion
+        function openMembersPage() { window.location.href = 'members.html'; }
+        function openReader(id) {
+            window.location.href = 'comic-reader.html?heft=' + id;
+        }
+    </script>
+
+    <style>
+        :root { --gold: #d4af37; --bg: #000; --card-bg: rgba(20, 20, 20, 0.6); }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        body { 
+            background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; margin: 0; padding: 0; 
+            background-image: url('blatt_textur.jpg'); background-size: cover; 
+            background-attachment: fixed; background-blend-mode: multiply;
+            padding-top: env(safe-area-inset-top);
+            opacity: 0; animation: fadeInBody 0.8s ease-in forwards;
+            overflow-x: hidden;
+        }
+        @keyframes fadeInBody { to { opacity: 1; } }
+
+        .header { padding: 40px 20px 10px; text-align: left; max-width: 1400px; margin: 0 auto; }
+        h1 { font-family: 'Playfair Display', serif; font-size: 2.2rem; margin: 0; color: var(--gold); text-transform: uppercase; letter-spacing: 4px; }
+
+        .char-hub { display: flex; gap: 15px; overflow-x: auto; padding: 20px; scrollbar-width: none; -webkit-overflow-scrolling: touch; max-width: 1400px; margin: 0 auto; }
+        .char-hub::-webkit-scrollbar { display: none; }
+        .char-card { flex-shrink: 0; width: 75px; text-align: center; cursor: pointer; }
+        
+        .char-img-wrap { position: relative; width: 65px; height: 65px; border-radius: 50%; padding: 2px; background: #222; margin: 0 auto; transition: 0.3s; }
+        .char-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 2px solid #333; position: relative; z-index: 2; }
+        
+        .char-card.active .char-img-wrap { background: var(--gold); transform: scale(1.1); }
+        .char-card.active .char-img-wrap::after { 
+            content: ''; position: absolute; top: -5px; left: -5px; right: -5px; bottom: -5px; 
+            border-radius: 50%; border: 2px solid var(--gold); animation: pulseRing 1.5s infinite; 
+        }
+        @keyframes pulseRing { 0% { transform: scale(1); opacity: 0.8; } 100% { transform: scale(1.3); opacity: 0; } }
+        
+        .char-name { font-size: 0.65rem; font-weight: 900; color: #aaa; text-transform: uppercase; margin-top: 8px; letter-spacing: 1px; }
+        .char-card.active .char-name { color: var(--gold); }
+
+        .gallery-wrapper { max-width: 1400px; margin: 0 auto; }
+        .category-section { margin-bottom: 40px; }
+        .category-title { 
+            font-family: 'Playfair Display', serif; font-size: 1.2rem; color: #fff; 
+            padding: 0 20px; margin-bottom: 15px; display: flex; align-items: center; gap: 10px;
+        }
+        .category-title::after { content: ''; height: 1px; background: linear-gradient(to right, var(--gold), transparent); flex-grow: 1; opacity: 0.5; }
+
+        .horizontal-scroll { 
+            display: flex; gap: 20px; overflow-x: auto; padding: 10px 20px 30px; 
+            scrollbar-width: none; -webkit-overflow-scrolling: touch;
+        }
+        .horizontal-scroll::-webkit-scrollbar { display: none; }
+
+        .heft-card { 
+            flex: 0 0 180px; 
+            background: var(--card-bg); border-radius: 15px; overflow: hidden; position: relative; 
+            border: 1px solid #222; box-shadow: 0 8px 20px rgba(0,0,0,0.6); 
+        }
+        .heft-card:active { transform: scale(0.96); }
+
+        .media-box { width: 100%; aspect-ratio: 9/16; background: #050505; overflow: hidden; position: relative; cursor: pointer; display: block; }
+        .heft-img, .heft-vid { width: 100%; height: 100%; object-fit: cover; display: block; }
+        
+        .vid-ui { position: absolute; top: 10px; right: 10px; z-index: 10; display: flex; gap: 5px; }
+        .v-btn { background: rgba(0,0,0,0.7); color: #fff; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(5px); }
+
+        .heft-info { 
+            position: absolute; bottom: 0; left: 0; right: 0; 
+            padding: 15px 10px; text-align: center; 
+            background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.7) 60%, rgba(0,0,0,0) 100%);
+            backdrop-filter: blur(3px); pointer-events: none; /* Klicks gehen durch zum Bild */
+        }
+        .heft-title { font-weight: 900; font-size: 0.75rem; color: #fff; text-transform: uppercase; margin-top: 3px; line-height: 1.2; letter-spacing: 0.5px; }
+        
+        .prog-bar { display: none; }
+    
+        .read-bar-wrap { position:absolute; bottom:0; left:0; right:0; height:18px; background:#1a1a1a; border-radius:0 0 8px 8px; overflow:hidden; display:flex; align-items:center; }
+        .read-bar { height:100%; width:0%; transition:width 0.4s ease, background 0.4s ease; background:#333; position:relative; }
+        .read-bar.yellow { background:#d4af37; }
+        .read-bar.green  { background:#4caf50; }
+        .read-bar-pct { position:absolute; right:0; top:0; bottom:0; display:flex; align-items:center; padding-right:6px; font-size:0.5rem; font-weight:900; color:#000; white-space:nowrap; }
+
+    
+        .heft-card.locked { cursor: default; }
+        .heft-card.locked .media-box { filter: blur(4px) brightness(0.4); pointer-events: none; }
+        .lock-overlay {
+            position: absolute; inset: 0;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            z-index: 5; gap: 6px;
+        }
+        .lock-icon { font-size: 1.8rem; }
+        .lock-label {
+            font-size: 0.55rem; font-weight: 900;
+            color: var(--gold); letter-spacing: 2px;
+            text-transform: uppercase;
+            background: rgba(0,0,0,0.7);
+            padding: 4px 10px; border-radius: 20px;
+            border: 1px solid var(--gold);
+        }
+        .member-badge {
+            position: absolute; top: 8px; left: 8px;
+            font-size: 0.5rem; font-weight: 900;
+            color: #000; background: var(--gold);
+            padding: 3px 8px; border-radius: 10px;
+            letter-spacing: 1px; text-transform: uppercase; z-index: 6;
+        }
+        /* Member banner in header */
+        .member-bar {
+            text-align: center; padding: 6px;
+            font-size: 0.55rem; font-weight: 900;
+            letter-spacing: 2px; text-transform: uppercase;
+            background: rgba(212,175,55,0.1);
+            border-bottom: 1px solid rgba(212,175,55,0.2);
+            color: var(--gold);
+        }
+        .member-bar a { color: #555; text-decoration: none; margin-left: 12px; }
+
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>Snails <span>Stons</span></h1>
+    </div>
+
+    <div id="bookmark-banner" style="display:none; margin:0 15px 10px; padding:12px 16px; background:rgba(212,175,55,0.12); border:1px solid rgba(212,175,55,0.4); border-radius:12px; cursor:pointer;" onclick="goToBookmark()">
+        <div style="font-size:0.6rem;font-weight:900;color:#888;text-transform:uppercase;letter-spacing:1px;">📖 Weiterlesen</div>
+        <div id="bookmark-text" style="font-size:0.85rem;font-weight:700;color:var(--gold);margin-top:3px;"></div>
+    </div>
+
+    <div class="char-hub">
+        <div class="char-card" onclick="toggleFilter('Felix', this)"><div class="char-img-wrap"><img src="felix.jpg" class="char-img"></div><div class="char-name">Felix</div></div>
+        <div class="char-card" onclick="toggleFilter('Archie', this)"><div class="char-img-wrap"><img src="archie.jpg" class="char-img"></div><div class="char-name">Archie</div></div>
+        <div class="char-card" onclick="toggleFilter('Stella', this)"><div class="char-img-wrap"><img src="stella.jpg" class="char-img"></div><div class="char-name">Stella</div></div>
+        <div class="char-card" onclick="toggleFilter('Luna', this)"><div class="char-img-wrap"><img src="luna.jpg" class="char-img"></div><div class="char-name">Luna</div></div>
+        <div class="char-card" onclick="toggleFilter('Salome', this)"><div class="char-img-wrap"><img src="salome.jpg" class="char-img"></div><div class="char-name">Salome</div></div>
+    </div>
+
+    <div class="gallery-wrapper" id="master-gallery">
+        <p id="loading-msg" style="padding:20px; color:var(--gold); font-size:0.8rem; font-weight:900; text-align:center;">LADE STORYS...</p>
+    </div>
+
+    <script>
+                
+        // ── MEMBER SYSTEM ──────────────────────────────────
+        function isMember() {
+            const token = localStorage.getItem('ss_member_token');
+            const bis   = localStorage.getItem('ss_member_bis');
+            if (!token || !bis) return false;
+            const today = new Date().toISOString().split('T')[0];
+            return today <= bis;
+        }
+
+        function getReadProgress(id) {
+            try {
+                const val = localStorage.getItem('progress_heft_' + id);
+                return val !== null ? parseInt(val) : -1;
+            } catch(e) { return -1; }
+        }
+
+        function calculateProgress(id) {
+            const h = hefte[id]; if(!h || !h.seiten) return 0;
+            let total = 3, filled = 0;
+            if(h.teaser) filled++; if(h.locDna) filled++; if(h.coverStory) filled++;
+            h.seiten.forEach(s => { if(s.panels) s.panels.forEach(p => { total += 2; if(p.locDna) filled++; if(p.story) filled++; })});
+            return Math.round((filled/total)*100);
+        }
+
+        function toggleFilter(name, el) {
+            const isSame = window.activeFilter === name;
+            document.querySelectorAll('.char-card').forEach(c => c.classList.remove('active'));
+            
+            if (isSame) {
+                window.activeFilter = null;
+            } else {
+                window.activeFilter = name;
+                el.classList.add('active');
+            }
+            renderGallery();
+        }
+
+        function hasCharacter(heftObj, charName) {
+            if (!charName) return true; 
+            if (!heftObj.seiten) return false;
+            const search = charName.toLowerCase();
+            return heftObj.seiten.some(s => 
+                s.panels && s.panels.some(p => p.skript && p.skript.toLowerCase().includes(search))
+            );
+        }
+
+        function createCardHtml(id, h) {
+            const progress = calculateProgress(id);
+            let media = '';
+            const isVid = h.video && (h.video.endsWith('.mp4') || h.video.endsWith('.mov'));
+            if(isVid) {
+                media = `<div class="vid-ui"><div class="v-btn" onclick="vPlay(${id}, event)">▶</div><div class="v-btn" onclick="vMute(${id}, event)">🔇</div></div>
+                         <video id="vid-${id}" class="heft-vid" loop muted playsinline><source src="heft${id}/${h.video}" type="video/mp4"></video>`;
+            } else {
+                media = `<img class="heft-img" src="heft${id}/${h.cover || 'cover.jpg'}" onerror="this.src='image_9.png'">`;
+            }
+
+            // Hier ist der Fix: Sauberer onclick Aufruf über die openReader Funktion!
+            const locked = h.members === true && !isMember();
+            return `
+                <div class="heft-card ${locked ? 'locked' : ''}" onclick="${locked ? 'openMembersPage()' : 'openReader('+id+')'}">
+                    ${h.members === true ? '<div class="member-badge">⭐ MEMBERS</div>' : ''}
+                    ${locked ? '<div class="lock-overlay"><div class="lock-icon">🔒</div><div class="lock-label">Members Only</div></div>' : ''}
+                    <div class="prog-bar">${progress}%</div>
+                    <div class="media-box">
+                        ${media}
+                        <div class="heft-info">
+                            <div style="font-size:0.5rem; color:var(--gold); letter-spacing:1px; font-weight:700;">HEFT ${id}</div>
+                            <div class="heft-title">${h.titel || 'STORY'}</div>
+                        </div>
+                    </div>
+                    <div class="read-bar-wrap"><div class="read-bar ${getReadProgress(id) >= 80 ? 'green' : getReadProgress(id) > 0 ? 'yellow' : ''}" style="width:${getReadProgress(id) > 0 ? getReadProgress(id) : 0}%">${getReadProgress(id) > 0 ? `<span class="read-bar-pct">${getReadProgress(id)}%</span>` : ''}</div></div>
+                </div>`;
+        }
+
+        function renderGallery() {
+            if (typeof hefte === 'undefined') return; 
+            const master = document.getElementById('master-gallery');
+            master.innerHTML = '';
+            
+            let totalHefteFound = 0;
+            let assignedHefteIds = new Set();
+
+            window.playlistMap.forEach(cat => {
+                let catHtml = '';
+                let hasItems = false;
+
+                cat.hefte.forEach(id => {
+                    const h = hefte[id];
+                    if(!h) return;
+                    // Members-Hefte immer zeigen (gesperrt), normale nur wenn released
+                    if(!h.members && h.released !== true) return;
+                    if(!hasCharacter(h, window.activeFilter)) return;
+                    
+                    catHtml += createCardHtml(id, h);
+                    assignedHefteIds.add(id.toString());
+                    hasItems = true;
+                    totalHefteFound++;
+                });
+
+                if (hasItems) {
+                    const suffix = window.activeFilter ? ` (mit ${window.activeFilter})` : '';
+                    master.innerHTML += `
+                        <div class="category-section">
+                            <div class="category-title">${cat.titel}${suffix}</div>
+                            <div class="horizontal-scroll">${catHtml}</div>
+                        </div>`;
+                }
+            });
+
+            let unassignedHtml = '';
+            let unassignedCount = 0;
+            
+            Object.keys(hefte).sort((a,b) => parseInt(b) - parseInt(a)).forEach(id => {
+                const h = hefte[id];
+                if(!h) return;
+                if(!h.members && h.released !== true) return;
+                if(assignedHefteIds.has(id.toString())) return; 
+                if(!hasCharacter(h, window.activeFilter)) return;
+
+                unassignedHtml += createCardHtml(id, h);
+                unassignedCount++;
+                totalHefteFound++;
+            });
+
+            if (unassignedCount > 0) {
+                const suffix = window.activeFilter ? ` (mit ${window.activeFilter})` : '';
+                master.innerHTML = `
+                    <div class="category-section">
+                        <div class="category-title">Unkategorisiert / Neu${suffix}</div>
+                        <div class="horizontal-scroll">${unassignedHtml}</div>
+                    </div>` + master.innerHTML; 
+            }
+
+            if(totalHefteFound === 0) {
+                master.innerHTML = '<p style="padding:20px; color:#666; font-style:italic; text-align:center;">Keine passenden Storys gefunden.</p>';
+            }
+        }
+
+        function vPlay(id, e) {
+            e.stopPropagation();
+            const v = document.getElementById(`vid-${id}`);
+            if(v.paused) { v.play(); e.target.innerText = '||'; } else { v.pause(); e.target.innerText = '▶'; }
+        }
+
+        function vMute(id, e) {
+            e.stopPropagation();
+            const v = document.getElementById(`vid-${id}`);
+            v.muted = !v.muted; e.target.innerText = v.muted ? '🔇' : '🔊';
+        }
+    // Fortschritt aktualisieren wenn User vom Reader zurückkommt
+    window.addEventListener('focus', () => {
+        if (typeof renderGallery === 'function') renderGallery();
+    });
+    document.addEventListener('visibilitychange', () => {
+        if (!document.hidden && typeof renderGallery === 'function') renderGallery();
+    });
+    </script>
+
+    <!-- ── ANLEITUNG BANNER ──────────────────────── -->
+    <div style="display:flex; gap:10px; margin:30px 16px 40px;">
+        <a href="members.html" style="text-decoration:none; flex:1;">
+            <div style="background:linear-gradient(135deg,#0a0a00,#1a1500);border:1px solid #d4af37;border-radius:16px;padding:20px 16px;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:8px;position:relative;overflow:hidden;">
+                <div style="font-size:1.6rem;">⭐</div>
+                <div style="font-size:0.55rem;font-weight:900;letter-spacing:2px;color:#d4af37;text-transform:uppercase;">Members</div>
+                <div style="font-size:0.75rem;font-weight:900;color:#fff;line-height:1.2;">Jetzt einloggen</div>
+                <div style="font-size:0.6rem;color:#555;">Exklusive Inhalte →</div>
+            </div>
+        </a>
+        <a href="anleitung.html" style="text-decoration:none; flex:1;">
+        <div style="
+            background: linear-gradient(135deg, #111 0%, #1a1500 100%);
+            border: 1px solid var(--gold, #d4af37);
+            border-radius: 16px;
+            padding: 20px 22px;
+            display: flex; align-items: center; gap: 16px;
+            position: relative; overflow: hidden;
+        ">
+            <!-- Gold glow accent -->
+            <div style="
+                position:absolute; top:-30px; right:-30px;
+                width:100px; height:100px;
+                background: radial-gradient(circle, rgba(212,175,55,0.15) 0%, transparent 70%);
+                pointer-events:none;
+            "></div>
+
+            <div style="font-size:2rem; flex-shrink:0;">🐌</div>
+
+            <div style="flex:1;">
+                <div style="
+                    font-size:0.55rem; font-weight:900; letter-spacing:3px;
+                    color:var(--gold,#d4af37); text-transform:uppercase; margin-bottom:5px;
+                ">Neu hier?</div>
+                <div style="
+                    font-size:0.95rem; font-weight:900; color:#fff;
+                    margin-bottom:4px; line-height:1.2;
+                ">So funktioniert das Studio</div>
+                <div style="
+                    font-size:0.7rem; color:#666; line-height:1.4;
+                ">Zoom, Audio, Story-Modus, App-Installation&nbsp;→</div>
+            </div>
+
+            <div style="
+                font-size:1rem; color:var(--gold,#d4af37);
+                flex-shrink:0;
+            ">›</div>
+        </div>
+    </a>
+
+<!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "dab849fee5f44e428afdced853a0c2b2"}'></script><!-- End Cloudflare Web Analytics -->
+</body>
+</html>
+

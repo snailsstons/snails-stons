@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>SnailsStons | MD Format Fixer</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+    :root { --gold: #d4af37; --bg: #000; --card: #111; --success: #28a745; --danger: #ff4444; }
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: #eee; margin: 0; padding: 20px;
+           background-image: url('blatt_textur.jpg'); background-size: cover; background-blend-mode: multiply; }
+    .app { max-width: 500px; margin: 0 auto; }
+    h1 { font-weight: 900; color: var(--gold); text-align: center; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 6px; }
+    .sub { text-align: center; font-size: 0.65rem; color: #555; font-weight: 700; text-transform: uppercase; margin-bottom: 25px; letter-spacing: 1px; }
+    
+    .drop-zone { border: 2px dashed var(--gold); border-radius: 12px; padding: 40px 20px; text-align: center; background: rgba(0,0,0,0.6); margin-bottom: 20px; cursor: pointer; transition: 0.3s; }
+    .drop-zone:hover, .drop-zone.dragover { background: rgba(212,175,55,0.1); }
+    .drop-zone p { margin: 0; font-weight: 900; color: var(--gold); }
+    .drop-zone span { font-size: 0.7rem; color: #888; display: block; margin-top: 8px; font-weight: normal; }
+    
+    #file-input { display: none; }
+    
+    .btn { display: none; width: 100%; padding: 15px; background: var(--gold); color: #000; font-weight: 900; text-align: center; text-transform: uppercase; border-radius: 8px; text-decoration: none; margin-top: 15px; border: none; cursor: pointer; }
+    .btn:hover { background: #e5c158; }
+    
+    .preview-box { display: none; background: #050505; border: 1px solid #333; padding: 15px; border-radius: 8px; margin-top: 20px; font-family: monospace; font-size: 0.7rem; color: #aaa; white-space: pre-wrap; max-height: 300px; overflow-y: auto; }
+</style>
+</head>
+<body>
+
+<div class="app">
+    <h1>MD Fixer</h1>
+    <div class="sub">F: Format Auto-Injection v2.1</div>
+
+    <div class="drop-zone" id="drop-zone" onclick="document.getElementById('file-input').click()">
+        <p>MARKDOWN DATEI WÄHLEN</p>
+        <span>(Oder hierher ziehen)</span>
+    </div>
+    <input type="file" id="file-input" accept=".md, .txt">
+
+    <button class="btn" id="dl-btn" onclick="downloadFixed()">DOWNLOAD FIXED DATEI</button>
+
+    <div class="preview-box" id="preview"></div>
+</div>
+
+<script>
+    const dropZone = document.getElementById('drop-zone');
+    const fileInput = document.getElementById('file-input');
+    let fixedContent = '';
+    let fileName = 'story.md';
+
+    dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
+    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+    dropZone.addEventListener('drop', (e) => {
+        e.preventDefault(); dropZone.classList.remove('dragover');
+        if (e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
+    });
+    fileInput.addEventListener('change', (e) => {
+        if (e.target.files.length) handleFile(e.target.files[0]);
+    });
+
+    function handleFile(file) {
+        fileName = file.name;
+        const reader = new FileReader();
+        reader.onload = (e) => processMarkdown(e.target.result);
+        reader.readAsText(file);
+    }
+
+    function processMarkdown(content) {
+        // Berücksichtigt Windows (\r\n) und Unix (\n) Zeilenumbrüche
+        const lines = content.split(/\r?\n/);
+        const panels = [];
+        let currentPanel = null;
+
+        // Parse panels
+        lines.forEach((line, idx) => {
+            // HIER DIE NEUE LOGIK FÜR ALLE RAUTEN (##, ###, ####)
+            let match = line.match(/^#+\s*(S\d+_P\d+)\s*\[(.*?)\]/);
+            
+            if (match) {
+                if (currentPanel) panels.push(currentPanel);
+                currentPanel = {
+                    id: match[1],
+                    format: match[2],
+                    headerLine: idx,
+                    fLine: -1,
+                    hasF: false
+                };
+            } else if (currentPanel) {
+                if (line.match(/^F:\s*(.*)/i)) { // i = ignore case (erkennt auch f:)
+                    currentPanel.hasF = true;
+                    currentPanel.fLine = idx;
+                }
+            }
+        });
+        if (currentPanel) panels.push(currentPanel);
+
+        // Calculate missing formats and prepare insertions
+        const insertions = {};
+        const replacements = {};
+
+        panels.forEach(p => {
+            let targetFmt = p.format.trim();
+            if (targetFmt) {
+                if (p.hasF && p.fLine >= 0) {
+                    replacements[p.fLine] = `F: ${targetFmt}`;
+                } else {
+                    if (!insertions[p.headerLine]) insertions[p.headerLine] = [];
+                    insertions[p.headerLine].push(`F: ${targetFmt}`);
+                }
+            }
+        });
+
+        // Neues File zusammenbauen
+        const result = [];
+        lines.forEach((line, idx) => {
+            result.push(line);
+            if (insertions[idx]) {
+                insertions[idx].forEach(ins => result.push(ins));
+            }
+            if (replacements[idx] !== undefined) {
+                result[result.length - 1] = replacements[idx];
+            }
+        });
+
+        fixedContent = result.join('\n');
+
+        // Preview
+        const preview = document.getElementById('preview');
+        preview.style.display = 'block';
+        preview.innerText = fixedContent.substring(0, 2000) + (fixedContent.length > 2000 ? '\n...(gekürzt)' : '');
+
+        document.getElementById('dl-btn').style.display = 'block';
+    }
+
+    function downloadFixed() {
+        const base = fileName.replace('.md', '');
+        const blob = new Blob([fixedContent], { type: 'text/markdown' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = `${base}_fixed.md`;
+        a.click();
+    }
+</script>
+</body>
+</html>

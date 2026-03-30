@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>SnailsStons | Members</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@900&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --gold: #d4af37; --silver: #aaa; --bronze: #cd7f32;
+            --red: #e53935; 
+        }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
+
+        body {
+            background: #000; color: #fff;
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            background-image: url('blatt_textur.jpg');
+            background-size: cover; background-blend-mode: multiply;
+            padding: 20px;
+        }
+
+        /* Glassmorphism Card */
+        .card {
+            width: 100%; max-width: 360px;
+            background: rgba(15, 15, 15, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 20px;
+            padding: 35px;
+            text-align: center;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.9);
+            display: none;
+        }
+        .card.show { display: block; animation: fadeIn 0.5s ease; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        h1 { font-family: 'Playfair Display', serif; color: var(--gold); font-size: 1.8rem; margin-bottom: 8px; }
+        p { color: #888; font-size: 0.8rem; margin-bottom: 25px; }
+
+        input {
+            width: 100%; background: rgba(0,0,0,0.5); border: 1px solid #333;
+            color: #fff; padding: 14px; border-radius: 12px;
+            font-family: inherit; font-size: 1rem; text-align: center;
+            margin-bottom: 15px; outline: none; transition: 0.3s;
+        }
+        input:focus { border-color: var(--gold); box-shadow: 0 0 10px rgba(212, 175, 55, 0.2); }
+
+        .btn {
+            width: 100%; background: var(--gold); color: #000;
+            border: none; padding: 15px; border-radius: 12px;
+            font-weight: 900; font-size: 0.9rem; cursor: pointer;
+            text-transform: uppercase; letter-spacing: 1px;
+            margin-bottom: 10px; display: block; text-decoration: none;
+            transition: 0.3s;
+        }
+        .btn:hover { background: #f1c40f; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4); }
+
+        .btn-back {
+            display: block; width: 100%; padding: 12px;
+            background: transparent; border: 1px solid #444;
+            color: #aaa; text-decoration: none; border-radius: 12px;
+            font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+            cursor: pointer;
+        }
+
+        /* Metallic Badges */
+        .tier-badge {
+            display: inline-block; padding: 8px 20px; border-radius: 6px;
+            font-weight: 900; font-size: 0.75rem; text-transform: uppercase;
+            margin: 15px 0; letter-spacing: 1px;
+        }
+        .tier-gold { 
+            background: linear-gradient(135deg, #fceabb 0%, #fccd4d 50%, #f8b500 51%, #fbdf93 100%); 
+            color: #4a3500; box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+        }
+        .tier-silver { 
+            background: linear-gradient(135deg, #e2e2e2 0%, #dbdbdb 50%, #d1d1d1 51%, #fefefe 100%); 
+            color: #333; box-shadow: 0 0 15px rgba(170, 170, 170, 0.3);
+        }
+        .tier-bronze { 
+            background: linear-gradient(135deg, #ca7345 0%, #a35d36 50%, #824b2b 51%, #ed935d 100%); 
+            color: #fff; box-shadow: 0 0 15px rgba(205, 127, 50, 0.3);
+        }
+
+        .member-details {
+            background: rgba(255,255,255,0.05); padding: 20px; border-radius: 15px;
+            margin-bottom: 20px; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.1);
+        }
+        .date-row { color: var(--gold); font-weight: 700; margin-top: 5px; font-size: 0.75rem; }
+
+        .btn-logout { background: transparent; border: 1px solid #333; color: #666; margin-top: 20px; font-size: 0.7rem; padding: 8px 15px; border-radius: 8px; cursor: pointer; width: 100%; }
+        .error-msg { color: var(--red); font-size: 0.75rem; font-weight: 700; margin-top: 15px; display: none; }
+        .error-msg.active { display: block; }
+    </style>
+</head>
+<body>
+
+    <div class="card show" id="login-form">
+        <h1>Member Login</h1>
+        <p>Logge dich ein, um an deiner letzten Position weiterzulesen.</p>
+        <input type="text" id="token-input" placeholder="DEIN TOKEN" spellcheck="false">
+        <button class="btn" id="main-login-btn" onclick="doLogin()">🐌 EINLOGGEN</button>
+        <button class="btn-back" onclick="goBack()">← ABBRECHEN</button>
+        <div class="error-msg" id="error-msg">Token ungültig oder abgelaufen!</div>
+        <div style="margin-top:20px; padding:12px; background:rgba(212,175,55,0.1); border:1px solid rgba(212,175,55,0.3); border-radius:10px; font-size:0.75rem; color:#888; text-align:center;">
+            🥉 Als Gast liest du im <strong style="color:var(--gold);">Bronze</strong> Level.<br>
+            Login schaltet Silver & Gold Inhalte frei.
+        </div>
+    </div>
+
+    <div class="card" id="logged-in">
+        <h1>Dein Status</h1>
+        <div id="tier-display"></div>
+        <div class="member-details" id="member-info"></div>
+        <button class="btn" onclick="goBack()">📖 ZUR STORY ZURÜCK</button>
+        <button class="btn-logout" onclick="doLogout()">Abmelden & Startseite</button>
+    </div>
+
+<script>
+    // Datum formatieren: ISO -> Deutsch
+    function formatDE(iso) {
+        if (!iso || !iso.includes('-')) return iso;
+        const [y, m, d] = iso.split('-');
+        return `${d}.${m}.${y}`;
+    }
+
+    // Smart History
+    (function captureHistory() {
+        const params = new URLSearchParams(window.location.search);
+        const backParam = params.get('back');
+        if (backParam) {
+            sessionStorage.setItem('ss_last_reader_pos', decodeURIComponent(backParam));
+        } else {
+            const ref = document.referrer;
+            if (ref && ref.includes('comic-reader.html')) {
+                sessionStorage.setItem('ss_last_reader_pos', ref);
+            }
+        }
+    })();
+
+    function goBack() {
+        const lastPos = sessionStorage.getItem('ss_last_reader_pos');
+        window.location.href = (lastPos && !lastPos.includes('members.html')) ? lastPos : 'index.html';
+    }
+
+    async function loadMembers() {
+        try {
+            const response = await fetch('members.md?v=' + Date.now());
+            if (!response.ok) return {};
+            const text = await response.text();
+            const members = {};
+            text.split('\n').forEach(line => {
+                line = line.trim();
+                if (line && !line.startsWith('#') && line.includes(':')) {
+                    const [token, von, bis, level] = line.split(':');
+                    members[token.toLowerCase()] = { von, bis, level: level?.trim().toLowerCase() || 'bronze' };
+                }
+            });
+            return members;
+        } catch (e) { return {}; }
+    }
+
+    async function doLogin() {
+        const input = document.getElementById('token-input').value.trim().toLowerCase();
+        const loginBtn = document.getElementById('main-login-btn');
+        loginBtn.innerText = "PRÜFE...";
+        
+        const members = await loadMembers();
+        const member = members[input];
+
+        if (member) {
+            const today = new Date().toISOString().split('T')[0];
+            if (today >= member.von && today <= member.bis) {
+                localStorage.setItem('ss_member_token', input);
+                localStorage.setItem('ss_member_von', member.von);
+                localStorage.setItem('ss_member_bis', member.bis);
+                localStorage.setItem('ss_member_level', member.level);
+                showStatus(input, member.von, member.bis, member.level);
+                setTimeout(goBack, 1200);
+            } else { showError(); }
+        } else { showError(); }
+    }
+
+    function showError() {
+        document.getElementById('error-msg').classList.add('active');
+        document.getElementById('main-login-btn').innerText = "🐌 EINLOGGEN";
+    }
+
+    function showStatus(token, von, bis, level) {
+        document.getElementById('login-form').classList.remove('show');
+        document.getElementById('logged-in').classList.add('show');
+        document.getElementById('tier-display').innerHTML = `<span class="tier-badge tier-${level}">${level} Member</span>`;
+        document.getElementById('member-info').innerHTML = `
+            Token: <strong>${token.toUpperCase()}</strong><br>
+            <div class="date-row">Aktiv von: ${formatDE(von)}</div>
+            <div class="date-row">Gültig bis: ${formatDE(bis)}</div>
+        `;
+    }
+
+    function doLogout() {
+        localStorage.removeItem("ss_member_token");
+        localStorage.removeItem("ss_member_von");
+        localStorage.removeItem("ss_member_bis");
+        localStorage.removeItem("ss_member_level");
+        sessionStorage.removeItem('ss_last_reader_pos');
+        window.location.href = 'index.html';
+    }
+
+    (function() {
+        const token = localStorage.getItem('ss_member_token');
+        const bis = localStorage.getItem('ss_member_bis');
+        if (token && bis && new Date().toISOString().split('T')[0] <= bis) {
+            showStatus(token, localStorage.getItem('ss_member_von'), bis, localStorage.getItem('ss_member_level'));
+        }
+    })();
+</script>
+</body>
+</html>

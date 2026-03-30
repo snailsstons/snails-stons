@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>SnailsAdmin | v10.0 (Member & Guardian)</title>
+    <link rel="manifest" href="manifest_admin.json">
+    <meta name="theme-color" content="#d4af37">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="SnailsAdmin">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@900&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <script>
+        // Sicheres hefte-Objekt – auch wenn hefte.js fehlt oder leer ist
+        if (typeof hefte === 'undefined') { var hefte = {}; }
+    </script>
+    <script src="hefte.js" onerror="console.warn('hefte.js nicht gefunden – leeres Objekt wird verwendet.')"></script>
+    <script>
+        if (typeof hefte === 'undefined') { var hefte = {}; }
+    </script>
+    <style>
+        :root { --gold: #d4af37; --bg: #000; --card: #111; --success: #28a745; --danger: #ff4444; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; scroll-behavior: smooth; }
+        body { 
+            background: var(--bg); color: #eee; font-family: 'Inter', sans-serif; margin: 0; padding: 0; 
+            background-image: url('blatt_textur.jpg'); background-size: cover; 
+            background-attachment: fixed; background-blend-mode: multiply;
+        }
+        .sticky-top { position: sticky; top: 0; background: rgba(0,0,0,0.96); z-index: 1000; padding: 15px; border-bottom: 1px solid #222; }
+        .container { max-width: 800px; margin: 0 auto; padding: 20px; }
+        h1 { font-family: 'Playfair Display', serif; color: var(--gold); margin: 0; font-size: 1.8rem; text-align: center; }
+        
+        .card { background: var(--card); border-radius: 12px; padding: 20px; margin-bottom: 20px; border: 1px solid #222; }
+        .card h2 { margin-top: 0; font-size: 0.9rem; text-transform: uppercase; color: var(--gold); letter-spacing: 1px; border-bottom: 1px solid #333; padding-bottom: 10px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
+        
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        input, select, textarea { width: 100%; background: #000; border: 1px solid #333; color: #fff; padding: 12px; border-radius: 8px; font-size: 0.9rem; }
+        label { display: block; font-size: 0.7rem; color: #666; text-transform: uppercase; margin-bottom: 5px; font-weight: 700; }
+        
+        .btn { background: var(--gold); color: #000; border: none; padding: 12px; border-radius: 8px; font-weight: 900; text-transform: uppercase; cursor: pointer; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .btn-sec { background: #222; color: #fff; font-size: 0.7rem; }
+        .btn-lock { background: transparent; border: 1px solid #444; color: #666; padding: 4px 8px; font-size: 0.6rem; border-radius: 4px; }
+        .btn-lock.active { background: var(--danger); border-color: #fff; color: #fff; }
+
+        .panel-row { background: #080808; border: 1px solid #1a1a1a; border-radius: 6px; padding: 6px 10px; margin-bottom: 4px; display: grid; grid-template-columns: 180px 1fr 40px; gap: 8px; align-items: center; }
+        .seite-header { display:flex; justify-content:space-between; align-items:center; padding: 8px 10px; background:#0d0d0d; border:1px solid #222; border-radius:8px; margin-top:8px; cursor:pointer; user-select:none; }
+        .seite-header:hover { border-color:#333; }
+        .seite-panels { display:none; padding: 4px 0 4px 0; }
+        .seite-panels.open { display:block; }
+        .panel-story-short { font-size:0.6rem; color:#666; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%; }
+        .panel-meta { color: var(--gold); font-weight: 900; font-size: 0.65rem; display: flex; align-items: center; gap: 10px; }
+        
+        #status-msg { position: fixed; bottom: 0; left: 0; right: 0; background: var(--success); color: #fff; padding: 10px; text-align: center; font-weight: 700; transform: translateY(100%); transition: 0.3s; z-index: 2000; }
+        #status-msg.show { transform: translateY(0); }
+        .hidden { display: none; }
+        
+        /* Member Table */
+        table { width: 100%; border-collapse: collapse; font-size: 0.75rem; margin-top: 10px; }
+        th { text-align: left; color: var(--gold); padding: 8px; border-bottom: 1px solid #333; }
+        td { padding: 8px; border-bottom: 1px solid #111; }
+    </style>
+</head>
+<body>
+
+<div id="status-msg">Info-Meldung</div>
+
+<div class="sticky-top">
+    <h1>SnailsAdmin</h1>
+    <div style="display:flex; gap:10px; margin-top:15px; max-width:800px; margin-left:auto; margin-right:auto;">
+        <select id="heft-select" onchange="loadHeft(this.value)"></select>
+        <button class="btn btn-sec" style="width:auto; padding: 0 20px;">+</button>
+        <button id="pwa-install-btn" class="btn btn-sec" style="width:auto; padding:0 12px; display:none;" onclick="installPWA()">📲</button>
+    </div>
+</div>
+
+<div class="container">
+    
+    <div class="card">
+        <h2>Mitglieder-Liste (members.md) 
+            <div style="display:flex;gap:5px;">
+                <button class="btn-lock" style="font-size:0.5rem;" onclick="reloadMembers()">↺ NEU LADEN</button>
+                <button class="btn-lock" style="font-size:0.5rem;" onclick="document.getElementById('member-file').click()">IMPORT .MD</button>
+            </div>
+        </h2>
+        <input type="file" id="member-file" class="hidden" accept=".md" onchange="importMembers(this)">
+        <div id="member-manager">
+            <div class="grid" style="grid-template-columns: 1fr 1fr 1fr 1fr 50px; margin-bottom:10px;">
+                <input type="text" id="m-token" placeholder="Token">
+                <input type="date" id="m-von">
+                <input type="date" id="m-bis">
+                <select id="m-level">
+                    <option value="bronze">Bronze</option>
+                    <option value="silver">Silver</option>
+                    <option value="gold">Gold</option>
+                </select>
+                <button class="btn" onclick="addMember()">+</button>
+            </div>
+            <table id="member-table">
+                <thead><tr><th>Token</th><th>Von</th><th>Bis</th><th>Level</th><th></th></tr></thead>
+                <tbody></tbody>
+            </table>
+            <button class="btn" style="margin-top:15px; background: var(--success);" onclick="exportMembers()">💾 MEMBERS.MD EXPORTIEREN & HOCHLADEN</button>
+            <div id="export-reminder" style="display:none; margin-top:10px; padding:10px; background:#1a1a00; border:1px solid var(--gold); border-radius:8px; font-size:0.75rem; color:var(--gold);">
+                ⚠️ Datei heruntergeladen! Jetzt <strong>members.md auf den Server hochladen</strong> – sonst kann der neue Member sich nicht einloggen.
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>Heft Meta-Daten
+            <select id="heft-lock-btn" onchange="setHeftLevel(this.value)" style="width:auto;padding:3px 8px;font-size:0.65rem;background:#111;color:#fff;border:1px solid #444;border-radius:4px;">
+                <option value="free">🔓 Free</option>
+                <option value="silver">🥈 Silver</option>
+                <option value="gold">🥇 Gold</option>
+            </select>
+        </h2>
+        <div class="grid" style="grid-template-columns: 80px 1fr;">
+            <div><label>ID</label><input type="text" id="h-id" readonly></div>
+            <div><label>Titel</label><input type="text" id="h-titel" oninput="updateMeta()"></div>
+        </div>
+        <div style="margin-top:15px;">
+            <label>Teaser & Cover Story</label>
+            <textarea id="h-teaser" rows="3" oninput="updateMeta()"></textarea>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>📋 Rubriken & Playlisten
+            <button class="btn-lock" style="font-size:0.5rem;" onclick="addRubrik()">+ NEU</button>
+        </h2>
+        <div id="rubrik-list"></div>
+        <button class="btn" style="margin-top:12px; background:var(--success);" onclick="pushPlaylists()">🚀 RUBRIKEN → GITHUB</button>
+        <div id="rubrik-push-status" style="display:none; margin-top:8px; padding:8px; border-radius:8px; font-size:0.75rem;"></div>
+    </div>
+
+    <div class="card">
+        <h2>Story Import</h2>
+        <div style="background: #080808; border: 2px dashed #333; padding: 20px; border-radius: 8px; text-align: center;">
+            <input type="file" id="md-file" class="hidden" accept=".md" onchange="importStoryMD(this)">
+            <button class="btn btn-sec" onclick="document.getElementById('md-file').click()">STORY DATEI WÄHLEN</button>
+            <div id="import-status" style="display:none; margin-top:10px; padding:10px; background:#0a1a00; border:1px solid var(--success); border-radius:8px; font-size:0.75rem; color:var(--success);"></div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>Panel-Vorschau & Guardian Control</h2>
+        <div id="preview-list"></div>
+    </div>
+
+    <div class="card">
+        <h2>⚙️ GitHub Setup</h2>
+        <div class="grid" style="grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:10px;">
+            <div>
+                <label>Repo (user/repo)</label>
+                <input type="text" id="gh-repo" placeholder="snailsstons/members">
+            </div>
+            <div>
+                <label>Branch</label>
+                <input type="text" id="gh-branch" placeholder="main">
+            </div>
+        </div>
+        <div style="margin-bottom:10px;">
+            <label>Personal Access Token</label>
+            <input type="password" id="gh-token" placeholder="ghp_...">
+        </div>
+        <div style="display:flex; gap:10px;">
+            <button class="btn btn-sec" style="flex:1;" onclick="saveGHConfig()">💾 SPEICHERN</button>
+            <button class="btn btn-sec" style="flex:1;" onclick="testGHConnection()">🔌 VERBINDUNG TESTEN</button>
+        </div>
+        <div id="gh-status" style="display:none; margin-top:10px; padding:8px; border-radius:8px; font-size:0.75rem;"></div>
+    </div>
+
+    <div class="card">
+        <h2>Export & GitHub Push</h2>
+        <div style="display:flex; gap:10px; margin-bottom:10px;">
+            <button class="btn" style="flex:1;" onclick="pushHeft(currentHeftId)">🚀 HEFT → GITHUB</button>
+            <button class="btn btn-sec" style="flex:1;" onclick="exportHeft(currentHeftId)">💾 DOWNLOAD</button>
+        </div>
+        <button class="btn" style="background:var(--success); margin-bottom:10px;" onclick="pushMembers()">🚀 MEMBERS.MD → GITHUB</button>
+        <button class="btn btn-sec" style="margin-bottom:10px; border:1px solid #ff4444; color:#ff4444;" onclick="resetHeftToFree()">🔓 ALLES AUF FREE (dieses Heft)</button>
+        <div id="push-status" style="display:none; margin-top:10px; padding:10px; border-radius:8px; font-size:0.75rem;"></div>
+        <button class="btn btn-sec" style="margin-top:10px; background:var(--danger);" onclick="clearLocal()">RESET & BLIND SYNC</button>
+    </div>
+</div>
+
+<script>
+    let currentHeftId = "0";
+    let members = [];
+
+    // Muss vor init() stehen – blindSync braucht getGHConfig
+    function getGHConfig() {
+        return {
+            repo: localStorage.getItem('gh_repo'),
+            branch: localStorage.getItem('gh_branch') || 'main',
+            token: localStorage.getItem('gh_token')
+        };
+    }
+
+    async function reloadMembers() {
+        localStorage.removeItem('snail_members');
+        members = [];
+        await loadMembersFromServer();
+        renderMembers();
+    }
+
+    async function loadMembersFromServer() {
+        try {
+            const res = await fetch('members.md?v=' + Date.now());
+            if (!res.ok) return;
+            const text = await res.text();
+            members = [];
+            text.split('\n').forEach(line => {
+                line = line.trim();
+                if (line && !line.startsWith('#') && line.includes(':')) {
+                    const parts = line.split(':');
+                    if (parts.length >= 3) {
+                        members.push({
+                            token: parts[0].trim(),
+                            von:   parts[1].trim(),
+                            bis:   parts[2].trim(),
+                            level: parts[3] ? parts[3].trim().toLowerCase() : 'bronze'
+                        });
+                    }
+                }
+            });
+            saveMembers();
+            showStatus(`${members.length} Members geladen`);
+        } catch(e) {}
+    }
+
+    async function init() {
+        const local = localStorage.getItem('snail_v50_data');
+        const localMembers = localStorage.getItem('snail_members');
+        
+        if(!local) await blindSync(); 
+        else Object.assign(hefte, JSON.parse(local));
+        
+        if(localMembers) {
+            members = JSON.parse(localMembers);
+        } else {
+            // Automatisch members.md laden wenn localStorage leer
+            await loadMembersFromServer();
+        }
+        
+        renderHeftSelector();
+        renderMembers();
+        loadGHConfig();
+        loadPlaylists();
+    }
+
+    async function blindSync() {
+        const { repo, branch, token } = getGHConfig();
+
+        // GitHub-Sync: data/ Ordner auslesen und alle heftN.js laden
+        if (repo && token) {
+            showStatus("Lade Hefte von GitHub...");
+            try {
+                const res = await fetch(`https://api.github.com/repos/${repo}/contents/data?ref=${branch}`, {
+                    headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json' }
+                });
+                if (res.ok) {
+                    const files = await res.json();
+                    const heftFiles = files.filter(f => f.name.match(/^heft\d+\.js$/));
+                    for (const f of heftFiles) {
+                        try {
+                            const fileRes = await fetch(f.download_url);
+                            const code = await fileRes.text();
+                            // hefte["N"] = {...} eval-safe ausführen
+                            const fn = new Function('hefte', code);
+                            fn(hefte);
+                        } catch(e) { console.warn('Fehler beim Laden:', f.name, e); }
+                    }
+                    saveLocal();
+                    showStatus(`${heftFiles.length} Hefte von GitHub geladen!`);
+                    return;
+                }
+            } catch(e) { console.warn('GitHub-Sync fehlgeschlagen, versuche lokal:', e); }
+        }
+
+        // Fallback: lokal via script-tags (localhost / gleiche Domain)
+        let i = 0, errors = 0;
+        while (errors <= 1) {
+            try { await loadScript(`data/heft${i}.js?v=${Date.now()}`); i++; errors = 0; }
+            catch (err) { i++; errors++; }
+            if (i > 150) break;
+        }
+        saveLocal();
+    }
+
+    function loadScript(src) {
+        return new Promise((resolve, reject) => {
+            const s = document.createElement('script');
+            s.src = src; s.onload = resolve; s.onerror = reject;
+            document.head.appendChild(s);
+        });
+    }
+
+    function renderHeftSelector() {
+        const sel = document.getElementById('heft-select');
+        sel.innerHTML = "";
+        const ids = Object.keys(hefte).sort((a,b) => parseInt(a)-parseInt(b));
+        ids.forEach(id => {
+            const opt = document.createElement('option');
+            opt.value = id; opt.textContent = `Heft ${id}: ${hefte[id].titel || ''}`;
+            sel.appendChild(opt);
+        });
+        if(ids.length > 0) loadHeft(ids[0]);
+    }
+
+    function loadHeft(id) {
+        currentHeftId = id;
+        const h = hefte[id];
+        if(!h) return;
+        document.getElementById('h-id').value = id;
+        document.getElementById('h-titel').value = h.titel || '';
+        document.getElementById('h-teaser').value = h.teaser || '';
+        
+        const heftLvl = h.members ? (h.level || 'bronze') : 'free';
+        document.getElementById('heft-lock-btn').value = heftLvl;
+        
+        renderPreview(id);
+    }
+
+    function renderPreview(id) {
+        const h = hefte[id];
+        const container = document.getElementById('preview-list');
+        if(!h || !h.seiten) { container.innerHTML = ''; return; }
+
+        const levelSelect = (cur, onChange) => {
+            const opts = ['free','silver','gold'].map(l => {
+                const icon = l==='free'?'🔓':l==='silver'?'🥈':'🥇';
+                return `<option value="${l}" ${cur===l?'selected':''}>${icon} ${l.charAt(0).toUpperCase()+l.slice(1)}</option>`;
+            }).join('');
+            const fn = onChange.replace('this.value', 'this.options[this.selectedIndex].value');
+            return `<select style="width:auto;padding:2px 4px;font-size:0.55rem;background:#111;color:#fff;border:1px solid #444;border-radius:4px;" onchange="${fn}">${opts}</select>`;
+        };
+
+        let html = "";
+        h.seiten.forEach((seite, sIdx) => {
+            const seiteCur = seite.members ? (seite.level || 'bronze') : 'free';
+            const sNr = seite.nummer || sIdx + 1;
+            const pCount = seite.panels ? seite.panels.length : 0;
+            const sIcon = seiteCur==='free'?'🔓':seiteCur==='bronze'?'🥉':seiteCur==='silver'?'🥈':'🥇';
+
+            html += `
+                <div class="seite-header" onclick="toggleSeite(${sIdx})">
+                    <div style="display:flex;align-items:center;gap:8px;">
+                        <span style="color:var(--gold);font-size:0.7rem;font-weight:900;">S${sNr}</span>
+                        <span style="font-size:0.6rem;color:#555;">${pCount} Panels</span>
+                        <span style="font-size:0.65rem;">${sIcon}</span>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:6px;" onclick="event.stopPropagation()">
+                        ${levelSelect(seiteCur, `setSeiteLevel(${sIdx}, this.value)`)}
+                        <span id="seite-arrow-${sIdx}" style="color:#444;font-size:0.7rem;">▼</span>
+                    </div>
+                </div>
+                <div class="seite-panels" id="seite-panels-${sIdx}">`;
+
+            seite.panels.forEach((p, pIdx) => {
+                const panelCur = p.level ? p.level : (p.members || p.bonus ? 'bronze' : 'free');
+                const fmt = p.format || (p.wide?'16:9':p.tall?'9:16':'1:1');
+                const fmtColor = {'16:9':'#4a9eff','1:1':'#d4af37','3:5':'#a855f7','9:16':'#ff6b35'}[fmt]||'#888';
+                const story = (p.story||'').substring(0,60) + ((p.story||'').length>60?'…':'');
+
+                const adIcon = p.werbung && p.werbung.bild ? '📢' : '📭';
+                const moIcon = p.makingOf ? '🎬' : '🎞️';
+                html += `
+                    <div class="panel-row">
+                        <div style="display:flex;align-items:center;gap:6px;min-width:0;">
+                            <span style="color:var(--gold);font-weight:900;font-size:0.65rem;white-space:nowrap;">P${pIdx+1}</span>
+                            <span style="font-size:0.5rem;color:${fmtColor};font-weight:900;white-space:nowrap;">${fmt}</span>
+                            ${levelSelect(panelCur, `setPanelLevel(${sIdx}, ${pIdx}, this.value)`)}
+                        </div>
+                        <div class="panel-story-short" title="${(p.story||'').replace(/"/g,"'")}">
+                            ${story || '<span style="color:#333">–</span>'}
+                        </div>
+                        <div style="display:flex;gap:3px;">
+                            <button class="btn btn-sec" style="padding:4px;font-size:0.7rem;" onclick="openPromptEngine('${currentHeftId}', ${sIdx}, ${pIdx})">🎨</button>
+                            <button class="btn btn-sec" style="padding:4px;font-size:0.7rem;" onclick="editAd(${sIdx}, ${pIdx})" title="Werbung">${adIcon}</button>
+                            <button class="btn btn-sec" style="padding:4px;font-size:0.7rem;" onclick="editMakingOf(${sIdx}, ${pIdx})" title="Making Of">${moIcon}</button>
+                        </div>
+                    </div>`;
+            });
+
+            html += `</div>`;
+        });
+        container.innerHTML = html;
+    }
+
+    function toggleSeite(sIdx) {
+        const panels = document.getElementById(`seite-panels-${sIdx}`);
+        const arrow  = document.getElementById(`seite-arrow-${sIdx}`);
+        const isOpen = panels.classList.contains('open');
+        panels.classList.toggle('open', !isOpen);
+        arrow.textContent = isOpen ? '▼' : '▲';
+    }
+
+    function setHeftLevel(val) {
+        const h = hefte[currentHeftId];
+        if (val === 'free') { h.members = false; delete h.level; }
+        else { h.members = true; h.level = val; }
+        saveLocal();
+    }
+
+    function setSeiteLevel(sIdx, val) {
+        const s = hefte[currentHeftId].seiten[sIdx];
+        if (val === 'free') { s.members = false; delete s.level; }
+        else { s.members = true; s.level = val; }
+        saveLocal();
+    }
+
+    function setPanelLevel(sIdx, pIdx, val) {
+        const p = hefte[currentHeftId].seiten[sIdx].panels[pIdx];
+        if (val === 'free') { p.members = false; p.bonus = false; delete p.level; }
+        else { p.members = true; p.bonus = true; p.level = val; }
+        saveLocal();
+    }
+
+    // --- MEMBER MANAGEMENT ---
+    // FIX: Level-Wert wird nun mitgespeichert
+    function addMember() {
+        const t = document.getElementById('m-token').value.trim();
+        const v = document.getElementById('m-von').value;
+        const b = document.getElementById('m-bis').value;
+        const l = document.getElementById('m-level').value;
+        if(!t || !v || !b) { showStatus("Token, Von und Bis ausfüllen!"); return; }
+        members.push({ token: t, von: v, bis: b, level: l });
+        document.getElementById('m-token').value = '';
+        renderMembers();
+        saveMembers();
+        // Reminder anzeigen
+        document.getElementById('export-reminder').style.display = 'block';
+        showStatus("Member hinzugefügt – Exportieren nicht vergessen!");
+    }
+
+    // FIX: Level-Anzeige in der Tabelle ergänzt
+    function renderMembers() {
+        const tbody = document.querySelector('#member-table tbody');
+        tbody.innerHTML = '';
+        members.forEach((m, i) => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `<td>${m.token}</td><td>${m.von}</td><td>${m.bis}</td><td style="text-transform:uppercase; font-size:0.6rem; color:var(--gold)">${m.level || 'bronze'}</td><td><button class="btn-lock active" onclick="delMember(${i})">X</button></td>`;
+            tbody.appendChild(tr);
+        });
+    }
+
+    function delMember(i) {
+        members.splice(i, 1);
+        renderMembers();
+        saveMembers();
+    }
+
+    function importMembers(input) {
+        const file = input.files[0];
+        if(!file) return;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const lines = e.target.result.split('\n');
+            members = [];
+            lines.forEach(line => {
+                line = line.trim();
+                if(line.includes(':') && !line.startsWith('#')) {
+                    const parts = line.split(':');
+                    if(parts.length >= 3) {
+                        members.push({ 
+                            token: parts[0].trim(), 
+                            von: parts[1].trim(), 
+                            bis: parts[2].trim(),
+                            level: parts[3] ? parts[3].trim().toLowerCase() : 'bronze'
+                        });
+                    }
+                }
+            });
+            renderMembers();
+            saveMembers();
+        };
+        reader.readAsText(file);
+    }
+
+    // --- MD STORY IMPORT ---
+    function importStoryMD(input) {
+        const file = input.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const text = e.target.result;
+            const result = parseMD(text);
+            if (!result) { showStatus("Fehler beim Parsen der MD-Datei!"); return; }
+
+            const id = result.id;
+            hefte[id] = result.heft;
+            saveLocal();
+            renderHeftSelector();
+
+            // Zu neuem Heft springen
+            document.getElementById('heft-select').value = id;
+            loadHeft(id);
+
+            const statusEl = document.getElementById('import-status');
+            statusEl.style.display = 'block';
+            statusEl.innerHTML = `✅ Heft ${id} importiert: <strong>${result.heft.titel}</strong> – ${result.heft.seiten.length} Seiten, ${result.heft.seiten.reduce((s,p)=>s+p.panels.length,0)} Panels.<br>➡️ Jetzt <strong>💾 HEFT EXPORTIEREN</strong> klicken → als heft${id}.js in /data/ hochladen.`;
+            showStatus(`Heft ${id} geladen – Export nicht vergessen!`);
+        };
+        reader.readAsText(file);
+        input.value = ''; // Reset für erneuten Import
+    }
+
+    function parseMD(text) {
+        const lines = text.split('\n').map(l => l.trimEnd());
+
+        // Heft-Titel und ID aus erster Zeile: ## Heft 23 – Titel [...]
+        const headerMatch = lines[0].match(/##\s+Heft\s+(\d+)\s*[–-]\s*(.+?)(?:\s*\[.*\])?\s*$/);
+        if (!headerMatch) return null;
+        const id = headerMatch[1];
+        const titel = headerMatch[2].trim();
+
+        // Teaser
+        let teaser = '';
+        for (let i = 1; i < Math.min(10, lines.length); i++) {
+            if (lines[i].startsWith('TEASER:')) {
+                teaser = lines[i].replace(/^TEASER:\s*/, '').replace(/#\S+/g, '').trim();
+                break;
+            }
+        }
+
+        const seiten = [];
+        let currentSeite = null;
+        let currentPanel = null;
+        let currentAkt = '';
+        let i = 0;
+
+        while (i < lines.length) {
+            const line = lines[i];
+
+            // Akt-Zeile: ## AKT 1 – SETUP: ...
+            const aktMatch = line.match(/^##\s+AKT\s+(\d+)\s*[–-]\s*(.+)/);
+            if (aktMatch) {
+                currentAkt = `AKT ${aktMatch[1]} – ${aktMatch[2].replace(/\(.*\)/, '').trim()}`;
+                i++; continue;
+            }
+
+            // Neue Seite: ## Seite N – Titel
+            const seiteMatch = line.match(/^##\s+Seite\s+(\d+)(?:\s*[–-]\s*(.+))?/);
+            if (seiteMatch) {
+                if (currentPanel && currentSeite) currentSeite.panels.push(currentPanel);
+                currentPanel = null;
+                currentSeite = {
+                    nummer: parseInt(seiteMatch[1]),
+                    titel: seiteMatch[2] ? seiteMatch[2].trim() : '',
+                    akt: currentAkt || '',
+                    panels: []
+                };
+                seiten.push(currentSeite);
+                i++; continue;
+            }
+
+            // Neues Panel: ## S{N}_P{N} [FORMAT] (optionaler Text danach erlaubt)
+            const panelMatch = line.match(/^##\s+S(\d+)_P(\d+)\s*\[([^\]]+)\]/);
+            if (panelMatch) {
+                if (currentPanel && currentSeite) currentSeite.panels.push(currentPanel);
+                const fmt = panelMatch[3].trim();
+                const sNr = parseInt(panelMatch[1]);
+                const pNr = parseInt(panelMatch[2]);
+
+                // Sicherstellen dass Seite existiert
+                if (!currentSeite || currentSeite.nummer !== sNr) {
+                    currentSeite = seiten.find(s => s.nummer === sNr);
+                    if (!currentSeite) {
+                        currentSeite = { nummer: sNr, panels: [] };
+                        seiten.push(currentSeite);
+                    }
+                }
+
+                const bildName = `${id}_${sNr}_P${pNr}.jpg`;
+                currentPanel = {
+                    bild: bildName,
+                    format: fmt,
+                    wide: fmt === '16:9',
+                    tall: fmt === '9:16',
+                    locDna: '',
+                    story: '',
+                    skript: '',
+                    caption: ''
+                };
+                i++; continue;
+            }
+
+            // Panel-Felder L / S / K
+            if (currentPanel) {
+                if (line.startsWith('L:')) {
+                    currentPanel.locDna = line.replace(/^L:\s*/, '');
+                } else if (line.startsWith('S:')) {
+                    currentPanel.story = line.replace(/^S:\s*/, '');
+                } else if (line.startsWith('K:')) {
+                    currentPanel.skript = line.replace(/^K:\s*/, '');
+                }
+            }
+            i++;
+        }
+
+        // Letztes offenes Panel schließen
+        if (currentPanel && currentSeite) currentSeite.panels.push(currentPanel);
+
+        // Seiten sortieren
+        seiten.sort((a, b) => a.nummer - b.nummer);
+
+        return {
+            id,
+            heft: {
+                titel,
+                teaser,
+                released: true,
+                cover: 'cover.jpg',
+                seiten,
+                coverStory: teaser
+            }
+        };
+    }
+
+    function exportMembers() {
+        let txt = "# SnailsStons Members\n# Format: token:von:bis:level\n\n";
+        members.forEach(m => txt += `${m.token}:${m.von}:${m.bis}:${m.level || 'bronze'}\n`);
+        downloadFile(txt, 'members.md', 'text/markdown');
+        document.getElementById('export-reminder').style.display = 'block';
+        showStatus("members.md heruntergeladen – jetzt auf Server hochladen!");
+    }
+
+    // --- SHARED ---
+    function saveLocal() {
+        localStorage.setItem('snail_v50_data', JSON.stringify(hefte));
+        showStatus("Stand gesichert!");
+    }
+
+    function saveMembers() {
+        localStorage.setItem('snail_members', JSON.stringify(members));
+    }
+
+    function showStatus(txt) {
+        const s = document.getElementById('status-msg');
+        s.innerText = txt; s.classList.add('show');
+        setTimeout(() => s.classList.remove('show'), 2000);
+    }
+
+    function updateMeta() {
+        const h = hefte[currentHeftId];
+        h.titel = document.getElementById('h-titel').value;
+        h.teaser = document.getElementById('h-teaser').value;
+        h.coverStory = h.teaser;
+        saveLocal();
+    }
+
+    function resetHeftToFree() {
+        const h = hefte[currentHeftId];
+        if (!h) return;
+        // Heft-Level
+        h.members = false; delete h.level;
+        // Alle Seiten
+        if (h.seiten) h.seiten.forEach(s => {
+            s.members = false; delete s.level;
+            // Alle Panels
+            if (s.panels) s.panels.forEach(p => {
+                p.members = false; p.bonus = false; delete p.level;
+            });
+        });
+        saveLocal();
+        loadHeft(currentHeftId);
+        showStatus(`Heft ${currentHeftId} – alles auf Free gesetzt!`);
+    }
+
+    function exportHeft(id) {
+        const h = hefte[id];
+        const data = `hefte["${id}"] = ${JSON.stringify(h, null, 2)};\n`;
+        downloadFile(data, `heft${id}.js`, 'application/javascript');
+    }
+
+    function clearLocal() {
+        if(confirm("Lokal löschen und data/ neu einlesen?")) {
+            localStorage.removeItem('snail_v50_data');
+            location.reload();
+        }
+    }
+
+    function downloadFile(content, name, type) {
+        const blob = new Blob([content], {type: type});
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob); a.download = name; a.click();
+    }
+
+    // --- GITHUB INTEGRATION ---
+    function saveGHConfig() {
+        const repo = document.getElementById('gh-repo').value.trim();
+        const branch = document.getElementById('gh-branch').value.trim();
+        const token = document.getElementById('gh-token').value.trim();
+        if (!repo || !branch || !token) { showStatus("Alle GitHub-Felder ausfüllen!"); return; }
+        localStorage.setItem('gh_repo', repo);
+        localStorage.setItem('gh_branch', branch);
+        localStorage.setItem('gh_token', token);
+        showGHStatus('✅ Gespeichert. Verbindung testen!', 'var(--success)');
+        showStatus("GitHub Config gespeichert!");
+    }
+
+    function loadGHConfig() {
+        const repo = localStorage.getItem('gh_repo') || '';
+        const branch = localStorage.getItem('gh_branch') || 'main';
+        const token = localStorage.getItem('gh_token') || '';
+        document.getElementById('gh-repo').value = repo;
+        document.getElementById('gh-branch').value = branch;
+        document.getElementById('gh-token').value = token;
+    }
+
+    async function testGHConnection() {
+        const { repo, token } = getGHConfig();
+        if (!repo || !token) { showGHStatus('⚠️ Zuerst Repo und Token speichern.', '#f0a500'); return; }
+        showGHStatus('🔌 Verbinde...', '#888');
+        try {
+            const res = await fetch(`https://api.github.com/repos/${repo}`, {
+                headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json' }
+            });
+            if (res.ok) {
+                const data = await res.json();
+                showGHStatus(`✅ Verbunden: <strong>${data.full_name}</strong> (${data.private ? 'privat' : 'öffentlich'})`, 'var(--success)');
+            } else {
+                showGHStatus(`❌ Fehler ${res.status}: Token ungültig oder Repo nicht gefunden.`, 'var(--danger)');
+            }
+        } catch (e) { showGHStatus('❌ Netzwerkfehler: ' + e.message, 'var(--danger)'); }
+    }
+
+    async function ghGetFileSHA(path) {
+        const { repo, branch, token } = getGHConfig();
+        try {
+            const res = await fetch(`https://api.github.com/repos/${repo}/contents/${path}?ref=${branch}`, {
+                headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json' }
+            });
+            if (res.ok) { const d = await res.json(); return d.sha; }
+        } catch(e) {}
+        return null;
+    }
+
+    async function ghPushFile(path, content, commitMsg) {
+        const { repo, branch, token } = getGHConfig();
+        if (!repo || !token) { showPushStatus('⚠️ GitHub nicht konfiguriert!', 'var(--danger)'); return false; }
+        const sha = await ghGetFileSHA(path);
+        const body = {
+            message: commitMsg,
+            content: btoa(unescape(encodeURIComponent(content))),
+            branch
+        };
+        if (sha) body.sha = sha;
+        try {
+            const res = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, {
+                method: 'PUT',
+                headers: {
+                    Authorization: `token ${token}`,
+                    Accept: 'application/vnd.github.v3+json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(body)
+            });
+            if (res.ok) return true;
+            const err = await res.json();
+            showPushStatus(`❌ GitHub Fehler: ${err.message}`, 'var(--danger)');
+            return false;
+        } catch(e) { showPushStatus('❌ Netzwerkfehler: ' + e.message, 'var(--danger)'); return false; }
+    }
+
+    async function pushHeft(id) {
+        const h = hefte[id];
+        if (!h) return;
+        showPushStatus(`⏳ Pushe heft${id}.js nach GitHub...`, '#888');
+        const content = `hefte["${id}"] = ${JSON.stringify(h, null, 2)};\n`;
+        const ok = await ghPushFile(`data/heft${id}.js`, content, `Admin: Update heft${id}.js`);
+        if (ok) {
+            showPushStatus(`✅ heft${id}.js → GitHub/data/ ✓ Cloudflare baut jetzt neu (~60s).`, 'var(--success)');
+            showStatus(`Heft ${id} auf GitHub!`);
+        }
+    }
+
+    async function pushMembers() {
+        showPushStatus('⏳ Pushe members.md nach GitHub...', '#888');
+        let txt = "# SnailsStons Members\n# Format: token:von:bis:level\n\n";
+        members.forEach(m => txt += `${m.token}:${m.von}:${m.bis}:${m.level || 'bronze'}\n`);
+        const ok = await ghPushFile('members.md', txt, 'Admin: Update members.md');
+        if (ok) {
+            showPushStatus('✅ members.md → GitHub ✓ Sofort aktiv.', 'var(--success)');
+            showStatus("members.md auf GitHub!");
+            document.getElementById('export-reminder').style.display = 'none';
+        }
+    }
+
+    function showGHStatus(msg, color) {
+        const el = document.getElementById('gh-status');
+        el.style.display = 'block';
+        el.style.background = '#0a0a0a';
+        el.style.border = `1px solid ${color}`;
+        el.style.color = color;
+        el.innerHTML = msg;
+    }
+
+    function showPushStatus(msg, color) {
+        const el = document.getElementById('push-status');
+        el.style.display = 'block';
+        el.style.background = '#0a0a0a';
+        el.style.border = `1px solid ${color}`;
+        el.style.color = color;
+        el.innerHTML = msg;
+    }
+
+    // --- PROMPT ENGINE ---
+    function openPromptEngine(heftId, sIdx, pIdx) {
+        const h = hefte[heftId];
+        if (!h) return;
+        const seite = h.seiten[sIdx];
+        if (!seite) return;
+        const p = seite.panels[pIdx];
+        if (!p) return;
+
+        const sNr = seite.nummer || sIdx + 1;
+        const pNr = pIdx + 1;
+
+        const params = new URLSearchParams({
+            heft:   heftId,
+            seite:  sNr,
+            panel:  pNr,
+            type:   'panel',
+            ar:     p.format || (p.wide ? '16:9' : p.tall ? '9:16' : '1:1'),
+            story:  encodeURIComponent(p.story   || ''),
+            locDna: encodeURIComponent(p.locDna  || ''),
+            skript: encodeURIComponent(p.skript  || ''),
+        });
+
+        window.open(`prompt-engine.html?${params.toString()}`, '_blank');
+    }
+
+    // --- PWA INSTALL ---
+    let deferredPrompt = null;
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        document.getElementById('pwa-install-btn').style.display = 'flex';
+    });
+    function installPWA() {
+        if (!deferredPrompt) return;
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then(() => {
+            deferredPrompt = null;
+            document.getElementById('pwa-install-btn').style.display = 'none';
+        });
+    }
+
+    // --- WERBUNG ---
+    let _adSIdx = null, _adPIdx = null;
+
+    function editAd(sIdx, pIdx) {
+        _adSIdx = sIdx; _adPIdx = pIdx;
+        const p = hefte[currentHeftId].seiten[sIdx].panels[pIdx];
+        document.getElementById('ad-bild').value = p.werbung?.bild || '';
+        document.getElementById('ad-link').value = p.werbung?.link || '';
+        document.getElementById('ad-alt').value  = p.werbung?.alt  || '';
+        const m = document.getElementById('ad-modal');
+        m.style.display = 'flex';
+    }
+
+    function saveAd() {
+        const p = hefte[currentHeftId].seiten[_adSIdx].panels[_adPIdx];
+        const bild = document.getElementById('ad-bild').value.trim();
+        const link = document.getElementById('ad-link').value.trim();
+        const alt  = document.getElementById('ad-alt').value.trim();
+        if (bild) p.werbung = { bild, link, alt };
+        else delete p.werbung;
+        saveLocal();
+        renderPreview(currentHeftId);
+        closeAdModal();
+        showStatus('Werbung gespeichert!');
+    }
+
+    function removeAd() {
+        const p = hefte[currentHeftId].seiten[_adSIdx].panels[_adPIdx];
+        delete p.werbung;
+        saveLocal();
+        renderPreview(currentHeftId);
+        closeAdModal();
+        showStatus('Werbung entfernt.');
+    }
+
+    function closeAdModal() {
+        document.getElementById('ad-modal').style.display = 'none';
+    }
+
+    // --- MAKING OF ---
+    let _moSIdx = null, _moPIdx = null;
+
+    function editMakingOf(sIdx, pIdx) {
+        _moSIdx = sIdx; _moPIdx = pIdx;
+        const p = hefte[currentHeftId].seiten[sIdx].panels[pIdx];
+        document.getElementById('mo-text').value = p.makingOf || '';
+        document.getElementById('mo-modal').style.display = 'flex';
+    }
+
+    function saveMakingOf() {
+        const p = hefte[currentHeftId].seiten[_moSIdx].panels[_moPIdx];
+        const txt = document.getElementById('mo-text').value.trim();
+        if (txt) p.makingOf = txt; else delete p.makingOf;
+        saveLocal();
+        renderPreview(currentHeftId);
+        closeMoModal();
+        showStatus('Making Of gespeichert!');
+    }
+
+    function removeMakingOf() {
+        const p = hefte[currentHeftId].seiten[_moSIdx].panels[_moPIdx];
+        delete p.makingOf;
+        saveLocal();
+        renderPreview(currentHeftId);
+        closeMoModal();
+        showStatus('Making Of entfernt.');
+    }
+
+    function closeMoModal() {
+        document.getElementById('mo-modal').style.display = 'none';
+    }
+
+    // --- RUBRIKEN ---
+    let playlists = [
+        { titel: "Gandia und Umgebung", hefte: [18, 19, 20] },
+        { titel: "Die Borgia Route", hefte: [] },
+        { titel: "Valencia Vibes", hefte: [15] },
+        { titel: "Shorts", hefte: [23, 24, 25] },
+        { titel: "🖇️ Experimente, Schmierheft", hefte: [0] },
+        { titel: "⭐ Members Only", hefte: [], membersOnly: true }
+    ];
+
+    function loadPlaylists() {
+        const saved = localStorage.getItem('snail_playlists');
+        if (saved) playlists = JSON.parse(saved);
+        renderRubriken();
+    }
+
+    function savePlaylists() {
+        localStorage.setItem('snail_playlists', JSON.stringify(playlists));
+    }
+
+    function renderRubriken() {
+        const container = document.getElementById('rubrik-list');
+        if (!container) return;
+        const heftIds = Object.keys(hefte).sort((a,b) => parseInt(a)-parseInt(b));
+
+        container.innerHTML = playlists.map((r, rIdx) => `
+            <div style="background:#0a0a0a;border:1px solid #222;border-radius:8px;padding:10px;margin-bottom:8px;">
+                <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;">
+                    <div style="display:flex;flex-direction:column;gap:2px;">
+                        <button onclick="moveRubrik(${rIdx},-1)" style="background:none;border:none;color:#555;cursor:pointer;font-size:0.6rem;padding:0;" ${rIdx===0?'disabled':''}>▲</button>
+                        <button onclick="moveRubrik(${rIdx},1)" style="background:none;border:none;color:#555;cursor:pointer;font-size:0.6rem;padding:0;" ${rIdx===playlists.length-1?'disabled':''}>▼</button>
+                    </div>
+                    <input type="text" value="${r.titel}" onchange="renameRubrik(${rIdx}, this.value)"
+                        style="flex:1;padding:6px 8px;font-size:0.75rem;background:#111;border:1px solid #333;color:#fff;border-radius:6px;">
+                    <label style="font-size:0.55rem;color:#666;display:flex;align-items:center;gap:3px;white-space:nowrap;">
+                        <input type="checkbox" ${r.membersOnly?'checked':''} onchange="toggleMembersOnly(${rIdx}, this.checked)"> Members
+                    </label>
+                    <button onclick="deleteRubrik(${rIdx})" style="background:none;border:none;color:#444;cursor:pointer;font-size:0.9rem;">🗑</button>
+                </div>
+                <div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px;">
+                    ${r.hefte.map((id, hIdx) => `
+                        <span style="background:#1a1a1a;border:1px solid #333;border-radius:4px;padding:2px 6px;font-size:0.6rem;color:var(--gold);display:flex;align-items:center;gap:4px;">
+                            ${id}: ${hefte[id]?.titel || '?'}
+                            <button onclick="removeHeftFromRubrik(${rIdx},${hIdx})" style="background:none;border:none;color:#555;cursor:pointer;font-size:0.7rem;padding:0;">✕</button>
+                        </span>`).join('')}
+                </div>
+                <div style="display:flex;gap:6px;">
+                    <select id="rubrik-heft-add-${rIdx}" style="flex:1;padding:4px;font-size:0.65rem;background:#111;border:1px solid #333;color:#fff;border-radius:6px;">
+                        <option value="">Heft hinzufügen...</option>
+                        ${heftIds.filter(id => !r.hefte.includes(parseInt(id))).map(id =>
+                            `<option value="${id}">Heft ${id}: ${hefte[id]?.titel || '?'}</option>`
+                        ).join('')}
+                    </select>
+                    <button onclick="addHeftToRubrik(${rIdx})" class="btn btn-sec" style="width:auto;padding:4px 10px;font-size:0.65rem;">+</button>
+                </div>
+            </div>`).join('');
+    }
+
+    function addRubrik() {
+        playlists.push({ titel: 'Neue Rubrik', hefte: [] });
+        savePlaylists(); renderRubriken();
+    }
+
+    function renameRubrik(idx, val) {
+        playlists[idx].titel = val;
+        savePlaylists();
+    }
+
+    function deleteRubrik(idx) {
+        if (!confirm(`"${playlists[idx].titel}" löschen?`)) return;
+        playlists.splice(idx, 1);
+        savePlaylists(); renderRubriken();
+    }
+
+    function moveRubrik(idx, dir) {
+        const newIdx = idx + dir;
+        if (newIdx < 0 || newIdx >= playlists.length) return;
+        [playlists[idx], playlists[newIdx]] = [playlists[newIdx], playlists[idx]];
+        savePlaylists(); renderRubriken();
+    }
+
+    function toggleMembersOnly(idx, val) {
+        playlists[idx].membersOnly = val;
+        savePlaylists();
+    }
+
+    function addHeftToRubrik(idx) {
+        const sel = document.getElementById(`rubrik-heft-add-${idx}`);
+        const id = parseInt(sel.value);
+        if (!id && id !== 0) return;
+        if (!playlists[idx].hefte.includes(id)) {
+            playlists[idx].hefte.push(id);
+            savePlaylists(); renderRubriken();
+        }
+    }
+
+    function removeHeftFromRubrik(rIdx, hIdx) {
+        playlists[rIdx].hefte.splice(hIdx, 1);
+        savePlaylists(); renderRubriken();
+    }
+
+    async function pushPlaylists() {
+        const content = `window.playlistMap = ${JSON.stringify(playlists, null, 2)};\n`;
+        const el = document.getElementById('rubrik-push-status');
+        el.style.display = 'block';
+        el.style.color = '#888'; el.style.border = '1px solid #333';
+        el.textContent = '⏳ Pushe playlists.js...';
+        const ok = await ghPushFile('playlists.js', content, 'Admin: Update playlists.js');
+        if (ok) {
+            el.style.color = 'var(--success)'; el.style.border = '1px solid var(--success)';
+            el.textContent = '✅ playlists.js → GitHub ✓';
+            showStatus('Rubriken gespeichert!');
+        } else {
+            el.style.color = 'var(--danger)'; el.style.border = '1px solid var(--danger)';
+            el.textContent = '❌ Push fehlgeschlagen.';
+        }
+    }
+
+    window.onload = init;
+</script>
+<!-- Werbung Modal -->
+<div id="ad-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:3000;align-items:center;justify-content:center;">
+    <div style="background:#111;border:1px solid #333;border-radius:16px;padding:24px;width:90%;max-width:400px;">
+        <h3 style="color:var(--gold);margin:0 0 15px;font-size:0.9rem;text-transform:uppercase;letter-spacing:1px;">📢 Werbung für Panel</h3>
+        <label>Bilddatei (z.B. 24_1_P0.jpg)</label>
+        <input type="text" id="ad-bild" placeholder="24_1_P0.jpg" style="margin-bottom:10px;">
+        <label>Link (URL)</label>
+        <input type="text" id="ad-link" placeholder="https://..." style="margin-bottom:10px;">
+        <label>Beschreibung (alt)</label>
+        <input type="text" id="ad-alt" placeholder="Café Bar Bus Gandia" style="margin-bottom:15px;">
+        <div style="display:flex;gap:10px;">
+            <button class="btn" style="flex:1;" onclick="saveAd()">💾 SPEICHERN</button>
+            <button class="btn btn-sec" style="flex:1;" onclick="removeAd()">🗑 ENTFERNEN</button>
+            <button class="btn btn-sec" style="width:auto;padding:0 12px;" onclick="closeAdModal()">✕</button>
+        </div>
+    </div>
+</div>
+
+<!-- Making Of Modal -->
+<div id="mo-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:3000;align-items:center;justify-content:center;">
+    <div style="background:#111;border:1px solid #333;border-radius:16px;padding:24px;width:90%;max-width:400px;">
+        <h3 style="color:var(--gold);margin:0 0 15px;font-size:0.9rem;text-transform:uppercase;letter-spacing:1px;">🎬 Making Of – Panel</h3>
+        <label style="font-size:0.65rem;color:#888;">Text (Silver+ sieht das im Story Modal)</label>
+        <textarea id="mo-text" rows="6" placeholder="Dieser Shot wurde 3x gerendert. Das Licht war das Problem..." style="margin-top:5px;margin-bottom:15px;resize:vertical;"></textarea>
+        <div style="display:flex;gap:10px;">
+            <button class="btn" style="flex:1;" onclick="saveMakingOf()">💾 SPEICHERN</button>
+            <button class="btn btn-sec" style="flex:1;" onclick="removeMakingOf()">🗑 ENTFERNEN</button>
+            <button class="btn btn-sec" style="width:auto;padding:0 12px;" onclick="closeMoModal()">✕</button>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

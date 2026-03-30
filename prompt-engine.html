@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SnailsStons | Engine v5.2 (Modular)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@900&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <script src="hefte.js"></script>
+    
+    <script>
+        const pUrl = new URLSearchParams(window.location.search);
+        const heftId = pUrl.get('heft') || '1';
+        
+        const scriptLdr = document.createElement('script');
+        scriptLdr.src = `data/heft${heftId}.js?v=` + Date.now();
+        scriptLdr.onload = scriptLdr.onerror = () => {
+            // Lade unspeicherte Admin-Änderungen aus dem LocalStorage drüber
+            const localData = localStorage.getItem('snail_v50_data');
+            if (localData) {
+                try {
+                    const parsed = JSON.parse(localData);
+                    if (parsed[heftId]) hefte[heftId] = parsed[heftId];
+                } catch(e) {}
+            }
+            initEngine(); // Starte die Engine, wenn die Daten da sind
+        };
+        document.head.appendChild(scriptLdr);
+    </script>
+
+    <style>
+        :root { --gold: #d4af37; --bg: #000; --card: #111; --success: #28a745; --danger: #c0392b; }
+        * { box-sizing: border-box; }
+        body { background: var(--bg); color: #eee; font-family: 'Inter', sans-serif; margin: 0; padding-bottom: 40px; }
+        
+        header { width: 100%; max-width: 500px; margin: 0 auto; background: #0a0a0a; border-bottom: 1px solid var(--gold); position: relative; aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        #output-image { width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: 0.3s ease-in-out; z-index: 1; }
+        .bar-top { position: absolute; top: 0; width: 100%; padding: 15px; display: flex; justify-content: space-between; align-items: center; z-index: 10; background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent); }
+        .work-title { color: var(--gold); font-family: 'Playfair Display', serif; letter-spacing: 2px; font-size: 0.85rem; font-weight: 900; text-transform: uppercase; }
+        .btn-skript { background: var(--gold); color: #000; padding: 5px 12px; border-radius: 4px; font-size: 0.6rem; font-weight: 900; text-decoration: none; text-transform: uppercase; }
+
+        /* Angepasste Navigations-Leisten für horizontales Scrollen */
+        .nav-bar { 
+            display: flex; width: 100%; max-width: 500px; margin: 0 auto; background: #0a0a0a; 
+            border-bottom: 1px solid #222; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; 
+        }
+        .nav-bar::-webkit-scrollbar { display: none; }
+        .nav-item { 
+            flex: 0 0 auto; min-width: 55px; padding: 12px 10px; text-align: center; color: #444; 
+            font-size: 0.65rem; font-weight: 900; text-decoration: none; border-right: 1px solid #111; white-space: nowrap; transition: 0.2s;
+        }
+        .nav-item.active { color: var(--gold); background: #111; border-bottom: 2px solid var(--gold); }
+
+        .container { width: 100%; max-width: 500px; margin: 0 auto; padding: 15px; }
+        .label { font-size: 0.55rem; color: var(--gold); font-weight: 900; text-transform: uppercase; margin-bottom: 6px; display: block; letter-spacing: 1px; }
+        .crew-grid { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 15px; background: #050505; padding: 10px; border-radius: 8px; border: 1px solid #222; }
+        .crew-btn { flex: 1; min-width: 75px; padding: 10px; background: #111; border: 1px solid #333; color: #444; border-radius: 5px; font-size: 0.6rem; font-weight: 900; text-align: center; }
+        .crew-btn.active { background: var(--gold); color: #000; border-color: #fff; }
+        
+        .card { background: var(--card); border-radius: 12px; padding: 15px; border: 1px solid #222; margin-bottom: 12px; }
+        textarea { width: 100%; background: #000; border: 1px solid #333; color: #fff; font-size: 0.9rem; padding: 12px; border-radius: 10px; resize: none; outline: none; line-height: 1.4; }
+        .result-box { background: #050505; border: 1px solid var(--success); color: var(--success); font-family: monospace; font-size: 0.7rem; padding: 15px; border-radius: 10px; min-height: 250px; white-space: pre-wrap; margin-top: 10px; }
+        
+        .btn-gen { width: 100%; padding: 20px; background: var(--gold); color: #000; border: none; border-radius: 12px; font-weight: 900; font-size: 1.1rem; text-transform: uppercase; cursor: pointer; margin-top: 15px; }
+        .btn-close { width: 100%; padding: 12px; background: transparent; color: #555; border: 1px solid #222; border-radius: 10px; font-weight: 900; font-size: 0.65rem; text-transform: uppercase; cursor: pointer; margin-top: 25px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="bar-top">
+            <div class="work-title" id="display-status">Lade Daten...</div>
+            <a href="admin.html" class="btn-skript">Skript</a>
+        </div>
+        <img id="output-image" src="">
+    </header>
+
+    <div class="nav-bar" id="p-nav"></div>
+    <div class="nav-bar" id="f-nav">
+        <a href="#" class="nav-item active" onclick="setFormat('1:1', this)">1:1 Sq</a>
+        <a href="#" class="nav-item" onclick="setFormat('16:9', this)">16:9 Wide</a>
+        <a href="#" class="nav-item" onclick="setFormat('9:16', this)">9:16 Cover</a>
+        <a href="#" class="nav-item" onclick="setFormat('3:5', this)">3:5 Portr</a>
+    </div>
+
+    <div class="container">
+        <div class="crew-grid" id="crew-list"></div>
+        <div class="card">
+            <label class="label">SCENE & STORY</label>
+            <textarea id="story-in" rows="3" oninput="runSync()"></textarea>
+        </div>
+        <div class="card">
+            <label class="label">LOCATION DNA</label>
+            <textarea id="loc-dna-in" rows="2" oninput="runSync()"></textarea>
+        </div>
+        <div class="card">
+            <label class="label">DIALOG (Sprechblase)</label>
+            <textarea id="script-in" rows="2" oninput="runSync()"></textarea>
+        </div>
+        <div class="card" style="border-color: var(--success);">
+            <label class="label" style="color: var(--success);">BILDTEXT (Info-Box / Caption)</label>
+            <textarea id="caption-in" rows="2" oninput="runSync()"></textarea>
+        </div>
+        <div class="result-box" id="result"></div>
+        <button class="btn-gen" id="copy-btn" onclick="copyPrompt()">🎨 PROMPT KOPIEREN</button>
+        <button class="btn-close" onclick="window.close()">✖ FERTIG & SCHLIESSEN</button>
+    </div>
+
+    <script>
+        const dnaPool = {
+            'FELIX': { id: 1, desc: 'slender athletic snail, sandy beige skin. Huge open grin. Two large expressive cartoon eyes positioned DIRECTLY IN THE FACE – NOT on antenna tips, NOT floating, IN THE FACE. Antennas are plain stalks ending in small round smooth knobs – NO eyes on antennas. Warm brown classic spiral shell ON HIS BACK – always present, never missing. NO legs. Snail glide base only.' },
+            'STELLA': { id: 2, desc: 'slender elegant snail – NOT round, NOT chubby. Beige-cream skin, rosy cheeks, lashes. Red hibiscus flower at left antenna base. Dark brown-purple spiral shell on back. Dragons Chain Harness: thin BLACK NYLON STRAPS across chest, silver metal O-rings, delicate silver chains hanging. Lightweight fashion harness – NOT heavy chain armor. NOT bondage. NO legs. Snail glide base only.' },
+            'ARCHIE': { id: 3, desc: 'slender snail, scaly beige-olive skin, heavy-lidded smirk. Worn straw hat with dark band, both antennas through hat. Green martini in hand. His shell IS a full medieval CASTLE – stone walls, tower, battlements, terracotta roof – MOUNTED ON HIS BACK. NOT held in hand. NOT a separate object. On his back. Always. NO legs. Snail glide base only.' },
+            'LUNA': { id: 4, desc: 'slender delicate snail, warm beige skin, rosy cheeks, long lashes. Eyes peacefully CLOSED – always. Soft zen smile. Small compact dark spiral shell on back. Wide flat snail base resting LOW on ground – NOT lotus pose, NOT crossed legs, NOT human sitting. Hands folded in front, prayer pose. NO legs. SNAIL BASE ONLY.' },
+            'SALOME': { id: 6, desc: 'slender shell-less slug, NO shell on back. Warm beige smooth skin. Amber-gold round knob antenna tips. Smaragd-gold headband tiara. Thorn-collar necklace. One arm raised in elegant dance pose. NOT standing still. NO legs. Snail glide base only.' }
+        };
+
+        let currentAR = "1:1";
+
+        function initEngine() {
+            const p = new URLSearchParams(window.location.search);
+            const heftId = p.get('heft') || '1';
+            const sNum = parseInt(p.get('seite') || '1');
+            const pNum = parseInt(p.get('panel') || '1');
+            const type = p.get('type') || 'panel';
+
+            let initialAR = p.get('ar'); // URL Parameter hat Prio (falls von Admin Tool forciert)
+
+            if(type === 'cover') {
+                document.getElementById('display-status').innerText = `HEFT ${heftId} | COVER`;
+                const hd = (typeof hefte !== 'undefined') ? hefte[heftId] : null;
+                const urlStory = p.get('story') ? decodeURIComponent(p.get('story')) : '';
+                const urlTeaser = p.get('teaser') ? decodeURIComponent(p.get('teaser')) : '';
+                const urlLocDna = p.get('locDna') ? decodeURIComponent(p.get('locDna')) : '';
+                const bestStory = urlStory || urlTeaser || (hd && hd.coverStory) || (hd && hd.teaser) || '';
+                const bestLoc   = urlLocDna || (hd && hd.locDna) || '';
+                if (bestStory) document.getElementById('story-in').value = bestStory;
+                if (bestLoc)   document.getElementById('loc-dna-in').value = bestLoc;
+                initialAR = '9:16';
+            } else {
+                document.getElementById('display-status').innerText = `HEFT ${heftId} | SEITE ${sNum} | P${pNum}`;
+            }
+
+            const cl = document.getElementById('crew-list');
+            Object.keys(dnaPool).forEach(name => {
+                const b = document.createElement('div'); b.className = 'crew-btn'; b.id = `btn-${name}`; b.innerText = name; cl.appendChild(b);
+            });
+
+            // Dynamische Panel-Buttons generieren
+            const pNav = document.getElementById('p-nav');
+            const heftData = (typeof hefte !== 'undefined') ? hefte[heftId] : null;
+
+            if(type !== 'cover') {
+                let panelCount = 7; 
+                if (heftData && heftData.seiten) {
+                    const pageObj = heftData.seiten.find(pg => pg.nummer == sNum || heftData.seiten.indexOf(pg) + 1 == sNum);
+                    if (pageObj && pageObj.panels) {
+                        panelCount = pageObj.panels.length;
+                        // Holt das Format direkt aus den JS-Daten für den initialen Load
+                        if (!initialAR && pageObj.panels[pNum - 1]) {
+                            const pd = pageObj.panels[pNum - 1];
+                            initialAR = pd.format || pd.size || (pd.wide ? "16:9" : (pd.tall ? "9:16" : "1:1"));
+                        }
+                    }
+                }
+
+                for(let i=1; i<=panelCount; i++) {
+                    const a = document.createElement('a');
+                    a.className = `nav-item ${pNum === i ? 'active' : ''}`;
+                    a.href = "#";
+
+                    // Format aus Panel-Daten lesen
+                    let panelAR = '1:1';
+                    if (heftData && heftData.seiten) {
+                        const pg = heftData.seiten.find(pg => pg.nummer == sNum || heftData.seiten.indexOf(pg) + 1 == sNum);
+                        if (pg && pg.panels && pg.panels[i-1]) {
+                            const pd2 = pg.panels[i-1];
+                            panelAR = pd2.format || pd2.size || (pd2.wide ? '16:9' : (pd2.tall ? '9:16' : '1:1'));
+                        }
+                    }
+                    const arColor = {'16:9':'#4a9eff','1:1':'#d4af37','3:5':'#a855f7','9:16':'#ff6b35'}[panelAR] || '#888';
+                    a.innerHTML = `P${i}<span style="display:block;font-size:0.5rem;color:${arColor};font-weight:900;letter-spacing:0.5px;">${panelAR}</span>`;
+
+                    a.onclick = (e) => {
+                        e.preventDefault();
+                        document.querySelectorAll('#p-nav .nav-item').forEach(el => el.classList.remove('active'));
+                        a.classList.add('active');
+                        loadPanelData(heftId, sNum, i);
+                    };
+                    pNav.appendChild(a);
+                }
+
+                // ── Pacer-Strip: mini Rhythmus-Balken ──────────────
+                if (heftData && heftData.seiten) {
+                    const pg = heftData.seiten.find(pg => pg.nummer == sNum || heftData.seiten.indexOf(pg) + 1 == sNum);
+                    if (pg && pg.panels && pg.panels.length) {
+                        const strip = document.createElement('div');
+                        strip.style.cssText = 'display:flex;gap:3px;padding:6px 12px;background:#050505;border-bottom:1px solid #1a1a1a;overflow-x:auto;';
+                        const arColor = {'16:9':'#4a9eff','1:1':'#d4af37','3:5':'#a855f7','9:16':'#ff6b35'};
+                        pg.panels.forEach((pd2, idx) => {
+                            const ar = pd2.format || pd2.size || (pd2.wide ? '16:9' : (pd2.tall ? '9:16' : '1:1'));
+                            const col = arColor[ar] || '#444';
+                            const w = ar === '16:9' ? '36px' : ar === '9:16' ? '14px' : ar === '3:5' ? '20px' : '24px';
+                            const h2 = '28px';
+                            const block = document.createElement('div');
+                            block.title = `P${idx+1}: ${ar}`;
+                            block.style.cssText = `width:${w};height:${h2};border-radius:3px;background:${col}22;border:1.5px solid ${col};flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:0.45rem;color:${col};font-weight:900;cursor:pointer;`;
+                            block.innerHTML = `<span>${ar}</span>`;
+                            block.onclick = () => {
+                                document.querySelectorAll('#p-nav .nav-item')[idx]?.click();
+                            };
+                            strip.appendChild(block);
+                        });
+                        // Insert strip after p-nav
+                        pNav.parentNode.insertBefore(strip, pNav.nextSibling);
+                    }
+                }
+            }
+
+            // Initiale Befüllung aus URL Parametern
+            let initialScript = p.get('skript') ? decodeURIComponent(p.get('skript')) : 
+                                p.get('script') ? decodeURIComponent(p.get('script')) : '';
+            let initialCaption = p.get('caption') ? decodeURIComponent(p.get('caption')) : '';
+
+            if(type !== 'cover') {
+                if(p.get('story'))  document.getElementById('story-in').value = decodeURIComponent(p.get('story'));
+                if(p.get('locDna')) document.getElementById('loc-dna-in').value = decodeURIComponent(p.get('locDna'));
+                
+                // AUTOMATISCHER SPLIT VON BILDTEXT UND DIALOG
+                let dArr = [];
+                let cArr = initialCaption ? [initialCaption] : [];
+                if (initialScript) {
+                    const lines = initialScript.split(/\r?\n/);
+                    lines.forEach(line => {
+                        if (line.includes('**BILDTEXT:**')) {
+                            cArr.push(line.replace(/\*\*BILDTEXT:\*\*/g, '').trim());
+                        } else if (line.trim() !== '') {
+                            dArr.push(line.replace(/\*\*DIALOG\*\*/g, '').trim());
+                        }
+                    });
+                }
+                document.getElementById('script-in').value = dArr.join('\n');
+                document.getElementById('caption-in').value = cArr.join('\n');
+            } else {
+                if(initialScript) document.getElementById('script-in').value = initialScript;
+                if(initialCaption) document.getElementById('caption-in').value = initialCaption;
+            }
+
+            const img = document.getElementById('output-image');
+            if(type === 'cover') {
+                img.src = `heft${heftId}/cover.jpg`;
+            } else {
+                img.src = `heft${heftId}/${heftId}_${sNum}_P${pNum}.jpg`; 
+            }
+            img.onload = () => img.style.opacity = "1";
+
+            if(initialAR) {
+                setFormat(initialAR, null);
+            } else {
+                runSync();
+            }
+        }
+
+        // Neue Funktion zum fließenden Wechseln der Panels
+        function loadPanelData(h, seite, panelNum) {
+            const newUrl = new URL(window.location);
+            newUrl.searchParams.set('panel', panelNum);
+            window.history.pushState({}, '', newUrl);
+
+            document.getElementById('display-status').innerText = `HEFT ${h} | SEITE ${seite} | P${panelNum}`;
+            
+            const heftData = typeof hefte !== 'undefined' ? hefte[h] : null;
+            if(heftData && heftData.seiten) {
+                const pageObj = heftData.seiten.find(pg => pg.nummer == seite || heftData.seiten.indexOf(pg) + 1 == seite);
+                if(pageObj && pageObj.panels[panelNum - 1]) {
+                    const pd = pageObj.panels[panelNum - 1];
+                    
+                    document.getElementById('story-in').value = pd.story || '';
+                    document.getElementById('loc-dna-in').value = pd.locDna || '';
+                    
+                    // AUTOMATISCHER SPLIT VON BILDTEXT UND DIALOG
+                    let dArr = [];
+                    let cArr = pd.caption ? [pd.caption] : [];
+                    if (pd.skript) {
+                        const lines = pd.skript.split(/\r?\n/);
+                        lines.forEach(line => {
+                            if (line.includes('**BILDTEXT:**')) {
+                                cArr.push(line.replace(/\*\*BILDTEXT:\*\*/g, '').trim());
+                            } else if (line.trim() !== '') {
+                                dArr.push(line.replace(/\*\*DIALOG\*\*/g, '').trim());
+                            }
+                        });
+                    }
+                    document.getElementById('script-in').value = dArr.join('\n');
+                    document.getElementById('caption-in').value = cArr.join('\n');
+                    
+                    const img = document.getElementById('output-image');
+                    img.style.opacity = "0";
+                    setTimeout(() => {
+                        img.src = `heft${h}/${pd.bild || `${h}_${seite}_P${panelNum}.jpg`}?v=` + Date.now();
+                        img.onload = () => img.style.opacity = "1";
+                    }, 200);
+                    
+                    // Format aus Daten setzen
+                    let ar = pd.format || pd.size || (pd.wide ? "16:9" : (pd.tall ? "9:16" : "1:1"));
+                    setFormat(ar, null);
+                    return;
+                }
+            }
+            runSync();
+        }
+
+        function setFormat(ar, el) {
+            if (!ar) return;
+            // Sync f-nav highlight
+            document.querySelectorAll('#f-nav .nav-item').forEach(btn => {
+                const label = btn.innerText.replace(/\s/g,'');
+                const match = ar === '16:9' ? 'Wide' : ar === '9:16' ? 'Cover' : ar === '3:5' ? 'Portr' : 'Sq';
+                btn.classList.toggle('active', btn.innerText.includes(match));
+            });
+            currentAR = ar; 
+            document.querySelector('header').style.aspectRatio = ar.replace(':', '/');
+            
+            document.querySelectorAll('#f-nav .nav-item').forEach(l => {
+                l.classList.remove('active');
+                if(l.innerText.includes(ar)) l.classList.add('active');
+            });
+            if(el) { 
+                document.querySelectorAll('#f-nav .nav-item').forEach(l => l.classList.remove('active')); 
+                el.classList.add('active'); 
+            }
+            runSync();
+        }
+
+        function runSync() {
+          try {
+            const story = (document.getElementById('story-in') || {value:''}).value || '',
+                  script = (document.getElementById('script-in') || {value:''}).value || '',
+                  locDna = (document.getElementById('loc-dna-in') || {value:''}).value || '',
+                  caption = (document.getElementById('caption-in') || {value:''}).value || '';
+            const full = (story + script + locDna + caption).toUpperCase();
+            let team = []; Object.keys(dnaPool).forEach(name => {
+                const b = document.getElementById(`btn-${name}`);
+                if (b) {
+                    if (full.includes(name)) { b.classList.add('active'); team.push(name); } else b.classList.remove('active');
+                }
+            });
+            const p = new URLSearchParams(window.location.search);
+            const type = p.get('type') || 'panel';
+            const heftId2 = p.get('heft') || '1';
+            const code = type === 'cover' ? `${heftId2}/COVER` : `${heftId2}/${p.get('seite')||'1'}/P${p.get('panel')||'1'}`;
+            
+            let res = '';
+
+            if (type === 'cover') {
+                const hd = (typeof hefte !== 'undefined') ? hefte[heftId2] : null;
+                const heftTitel = hd ? (hd.titel || '') : '';
+
+                res += `FORMAT: 9:16 vertical portrait – smartphone optimized. Comic book cover layout.\n\n`;
+                res += `Referenz Angaben zu den Charakteren sind unter "SnailsStons DNA" im Gedächtnis von Gemini hinterlegt.\n\n`;
+                team.forEach(name => res += `IMAGE ${dnaPool[name].id} = ${name} – character reference -> match exactly.\n`);
+                if (team.length > 0) res += `IMAGE 5 = LOCATION DNA.\n`;
+                res += `Do NOT invent characters. Do NOT invent locations.\n\n`;
+
+                res += `COVER CONCEPT:\n`;
+                res += `Ultra-realistic 3D CGI render, Blue Sky Studios style, hyper-detailed.\n`;
+                res += `Cinematic comic book cover. Dramatic composition. Strong focal point.\n`;
+                res += `NOT a panel. NOT a scene. A COVER – one iconic image.\n\n`;
+
+                res += `ANATOMY RULES – apply to every character:\n`;
+                res += `NO legs, NO feet on any character. Snail glide base only.\n`;
+                res += `Expressive cartoon eyes IN the face – not on antenna tips.\n`;
+                res += `Antennas end in small round smooth KNOB tips only.\n\n`;
+
+                res += `COMPOSITION RULES:\n`;
+                res += `Characters occupy lower 60% of frame. Top 40% reserved for title area.\n`;
+                res += `Strong rim lighting from behind. Dramatic shadows. Cinematic depth of field.\n`;
+                res += `Background: atmospheric, mood-matching the story. NOT flat. NOT empty.\n\n`;
+
+                if (story) res += `STORY MOOD (use to define atmosphere and expression):\n${story}\n\n`;
+                if (locDna) res += `LOCATION DNA (use for background):\n${locDna}\n\n`;
+                if (team.length > 0) { res += `CHARACTERS on cover:\n`; team.forEach(name => res += `${name}: ${dnaPool[name].desc}\n`); res += `\n`; }
+
+                res += `TITLE TEXT on cover:\n`;
+                res += `Top area: render "Snails Stons" in bold display font, gold (#d4af37), large.\n`;
+                res += `Small label above or below title: "Heft ${heftId2}" in small gold font.\n`;
+                if (heftTitel) res += `Below title: render "${heftTitel}" in smaller white italic font.\n`;
+                res += `Bottom strip: "× Dragons Chain | SOUND & STEEL" small, white, elegant.\n\n`;
+
+                res += `NO speech bubbles. NO dialog. NO captions. Cover only.\n`;
+                res += `BORDER: Every image MUST have a solid black 3px border around the entire outer edge.\n`;
+                res += `WATERMARK: Render "${code}" 12px, 90% transparent, top right corner.`;
+
+            } else {
+                res += `Referenz Angaben zu den Charakteren sind unter "SnailsStons DNA" im Gedächtnis von Gemini hinterlegt.\n\n`;
+                team.forEach(name => res += `IMAGE ${dnaPool[name].id} = ${name} – character reference -> match exactly.\n`);
+                res += `IMAGE 5 = LOCATION DNA.\n`;
+                res += `Do NOT invent characters. Do NOT invent locations.\n\n`;
+                res += `TYPE: Ultra-realistic 3D CGI render, Blue Sky Studios style, hyper-detailed.\n`;
+                res += `FORMAT: ${currentAR} aspect ratio.\n`;
+                res += `CODE: ${code} – render small, top right corner of image.\n\n`;
+                res += `ANATOMY RULES – apply to every character without exception:\n`;
+                res += `NO legs, NO feet on any character. Snail glide base only.\n`;
+                res += `Expressive cartoon eyes IN the face – not on antenna tips.\n`;
+                res += `Antennas end in small round smooth KNOB tips only – NOT eye-balls.\n\n`;
+                res += `SCENE:\n${story}\n\nLOCATION DNA:\n${locDna}\n\n`;
+                if (team.length > 0) { res += `CHARACTERS:\n`; team.forEach(name => res += `${name}: ${dnaPool[name].desc}\n`); res += `\n`; }
+                
+                if (script) {
+                  res += `SPEECH BUBBLES – strict style rules:\n`;
+                  res += `DO NOT use rounded rectangle bubbles. DO NOT use solid white filled bubbles. DO NOT place all bubbles at the bottom.\n`;
+                  res += `INSTEAD: Use a simple curved line (tail only) from each speaker's mouth. TEXT SIZE: Render all dialog text in a LARGE, BOLD, and highly readable font size (approx. 36pt equivalent). VISIBILITY: Text must be the primary focus, appearing large enough to be read easily on a mobile screen.\n`;
+                  res += `Place the dialog text directly in the image near the speaker, with NO bubble shape – just a very thin, barely visible curved white line as pointer. FONT STYLE: Use a clean, thick Sans-Serif font. Text is white with a heavy dark shadow for maximum contrast.\n`;
+                  res += `RENDER ALL DIALOG TEXT EXACTLY AS WRITTEN – do NOT shorten, paraphrase or cut any dialog. Every word must appear.\n`;
+                  res += `DIALOG:\n${script}\n\n`;
+                }
+                
+                if (caption) res += `INFO BOX – render as small caption panel:\nPlace a small, semi-transparent dark info box at the bottom of the image (NOT a label, NOT a title banner). Inside this box render the following text in small white font:\n"${caption}"\n\n`;
+                
+                res += `BORDER: Encapsulate the entire scene within a sharp, solid black outer border, like a high-quality comic panel.\n`;
+                res += `WATERMARK: In the extreme top right corner, render a very faint, small, translucent grey text "${code}".\n`;
+            }
+            const out = document.getElementById('result');
+            if (out) out.innerText = res || ('⚠️ res leer | type=' + type + ' | story=' + story.substring(0,40));
+          } catch(err) {
+            const out = document.getElementById('result');
+            if (out) out.innerText = '❌ JS ERROR: ' + err.message + '\n' + err.stack;
+          }
+        }
+
+        function copyPrompt() {
+            const t = document.getElementById('result').innerText, btn = document.getElementById('copy-btn');
+            const ta = document.createElement("textarea"); ta.value = t; ta.style.position = "fixed"; ta.style.left = "-9999px";
+            document.body.appendChild(ta); ta.focus(); ta.select(); document.execCommand('copy');
+            const old = btn.innerHTML; btn.innerHTML = "✅ KOPIERT!"; btn.style.background = "var(--success)";
+            setTimeout(() => { btn.innerHTML = old; btn.style.background = "var(--gold)"; }, 1500);
+            document.body.removeChild(ta);
+        }
+    </script>
+</body>
+</html>
