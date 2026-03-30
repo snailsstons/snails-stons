@@ -136,7 +136,7 @@ hefte["16"] = {
           "locDna": "Die Calle Tirso de Molina in der Totalen. Die Straßenlaternen flackern auf.",
           "story": "Im tiefen Schatten einer Seitenstraße leuchten Salomes bernsteinfarbene Fühler auf, während Stella als kleiner Punkt in der Ferne verschwindet.",
           "skript": "**BILDTEXT:** (Stella denkt:) „Vielleicht probiere ich es heute Nacht aus. Vielleicht auch nicht. Das Geheimnis ist das Beste daran.“",
-          "format": "19:6",
+          "format": "9:16",
           "caption": "",
           "members": false,
           "bonus": false
