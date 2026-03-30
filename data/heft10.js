@@ -122,7 +122,9 @@ hefte["10"] = {
           "skript": ""
         }
       ],
-      "nummer": 2
+      "nummer": 2,
+      "members": true,
+      "level": "silver"
     },
     {
       "panels": [
@@ -181,7 +183,9 @@ hefte["10"] = {
           "skript": ""
         }
       ],
-      "nummer": 3
+      "nummer": 3,
+      "members": true,
+      "level": "silver"
     },
     {
       "panels": [
@@ -240,7 +244,9 @@ hefte["10"] = {
           "skript": ""
         }
       ],
-      "nummer": 4
+      "nummer": 4,
+      "members": true,
+      "level": "silver"
     },
     {
       "panels": [
@@ -299,7 +305,9 @@ hefte["10"] = {
           "skript": ""
         }
       ],
-      "nummer": 5
+      "nummer": 5,
+      "members": true,
+      "level": "silver"
     },
     {
       "panels": [
@@ -358,7 +366,9 @@ hefte["10"] = {
           "skript": ""
         }
       ],
-      "nummer": 6
+      "nummer": 6,
+      "members": true,
+      "level": "silver"
     },
     {
       "panels": [
@@ -417,7 +427,9 @@ hefte["10"] = {
           "skript": ""
         }
       ],
-      "nummer": 7
+      "nummer": 7,
+      "members": true,
+      "level": "silver"
     }
   ],
   "members": false
