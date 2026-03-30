@@ -1,7 +1,7 @@
 hefte["23"] = {
   "titel": "Die vergessene Welt",
   "teaser": "Tief unter den Bergen von Gandia verbirgt sich ein Labyrinth aus Kristallen und geheimen Kammern – die größte Höhle der Region. Felix will unbedingt hinein, Archie warnt vor den Gefahren, Stella findet die Kristalle ästhetisch faszinierend – und Luna spürt die Stille unter der Erde. Aber der Weg dorthin ist nicht einfach.",
-  "released": true,
+  "released": false,
   "cover": "cover.jpg",
   "seiten": [
     {
