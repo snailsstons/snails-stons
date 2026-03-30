@@ -1,7 +1,7 @@
 hefte["8"] = {
   "titel": "Heft 8",
   "cover": "cover.jpg",
-  "released": true,
+  "released": false,
   "locDna": "",
   "teaser": "Schnecken im Schilf: Felix will baden (schon wieder), Stella findet Quallen \"nicht ihren Stil\", Archie erklärt Fische mit lateinischen Namen – und Luna bringt das Wasser zum Leuchten. Strandnacht inklusive. Marjal deluxe.",
   "coverStory": "",
