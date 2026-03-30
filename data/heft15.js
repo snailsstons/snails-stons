@@ -72,7 +72,12 @@ hefte["15"] = {
           "skript": "Felix: \"WIR SIND AUF DEM WEG NACH VALENCIA! ICH KANN ES NICHT FASSEN!\"",
           "caption": "",
           "members": false,
-          "bonus": false
+          "bonus": false,
+          "werbung": {
+            "bild": "15_2_P0.jpg",
+            "link": "https://www.alsa.es/destino/gandia",
+            "alt": "ALSA Bus Gandia"
+          }
         }
       ],
       "members": false
