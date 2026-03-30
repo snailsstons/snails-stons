@@ -49,7 +49,7 @@ hefte["14"] = {
           "skript": "**BILDTEXT:** (Stella denkt:) „Mein Harness schützt. Es definiert. Aber hier… hier scheint niemand etwas zu definieren.“",
           "wide": false,
           "tall": false,
-          "format": "3:5",
+          "format": "16:9",
           "members": false,
           "bonus": false
         },
