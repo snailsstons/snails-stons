@@ -107,7 +107,8 @@ hefte["18"] = {
           "bonus": false
         }
       ],
-      "members": false
+      "members": true,
+      "level": "silver"
     },
     {
       "nummer": 3,
@@ -158,7 +159,8 @@ hefte["18"] = {
           "bonus": false
         }
       ],
-      "members": false
+      "members": true,
+      "level": "silver"
     },
     {
       "nummer": 4,
@@ -209,7 +211,8 @@ hefte["18"] = {
           "bonus": false
         }
       ],
-      "members": false
+      "members": true,
+      "level": "silver"
     },
     {
       "nummer": 5,
@@ -260,7 +263,8 @@ hefte["18"] = {
           "bonus": false
         }
       ],
-      "members": false
+      "members": true,
+      "level": "silver"
     },
     {
       "nummer": 6,
@@ -311,7 +315,8 @@ hefte["18"] = {
           "bonus": false
         }
       ],
-      "members": false
+      "members": true,
+      "level": "silver"
     },
     {
       "nummer": 7,
@@ -362,7 +367,8 @@ hefte["18"] = {
           "bonus": false
         }
       ],
-      "members": false
+      "members": true,
+      "level": "silver"
     },
     {
       "nummer": 8,
@@ -416,7 +422,8 @@ hefte["18"] = {
           "bonus": false
         }
       ],
-      "members": false
+      "members": true,
+      "level": "silver"
     },
     {
       "nummer": 9,
@@ -470,7 +477,8 @@ hefte["18"] = {
           "bonus": false
         }
       ],
-      "members": false
+      "members": true,
+      "level": "silver"
     },
     {
       "nummer": 10,
@@ -524,7 +532,8 @@ hefte["18"] = {
           "bonus": false
         }
       ],
-      "members": false
+      "members": true,
+      "level": "silver"
     },
     {
       "nummer": 11,
@@ -578,7 +587,8 @@ hefte["18"] = {
           "bonus": false
         }
       ],
-      "members": false
+      "members": true,
+      "level": "silver"
     },
     {
       "nummer": 12,
@@ -632,7 +642,8 @@ hefte["18"] = {
           "bonus": false
         }
       ],
-      "members": false
+      "members": true,
+      "level": "silver"
     },
     {
       "nummer": 13,
@@ -686,7 +697,8 @@ hefte["18"] = {
           "bonus": false
         }
       ],
-      "members": false
+      "members": true,
+      "level": "silver"
     },
     {
       "nummer": 14,
@@ -740,7 +752,8 @@ hefte["18"] = {
           "bonus": false
         }
       ],
-      "members": false
+      "members": true,
+      "level": "silver"
     },
     {
       "nummer": 15,
@@ -794,7 +807,8 @@ hefte["18"] = {
           "bonus": false
         }
       ],
-      "members": false
+      "members": true,
+      "level": "silver"
     },
     {
       "nummer": 16,
@@ -848,7 +862,8 @@ hefte["18"] = {
           "bonus": false
         }
       ],
-      "members": false
+      "members": true,
+      "level": "silver"
     },
     {
       "nummer": 17,
@@ -902,7 +917,8 @@ hefte["18"] = {
           "bonus": false
         }
       ],
-      "members": false
+      "members": true,
+      "level": "silver"
     }
   ],
   "members": false
