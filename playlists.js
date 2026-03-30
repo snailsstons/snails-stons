@@ -9,7 +9,9 @@ window.playlistMap = [
   },
   {
     "titel": "Shorts",
-    "hefte": []
+    "hefte": [
+      15
+    ]
   },
   {
     "titel": "🖇️ Experimente, Schmierheft",
