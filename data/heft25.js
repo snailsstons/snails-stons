@@ -758,6 +758,5 @@ hefte["25"] = {
     }
   ],
   "coverStory": "Mitten in Gandia schlummern die Geister eines der wildesten Feste der Welt – die Fallas. Felix will die Ninots knipsen, Archie erklärt die Kunst der Satire, Stella findet den Stoff der Fallera-Kleider verführerisch – und Luna spürt, dass hier jedes Jahr tausend Geschichten im Feuer enden.",
-  "members": true,
-  "level": "gold"
+  "members": false
 };
