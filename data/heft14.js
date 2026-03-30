@@ -126,7 +126,8 @@ hefte["14"] = {
           "bonus": false
         }
       ],
-      "members": false
+      "members": true,
+      "level": "silver"
     },
     {
       "nummer": 3,
@@ -187,7 +188,8 @@ hefte["14"] = {
           "bonus": false
         }
       ],
-      "members": false
+      "members": true,
+      "level": "silver"
     },
     {
       "nummer": 4,
@@ -245,7 +247,8 @@ hefte["14"] = {
           "bonus": false
         }
       ],
-      "members": false
+      "members": true,
+      "level": "silver"
     }
   ],
   "members": false
