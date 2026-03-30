@@ -3,8 +3,7 @@ window.playlistMap = [
     "titel": "Stella allein unterwegs",
     "hefte": [
       14,
-      16,
-      17
+      16
     ]
   },
   {
