@@ -110,7 +110,7 @@ hefte["14"] = {
           "skript": "**DIALOG** Lúa: „Was soll uns verletzen? Die Sonne? Der Sand?“",
           "wide": false,
           "tall": false,
-          "format": "3:5",
+          "format": "16:9",
           "members": false,
           "bonus": false
         },
