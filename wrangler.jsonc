@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "snails-stons",
+  "name": "snailsstons",
   "compatibility_date": "2025-09-27",
   "observability": {
     "enabled": true
