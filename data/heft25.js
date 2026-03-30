@@ -47,7 +47,12 @@ hefte["25"] = {
           "locDna": "Blick durch die Glastür in das Innere. Eine helle Lobby, freundliches Licht. Im Hintergrund erste Vitrinen.",
           "story": "Felix gleitet bereits auf die Tür zu, die anderen folgen.",
           "skript": "**DIALOG** Felix: „Ich will die Ninots sehen! Die Figuren, die jedes Jahr verbrennen!“ – *Kamera hält auf die offene Tür.*",
-          "caption": ""
+          "caption": "",
+          "werbung": {
+            "bild": "25_1_P0.jpg",
+            "link": "https://planetagandia.com/museo-fallero-de-gandia/",
+            "alt": "Fallas Museum Gandia"
+          }
         }
       ]
     },
