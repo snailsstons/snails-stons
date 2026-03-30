@@ -1,7 +1,7 @@
 hefte["7"] = {
   "titel": "Heft 7",
   "cover": "cover.jpg",
-  "released": true,
+  "released": false,
   "locDna": "",
   "teaser": "Neue Burg, alte Steine – und noch ältere Kunst. Felix staunt über den Turm mit Baum, Stella über die Aussicht, Archie über arabische Graffiti – und Luna entdeckt 8.000 Jahre alte Kritzeleien. Geschichte zum Anfassen (für Schnecken).",
   "coverStory": "",
