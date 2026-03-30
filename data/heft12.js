@@ -161,5 +161,6 @@ hefte["12"] = {
       ]
     }
   ],
-  "members": false
+  "members": true,
+  "level": "gold"
 };
