@@ -23,5 +23,13 @@ window.playlistMap = [
     "titel": "⭐ Members Only",
     "hefte": [],
     "membersOnly": true
+  },
+  {
+    "titel": "Stella allein unterwegs",
+    "hefte": [
+      14,
+      16,
+      17
+    ]
   }
 ];
