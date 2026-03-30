@@ -757,5 +757,7 @@ hefte["24"] = {
       ]
     }
   ],
-  "coverStory": "Im Hafen von Gandia versteckt sich eine Schatzkammer aus Holz und Leidenschaft – ein Museum voller handgebauter Schiffe. Felix will jedes Modell fotografieren, Archie doziert über die Geschichte des Hafens, Stella findet die Ästhetik der alten Schiffe zeitlos – und Luna spürt die Hingabe eines Mannes, der hier sein Lebenswerk schuf. Am Ende, fast unbemerkt, ein Blick in die Ferne."
+  "coverStory": "Im Hafen von Gandia versteckt sich eine Schatzkammer aus Holz und Leidenschaft – ein Museum voller handgebauter Schiffe. Felix will jedes Modell fotografieren, Archie doziert über die Geschichte des Hafens, Stella findet die Ästhetik der alten Schiffe zeitlos – und Luna spürt die Hingabe eines Mannes, der hier sein Lebenswerk schuf. Am Ende, fast unbemerkt, ein Blick in die Ferne.",
+  "members": true,
+  "level": "gold"
 };
