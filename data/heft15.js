@@ -34,7 +34,12 @@ hefte["15"] = {
           "skript": "(kein Dialog)",
           "caption": "",
           "members": false,
-          "bonus": false
+          "bonus": false,
+          "werbung": {
+            "bild": "15_1_P0.jpg",
+            "link": "https://despistecafe.es/cafeteria/estacion-de-gandia/",
+            "alt": "Cafe am Busbahnhof Gandía"
+          }
         }
       ],
       "members": false
