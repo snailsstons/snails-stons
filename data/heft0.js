@@ -1,11 +1,11 @@
 hefte["0"] = {
-  "titel": "Schmierheft",
+  "titel": "Die geretteten Seelen",
   "released": true,
   "cover": "cover.jpg",
   "video": "",
-  "teaser": "Experimente. Kein Plan. Einfach ausprobieren.",
+  "teaser": "Mitten in Gandia schlummern die Geister eines der wildesten Feste der Welt – die Fallas. Felix will die Ninots knipsen, Archie erklärt die Kunst der Satire, Stella findet den Stoff der Fallera-Kleider verführerisch – und Luna spürt, dass hier jedes Jahr tausend Geschichten im Feuer enden.",
   "locDna": "",
-  "coverStory": "",
+  "coverStory": "Mitten in Gandia schlummern die Geister eines der wildesten Feste der Welt – die Fallas. Felix will die Ninots knipsen, Archie erklärt die Kunst der Satire, Stella findet den Stoff der Fallera-Kleider verführerisch – und Luna spürt, dass hier jedes Jahr tausend Geschichten im Feuer enden.",
   "seiten": [
     {
       "nummer": 1,
@@ -50,6 +50,5 @@ hefte["0"] = {
       "members": false
     }
   ],
-  "members": true,
-  "level": "silver"
+  "members": false
 };
