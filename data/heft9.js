@@ -1,7 +1,7 @@
 hefte["9"] = {
   "titel": "Heft 9",
   "cover": "cover.jpg",
-  "released": true,
+  "released": false,
   "locDna": "",
   "teaser": "Felix will baden, Stella hat Panik, Archie wird zum Reiseführer – und Luna führt sie alle hinters Licht. Oliva: Burg, heiße Quelle, enge Gassen und ein Bus zurück. Schnecken deluxe.",
   "coverStory": "",
