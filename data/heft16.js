@@ -116,7 +116,7 @@ hefte["16"] = {
           "locDna": "Kassenbereich. Kleine schwarze Papiertüte steht auf dem Tresen.",
           "story": "Stella platziert eine Münze mit der Gleitbasis auf dem Tresen und umschließt die Henkel der Tüte elegant mit einer Antenne.",
           "skript": "**DIALOG** Stella: „Es bleibt eine Option.“",
-          "format": "1:1",
+          "format": "3:5",
           "caption": "",
           "members": false,
           "bonus": false
@@ -126,7 +126,7 @@ hefte["16"] = {
           "locDna": "Vor der Ladentür. Die Dämmerung hat Gandia in ein tiefes Blau getaucht.",
           "story": "Stella blickt auf die Tüte in ihrem Griff und lässt sie mit einer geschmeidigen Bewegung in einer falte ihrer Schale verschwinden.",
           "skript": "**BILDTEXT:** (Stella denkt:) „Archie würde jetzt fragen, was ich gekauft habe. Ich würde sagen: ‚Etwas zum Ausprobieren.‘ Er würde nicht weiter fragen.“",
-          "format": "1:1",
+          "format": "3:5",
           "caption": "",
           "members": false,
           "bonus": false
