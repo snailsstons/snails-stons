@@ -1,5 +1,13 @@
 window.playlistMap = [
   {
+    "titel": "Stella allein unterwegs",
+    "hefte": [
+      14,
+      16,
+      17
+    ]
+  },
+  {
     "titel": "Gandia und Umgebung",
     "hefte": [
       18,
@@ -23,13 +31,5 @@ window.playlistMap = [
     "titel": "⭐ Members Only",
     "hefte": [],
     "membersOnly": true
-  },
-  {
-    "titel": "Stella allein unterwegs",
-    "hefte": [
-      14,
-      16,
-      17
-    ]
   }
 ];
