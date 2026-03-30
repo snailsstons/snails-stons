@@ -195,7 +195,10 @@
     </header>
 
     <div class="pacer-ui">
-        <button class="btn" onclick="document.getElementById('file-input').click()">Öffnen</button>
+        <select id="heft-select" onchange="loadHeftFromGitHub(this.value)" style="background:#111;color:var(--gold);border:1px solid #333;padding:5px 8px;border-radius:6px;font-size:0.7rem;font-weight:900;">
+            <option value="">Heft wählen...</option>
+        </select>
+        <button class="btn" onclick="document.getElementById('file-input').click()">📂 MD</button>
         <input type="file" id="file-input" accept=".md,.txt">
         <button class="btn" id="map-btn" onclick="goToMap()" style="display:none;">🗺 Map</button>
         <button class="btn" onclick="confirmReset()">Reset</button>
@@ -203,7 +206,7 @@
 
     <div id="viewport">
         <div class="slide" style="justify-content:center; opacity:0.3;">
-            <p style="text-align:center; font-weight:900; color:var(--gold);">DATEI WÄHLEN</p>
+            <p style="text-align:center; font-weight:900; color:var(--gold);">HEFT WÄHLEN ODER MD LADEN</p>
         </div>
     </div>
 
@@ -211,7 +214,100 @@
         const fileInput = document.getElementById('file-input');
         const viewport = document.getElementById('viewport');
         let hasData = false;
-        let allPages = []; // Analysierte Seiten
+        let allPages = [];
+
+        // --- GITHUB INTEGRATION ---
+        function ghConfig() {
+            return {
+                repo: localStorage.getItem('gh_repo'),
+                branch: localStorage.getItem('gh_branch') || 'main',
+                token: localStorage.getItem('gh_token')
+            };
+        }
+
+        async function initHeftSelector() {
+            const { repo, branch, token } = ghConfig();
+            if (!repo || !token) return;
+            try {
+                const res = await fetch(`https://api.github.com/repos/${repo}/contents/data?ref=${branch}`, {
+                    headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json' }
+                });
+                if (!res.ok) return;
+                const files = await res.json();
+                const sel = document.getElementById('heft-select');
+                files
+                    .filter(f => f.name.match(/^heft\d+\.js$/))
+                    .sort((a, b) => {
+                        const na = parseInt(a.name.match(/\d+/)[0]);
+                        const nb = parseInt(b.name.match(/\d+/)[0]);
+                        return nb - na; // neueste zuerst
+                    })
+                    .forEach(f => {
+                        const id = f.name.match(/\d+/)[0];
+                        const opt = document.createElement('option');
+                        opt.value = f.download_url;
+                        opt.dataset.id = id;
+                        opt.textContent = `Heft ${id}`;
+                        sel.appendChild(opt);
+                    });
+            } catch(e) {}
+        }
+
+        async function loadHeftFromGitHub(url) {
+            if (!url) return;
+            const sel = document.getElementById('heft-select');
+            const opt = sel.options[sel.selectedIndex];
+            const heftId = opt?.dataset?.id || '?';
+            try {
+                const res = await fetch(url);
+                const code = await res.text();
+                const hefte = {};
+                new Function('hefte', code)(hefte);
+                const h = hefte[heftId];
+                if (!h || !h.seiten) return;
+                // Seiten in Pacer-Format konvertieren
+                const pages = h.seiten.map(s => ({
+                    nummer: s.nummer,
+                    titel: s.titel || '',
+                    akt: s.akt || '',
+                    panels: s.panels.map(p => ({
+                        format: p.format || (p.wide ? '16:9' : p.tall ? '9:16' : '1:1'),
+                        story: p.story || '',
+                        skript: p.skript || '',
+                        locDna: p.locDna || '',
+                        caption: p.caption || '',
+                        wide: p.wide || false,
+                        tall: p.tall || false
+                    }))
+                }));
+                document.getElementById('info-display').innerText = `HEFT ${heftId} | ${h.titel || ''}`;
+                runWithPages(pages, `Heft ${heftId}: ${h.titel || ''}`);
+            } catch(e) { console.error('Ladefehler:', e); }
+        }
+
+        function runWithPages(pages, label) {
+            viewport.innerHTML = '';
+            allPages = pages;
+            hasData = true;
+            const rhythmScore = calcRhythmScore(allPages);
+            const warnings = findRepeatWarnings(allPages);
+            showRhythmBar(rhythmScore);
+            buildMapSlide(allPages, warnings, rhythmScore);
+            allPages.forEach(page => buildPageSlide(page, warnings));
+            document.getElementById('map-btn').style.display = 'block';
+            const updateCounter = () => {
+                const cur = Math.round(viewport.scrollLeft / window.innerWidth);
+                if (cur === 0) {
+                    document.getElementById('info-display').innerText = `${label} | ${allPages.length} SEITEN`;
+                } else {
+                    document.getElementById('info-display').innerText = `SEITE ${cur} VON ${allPages.length}`;
+                }
+            };
+            viewport.addEventListener('scroll', updateCounter);
+            updateCounter();
+        }
+
+        window.addEventListener('DOMContentLoaded', initHeftSelector);
 
         window.onbeforeunload = function() { if (hasData) return "Datenverlust droht!"; };
         function confirmReset() { if (confirm("Wirklich alles zurücksetzen?")) { hasData = false; window.location.reload(); } }
@@ -376,38 +472,15 @@
         }
 
         function processMD(content) {
-            viewport.innerHTML = '';
             allPages = [];
             hasData = true;
-
             const format = detectFormat(content);
-
             if (format === 'admin') {
                 parseAdminFormat(content);
             } else {
                 parsePacerFormat(content);
             }
-
-            // Rhythmus berechnen
-            const rhythmScore = calcRhythmScore(allPages);
-            const warnings = findRepeatWarnings(allPages);
-
-            showRhythmBar(rhythmScore);
-            buildMapSlide(allPages, warnings, rhythmScore);
-            allPages.forEach(page => buildPageSlide(page, warnings));
-
-            document.getElementById('map-btn').style.display = 'block';
-
-            const updateCounter = () => {
-                const cur = Math.round(viewport.scrollLeft / window.innerWidth);
-                if (cur === 0) {
-                    document.getElementById('info-display').innerText = `HEFT-MAP | ${allPages.length} SEITEN`;
-                } else {
-                    document.getElementById('info-display').innerText = `SEITE ${cur} VON ${allPages.length}`;
-                }
-            };
-            viewport.addEventListener('scroll', updateCounter);
-            updateCounter();
+            runWithPages(allPages, 'MD Import');
         }
 
         // =====================================================
