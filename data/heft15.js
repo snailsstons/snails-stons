@@ -75,8 +75,7 @@ hefte["15"] = {
           "bonus": false
         }
       ],
-      "members": true,
-      "level": "silver"
+      "members": false
     },
     {
       "nummer": 3,
