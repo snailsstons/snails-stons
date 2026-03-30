@@ -1,6 +1,6 @@
 hefte["17"] = {
   "titel": "Der Tag danach",
-  "released": false,
+  "released": true,
   "cover": "cover.jpg",
   "teaser": "Ein neues Harness, ein neuer Morgen – und Stella muss sich entscheiden, ob sie es trägt. Während Archie über alte Schalen philosophiert und Felix die falschen Fragen stellt, zeigt Luna, dass Stil und Schutz manchmal zwei Seiten derselben Schnecke sind. #SoundSteel #SnailsStons #Gandia #Harness #MorgenDanach",
   "locDna": "",
