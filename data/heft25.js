@@ -101,7 +101,9 @@ hefte["25"] = {
           "skript": "**DIALOG** Stella: „Und jedes Jahr werden die besten Figuren vor dem Feuer gerettet. Die Ninots Indultats.“ – *Kamera hält auf die glitzernden Juwelen.*",
           "caption": ""
         }
-      ]
+      ],
+      "members": true,
+      "level": "silver"
     },
     {
       "nummer": 3,
@@ -148,7 +150,9 @@ hefte["25"] = {
           "skript": "**BILDTEXT:** (kein Dialog) – *Kamera hält auf die groteske, lebendige Figur.*",
           "caption": ""
         }
-      ]
+      ],
+      "members": true,
+      "level": "silver"
     },
     {
       "nummer": 4,
@@ -195,7 +199,9 @@ hefte["25"] = {
           "skript": "**DIALOG** Felix: „Die haben das Feuer überlebt. Wie wir.“ – *Kamera hält auf das verschmitzte Lächeln des Ninots.*",
           "caption": ""
         }
-      ]
+      ],
+      "members": true,
+      "level": "silver"
     },
     {
       "nummer": 5,
@@ -242,7 +248,9 @@ hefte["25"] = {
           "skript": "**BILDTEXT:** (kein Dialog) – *Kamera hält auf die filigrane Handarbeit.*",
           "caption": ""
         }
-      ]
+      ],
+      "members": true,
+      "level": "silver"
     },
     {
       "nummer": 6,
@@ -289,7 +297,9 @@ hefte["25"] = {
           "skript": "**DIALOG** Archie: „Nur ein Echo. In echt ist es lauter. Und die Erde bebt mit.“ – *Kamera hält auf die zitternden Lautsprecher.*",
           "caption": ""
         }
-      ]
+      ],
+      "members": true,
+      "level": "silver"
     },
     {
       "nummer": 7,
@@ -336,7 +346,9 @@ hefte["25"] = {
           "skript": "**DIALOG** Felix: „Für das Album. Für die Musik.“ – *Kamera hält auf die staubigen Notenblätter.*",
           "caption": ""
         }
-      ]
+      ],
+      "members": true,
+      "level": "silver"
     },
     {
       "nummer": 8,
@@ -383,7 +395,9 @@ hefte["25"] = {
           "skript": "**DIALOG** Archie: „Weil es nicht um das Ding geht. Es geht um das Erschaffen. Um das gemeinsame Erlebnis.“ – *Kamera hält auf die filigranen Modelle.*",
           "caption": ""
         }
-      ]
+      ],
+      "members": true,
+      "level": "silver"
     },
     {
       "nummer": 9,
@@ -430,7 +444,9 @@ hefte["25"] = {
           "skript": "**BILDTEXT:** (kein Dialog) – *Kamera hält auf die Unmenge von Blüten.*",
           "caption": ""
         }
-      ]
+      ],
+      "members": true,
+      "level": "silver"
     },
     {
       "nummer": 10,
@@ -477,7 +493,9 @@ hefte["25"] = {
           "skript": "**DIALOG** Stella: „Ein Ritual des Feuers. Wie die Phönix, die aus der Asche steigt.“ – *Kamera hält auf die flackernden Flammen.*",
           "caption": ""
         }
-      ]
+      ],
+      "members": true,
+      "level": "silver"
     },
     {
       "nummer": 11,
@@ -524,7 +542,9 @@ hefte["25"] = {
           "skript": "**BILDTEXT:** (kein Dialog) – *Kamera hält auf Lunas friedliches Gesicht.*",
           "caption": ""
         }
-      ]
+      ],
+      "members": true,
+      "level": "silver"
     },
     {
       "nummer": 12,
@@ -571,7 +591,9 @@ hefte["25"] = {
           "skript": "**DIALOG** Archie: „Sie hat das Feuer überlebt. Wie alle hier. Sie erinnert an das, was war.“ – *Kamera hält auf die stolze Haltung der Ninot-Fallera.*",
           "caption": ""
         }
-      ]
+      ],
+      "members": true,
+      "level": "silver"
     },
     {
       "nummer": 13,
@@ -618,7 +640,9 @@ hefte["25"] = {
           "skript": "**BILDTEXT:** (kein Dialog) – *Kamera hält auf die moderne Fassade.*",
           "caption": ""
         }
-      ]
+      ],
+      "members": true,
+      "level": "silver"
     },
     {
       "nummer": 14,
@@ -665,7 +689,9 @@ hefte["25"] = {
           "skript": "**DIALOG** Stella: „Aber wir Schnecken brennen nicht. Wir gleiten weiter.“ – *Kamera hält auf Archies nachdenkliches Gesicht.*",
           "caption": ""
         }
-      ]
+      ],
+      "members": true,
+      "level": "silver"
     },
     {
       "nummer": 15,
@@ -712,7 +738,9 @@ hefte["25"] = {
           "skript": "**DIALOG** Archie: „Und wir haben überlebt. Wie die Ninots Indultats.“ – *Kamera hält auf die zufriedenen Gesichter.*",
           "caption": ""
         }
-      ]
+      ],
+      "members": true,
+      "level": "silver"
     },
     {
       "nummer": 16,
@@ -759,7 +787,9 @@ hefte["25"] = {
           "skript": "**DIALOG** Luna (aus dem Off): „…bis zum nächsten Mal.“",
           "caption": ""
         }
-      ]
+      ],
+      "members": true,
+      "level": "silver"
     }
   ],
   "coverStory": "Mitten in Gandia schlummern die Geister eines der wildesten Feste der Welt – die Fallas. Felix will die Ninots knipsen, Archie erklärt die Kunst der Satire, Stella findet den Stoff der Fallera-Kleider verführerisch – und Luna spürt, dass hier jedes Jahr tausend Geschichten im Feuer enden.",
