@@ -88,7 +88,7 @@ hefte["14"] = {
           "skript": "**DIALOG** Lúa (lächelnd): „Du bist neu hier, oder? Man sieht es am Harness.“",
           "wide": false,
           "tall": false,
-          "format": "3:5",
+          "format": "1:1",
           "members": false,
           "bonus": false
         },
@@ -99,7 +99,7 @@ hefte["14"] = {
           "skript": "**DIALOG** Lúa: „Wir kommen jeden Sommer. Keine Schale, keine Regeln, keine Blicke.“",
           "wide": false,
           "tall": false,
-          "format": "3:5",
+          "format": "1:1",
           "members": false,
           "bonus": false
         },
