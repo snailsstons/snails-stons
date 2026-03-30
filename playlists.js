@@ -8,10 +8,6 @@ window.playlistMap = [
     ]
   },
   {
-    "titel": "Die Borgia Route",
-    "hefte": []
-  },
-  {
     "titel": "Shorts",
     "hefte": []
   },
