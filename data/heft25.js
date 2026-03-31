@@ -93,7 +93,7 @@ hefte["25"] = {
         },
         {
           "bild": "25_2_P4.jpg",
-          "format": "3:5",
+          "format": "9:16",
           "wide": false,
           "tall": false,
           "locDna": "Stella gleitet zu einer Vitrine, in der alte Schmuckstücke liegen.",
@@ -189,7 +189,7 @@ hefte["25"] = {
         },
         {
           "bild": "25_4_P4.jpg",
-          "format": "3:5",
+          "format": "9:16",
           "wide": false,
           "tall": false,
           "locDna": "Felix fotografiert mit seinem `[ASSET: FELIX_HANDY_V1]` die alte Figur.",
