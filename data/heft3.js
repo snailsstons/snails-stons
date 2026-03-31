@@ -1,294 +1,761 @@
 hefte["3"] = {
-  "titel": "Heft 3",
-  "cover": "cover.jpg",
+  "titel": "Ankunft in Gandia",
+  "teaser": "Nach langer Wanderung erreichen die vier Schnecken endlich die Stadt Gandia. Strand, Hafen, Markthalle und die geheimnisvollen Gassen der Altstadt warten auf sie. Felix will alles fotografieren, Stella sucht nach dem perfekten Licht, Archie doziert über die Geschichte – und Luna genießt die Stille an den alten Mauern.",
   "released": true,
-  "locDna": "",
-  "teaser": "Strand, Hafen, Altstadt – Gandia ruft! Felix jubelt, Stella glänzt, Archie doziert, Luna schweigt. Die vier erobern die Stadt – im Schneckentempo, natürlich. 🐌🌆",
-  "coverStory": "",
+  "cover": "cover.jpg",
   "seiten": [
     {
+      "nummer": 1,
+      "titel": "Blick auf Gandia",
+      "akt": "AKT 1 – SETUP: Am Strand",
       "panels": [
         {
           "bild": "3_1_P1.jpg",
-          "locDna": "Blick von den Hügeln nördlich von Gandia auf die Küste. Im Vordergrund Pinien und Macchie, im Hintergrund die Stadt Gandia mit ihren Stränden, dem Hafen und den ersten Häusern. Das Mittelmeer glitzert in der Morgensonne.",
-          "story": "Die vier Schnecken erreichen nach langer Wanderung die Küste. Sie bleiben auf einem Hügel stehen und blicken auf Gandia hinab. Felix reckt begeistert die Antennen, Stella mustert die Szenerie, Archie nippt an seinem Martini, Luna lächelt still.",
-          "skript": "Felix: \"Da unten! Gandia! Das Meer! Wir haben's geschafft!\" Stella: \"Endlich wieder Zivilisation. Die Architektur dort unten sieht vielversprechend aus.\" Archie: \"Gandia. Historisch bedeutend. Die Borja – Borgia – hatten hier ihren Palast.\"",
-          "members": false,
-          "bonus": false
+          "format": "16:9",
+          "wide": true,
+          "tall": false,
+          "locDna": "Blick von den Hügeln nördlich von Gandia auf die Stadt. Im Vordergrund Pinien und Macchie, im Hintergrund die Küste mit dem langen Sandstrand Playa de Gandia, dem Hafen, den ersten Häusern. Das Meer glitzert in der Morgensonne. Leichter Wind bewegt die Gräser.",
+          "story": "Weite Totale. Die vier Schnecken haben die Anhöhe erreicht, bleiben stehen, blicken hinunter. Felix reckt die Antennen, Stella ordnet ihr `[ASSET: STELLA_MESH_HARNESS_V1]`, Archie nippt an `[ASSET: ARCHIE_MARTINI_V1]`, Luna mit geschlossenen Augen.",
+          "skript": "**BILDTEXT:** (Vogelgezwitscher, leiser Wind)",
+          "caption": ""
         },
         {
           "bild": "3_1_P2.jpg",
-          "locDna": "Nahaufnahme von Archie, der auf die Stadt blickt. Seine Burgschale ist deutlich sichtbar, der Strohhut sitzt perfekt.",
-          "story": "Archie denkt über die Geschichte nach und vergleicht seine Burg mit den Bauten in Gandia.",
-          "skript": "Archie: \"Die Borja. Eine der mächtigsten Familien Europas. Und wir Schnecken… wir kommen in ihre Stadt.\" Felix: \"Borja? Sind das die mit dem Gift?\" Archie: \"Das sind Legenden, Felix. Aber ja, auch das.\"",
-          "members": false,
-          "bonus": false
+          "format": "1:1",
+          "wide": false,
+          "tall": false,
+          "locDna": "Felix' Gesicht, die Augen riesig, ein breites Grinsen. Seine Antennen zittern vor Aufregung.",
+          "story": "Er zeigt mit einer Antenne auf die Stadt.",
+          "skript": "**DIALOG** Felix: „Da! Da ist sie! Gandia! Das Meer! Wir haben's geschafft!“",
+          "caption": ""
         },
         {
           "bild": "3_1_P3.jpg",
-          "locDna": "Weite Totale – die vier Schnecken als winzige Punkte auf dem Hügel, im Hintergrund die Küste von Gandia. Die Sonne steigt höher.",
-          "story": "Die Gruppe setzt ihren Weg fort, hinunter zur Stadt. Die Reise geht weiter.",
-          "skript": "(kein Dialog)",
-          "members": false,
-          "bonus": false
+          "format": "3:5",
+          "wide": false,
+          "tall": false,
+          "locDna": "Archie neben Felix, sein Blick auf die Stadt gerichtet. Er nippt an Martini, die Olive schwankt.",
+          "story": "Er liefert Fakten.",
+          "skript": "**DIALOG** Archie: „Gandia. Einst Sitz der Borgia. Heute 80.000 Einwohner. Ein Touristenzentrum.“",
+          "caption": ""
+        },
+        {
+          "bild": "3_1_P4.jpg",
+          "format": "16:9",
+          "wide": true,
+          "tall": false,
+          "locDna": "Weite Totale von der Anhöhe. Die vier Schnecken als winzige Punkte, im Hintergrund die Stadt und das Meer. Die Sonne zeichnet ihre Schatten lang.",
+          "story": "Ein Moment des Staunens.",
+          "skript": "**BILDTEXT:** (kein Dialog) – *Kamera hält auf die glitzernde Küste.*",
+          "caption": ""
         }
-      ],
-      "nummer": 1,
-      "members": false
+      ]
     },
     {
+      "nummer": 2,
+      "titel": "Am Strand",
+      "akt": "AKT 1 – SETUP: Am Strand",
       "panels": [
         {
           "bild": "3_2_P1.jpg",
-          "locDna": "Der Strand von Gandia (Playa de Gandia) am frühen Vormittag. Feiner goldener Sand, sanfte Wellen, ein paar Spaziergänger in der Ferne (Silhouetten). Dünen mit Strandhafer.",
-          "story": "Die vier erreichen den Strand. Felix ist sofort begeistert und will ins Wasser. Stella hält ihn zurück.",
-          "skript": "Felix: \"Das Meer! Ich will rein! Baden!\" Stella: \"Felix! Wir sind Schnecken! Wir lösen uns im Salzwasser auf!\" Felix: \"Oh. Stimmt.\" Archie: \"Weise Entscheidung, Stella.\"",
-          "members": false,
-          "bonus": false
+          "format": "16:9",
+          "wide": true,
+          "tall": false,
+          "locDna": "Playa de Gandia – breiter Sandstrand, Dünen mit Strandhafer, im Hintergrund die Stadt. Die Sonne steht höher, der Strand ist noch leer. Das **Saug-Geräusch** der Gleitbasen auf dem feuchten Sand.",
+          "story": "Die vier gleiten über den feinen Sand. Felix bleibt stehen, dreht sich einmal um sich selbst.",
+          "skript": "**BILDTEXT:** (Wellen, Möwen)",
+          "caption": ""
         },
         {
           "bild": "3_2_P2.jpg",
-          "locDna": "Stella steht am Wasser und betrachtet ihr Spiegelbild in einer kleinen Pfütze auf dem nassen Sand. Das Meer spiegelt sich darin.",
-          "story": "Stella genießt die natürliche Spiegelkulisse und vergleicht die Farben mit ihrem Harness.",
-          "skript": "Stella: \"Das Licht hier… perfekt. Mein Harness glänzt wie das Meer selbst.\" Felix: \"Du redest schon wieder mit deinem Harness?\" Stella: \"Es hört zu. Das ist mehr, als ich von dir behaupten kann.\"",
-          "members": false,
-          "bonus": false
+          "format": "1:1",
+          "wide": false,
+          "tall": false,
+          "locDna": "Felix lässt eine kleine Muschel durch seine Antennen rollen, seine Augen funkeln.",
+          "story": "Er ist begeistert.",
+          "skript": "**DIALOG** Felix: „Endlich Meer! Endlich Urlaub!“",
+          "caption": ""
         },
         {
           "bild": "3_2_P3.jpg",
-          "locDna": "Archie hat eine angespülte, alte Holzplanke gefunden und sich darauf niedergelassen. Er nippt genüsslich an seinem Martini und blickt aufs Meer. Luna gleitet langsam am Wasser entlang.",
-          "story": "Archie genießt die Ruhe, Luna ist in ihrer Welt. Felix baut Sandburgen.",
-          "skript": "Archie: \"Das Meer. Es rauscht seit Jahrmillionen. Und wir Schnecken hören zu.\" Felix: \"Guckt mal! Ich baue eine Burg! Aus Sand!\" Stella: \"Felix, das ist eine Sandburg.\" Felix: \"Für Schnecken ist das riesig!\"",
-          "members": false,
-          "bonus": false
+          "format": "1:1",
+          "wide": false,
+          "tall": false,
+          "locDna": "Stella mustert kritisch den Sand, dann ihr `[ASSET: STELLA_MESH_HARNESS_V1]`. Eine Antenne wischt vorsichtig über die Riemen.",
+          "story": "Sie hat Bedenken.",
+          "skript": "**DIALOG** Stella: „Feiner Sand. Gut für mein Harness. Aber kein Salzwasser.“",
+          "caption": ""
+        },
+        {
+          "bild": "3_2_P4.jpg",
+          "format": "16:9",
+          "wide": true,
+          "tall": false,
+          "locDna": "Archie deutet mit einer Antenne auf eine entfernte Mole im Hafen. Die Silhouette eines Fischerbootes ist zu sehen.",
+          "story": "Er zeigt die Richtung.",
+          "skript": "**DIALOG** Archie: „Der Hafen. Grau de Gandia. Vielleicht sehen wir die Schiffe.“",
+          "caption": ""
         }
-      ],
-      "nummer": 2,
-      "members": false
+      ]
     },
     {
+      "nummer": 3,
+      "titel": "Der Hafen",
+      "akt": "AKT 1 – SETUP: Am Strand",
       "panels": [
         {
           "bild": "3_3_P1.jpg",
-          "locDna": "Der Hafen von Gandia (Grau de Gandia) am späten Vormittag. Boote schaukeln im Wasser, Möwen kreischen. Im Hintergrund die Lagerhäuser und die ersten Bars.",
-          "story": "Die Gruppe erreicht den Hafen. Felix entdeckt die Boote und will sofort eines besteigen.",
-          "skript": "Felix: \"Boote! Können wir mit einem fahren?\" Archie: \"Das sind Fischerboote, Felix. Die gehören Leuten.\" Stella: \"Die Farben der Boote – weiß, blau, rot. Sehr harmonisch.\"",
-          "members": false,
-          "bonus": false
+          "format": "16:9",
+          "wide": true,
+          "tall": false,
+          "locDna": "Grau de Gandia – Hafenbecken mit Booten, Yachten, Fischerkuttern. Im Hintergrund die Lagerhäuser und der Wasserturm `[ASSET: BRITISH_WATERTOWER_V1]`. Möwen kreischen, das Wasser glitzert.",
+          "story": "Die vier gleiten am Kai entlang. Felix bleibt vor einem großen Fischerkutter stehen, reckt die Antennen.",
+          "skript": "**BILDTEXT:** (Möwen, Klatschen von Tauwerk)",
+          "caption": ""
         },
         {
           "bild": "3_3_P2.jpg",
-          "locDna": "Nahaufnahme von Felix, der auf einen Fischkutter zeigt. Im Hintergrund Netze und Kisten.",
-          "story": "Felix ist von der Hafenatmosphäre begeistert. Archie erklärt den Fischfang.",
-          "skript": "Felix: \"Was ist in den Kisten? Fische?\" Archie: \"Ja. Sardinen, Makrelen, manchmal Thunfisch. Die Mittelmeerfischerei ist uralt.\" Felix: \"Ich mag Thunfisch! Können wir einen kaufen?\" Stella: \"Felix, wir sind Schnecken. Wir kaufen nichts.\"",
-          "members": false,
-          "bonus": false
+          "format": "3:5",
+          "wide": false,
+          "tall": false,
+          "locDna": "Felix reckt die Antennen, versucht, den Mast zu sehen.",
+          "story": "Er ist beeindruckt.",
+          "skript": "**DIALOG** Felix: „Die sind riesig! Größer als im Museum!“",
+          "caption": ""
         },
         {
           "bild": "3_3_P3.jpg",
-          "locDna": "Luna hat sich an eine Pier gesetzt und blickt aufs Wasser. Ihre Antennen sind leicht geneigt. Die Sonne spiegelt sich im Wasser.",
-          "story": "Eine Luna-Pause. Sie genießt die Ruhe des Hafens.",
-          "skript": "(kein Dialog)",
-          "members": false,
-          "bonus": false
+          "format": "3:5",
+          "wide": false,
+          "tall": false,
+          "locDna": "Stella mustert die Yachten, die sauberen weißen Rümpfe. Ihr Kopf ist leicht geneigt.",
+          "story": "Sie nickt.",
+          "skript": "**DIALOG** Stella: „Elegante Linien. Die Besitzer haben Stil.“",
+          "caption": ""
+        },
+        {
+          "bild": "3_3_P4.jpg",
+          "format": "16:9",
+          "wide": true,
+          "tall": false,
+          "locDna": "Blick von der Mole auf die Boote. Die vier Schnecken als winzige Punkte am Kai. Die Sonne spiegelt sich im Wasser.",
+          "story": "Ein friedlicher Moment.",
+          "skript": "**BILDTEXT:** (kein Dialog) – *Kamera hält auf das glitzernde Wasser.*",
+          "caption": ""
         }
-      ],
-      "nummer": 3,
-      "members": false
+      ]
     },
     {
       "nummer": 4,
+      "titel": "Der Wasserturm",
+      "akt": "AKT 1 – SETUP: Am Strand",
       "panels": [
         {
           "bild": "3_4_P1.jpg",
-          "weight": 1,
+          "format": "16:9",
           "wide": true,
-          "locDna": "Marktplatz vor der Colegiata de Gandia. Bunte Marktschirme, Körbe voller Orangen und Oliven. Die vier Schnecken am Fuß eines hölzernen Marktstandes.",
-          "story": "Die Gruppe erreicht das Herz des Marktes. Felix ist überwältigt von den Gerüchen.",
-          "skript": "Felix: \"Leute, das ist das Paradies! Alles duftet nach Abenteuer... und Tomaten!\" Archie: \"Der Markt von Gandia – seit Jahrhunderten der Umschlagplatz für Lebensfreude und Klatsch.\"",
-          "members": false,
-          "bonus": false
+          "tall": false,
+          "locDna": "Am Fuß des Wasserturms `[ASSET: BRITISH_WATERTOWER_V1]`. Der Turm aus rotem Backstein, die Jahreszahl 1892 eingraviert. Schatten der Mittagssonne.",
+          "story": "Archie bleibt stehen, betrachtet die Inschrift. Felix reckt neugierig die Antennen.",
+          "skript": "**BILDTEXT:** (leise, kein Wind)",
+          "caption": ""
         },
         {
           "bild": "3_4_P2.jpg",
-          "locDna": "Nahaufnahme: Ein Korb mit tiefroten Paprika und lila Auberginen. Stella gleitet am Rand entlang, ihr Harness spiegelt das Sonnenlicht.",
-          "story": "Stella sucht nach farblicher Inspiration für ihre Designs.",
-          "skript": "Stella: \"Dieses tiefe Violett... in Kombination mit Edelstahl wäre das ein Statement für die nächste Kollektion.\"",
-          "members": false,
-          "bonus": false
+          "format": "1:1",
+          "wide": false,
+          "tall": false,
+          "locDna": "Archie liest die Jahreszahl vor, seine Antenne folgt den Buchstaben.",
+          "story": "Er erklärt.",
+          "skript": "**DIALOG** Archie: „G. Stephenson, 1892. Ein Brite baute diesen Turm für die Eisenbahn.“",
+          "caption": ""
         },
         {
           "bild": "3_4_P3.jpg",
-          "locDna": "Froschperspektive: Archie neben einem Stapel alter Keramikteller mit blauen Mustern. Er betrachtet die Glasur ganz genau.",
-          "story": "Archie entdeckt historische Parallelen in der lokalen Handwerkskunst.",
-          "skript": "Archie: \"Diese Azulejo-Muster sind ein Echo der maurischen Zeit. Symmetrie ist die Sprache der Unendlichkeit.\"",
-          "members": false,
-          "bonus": false
+          "format": "3:5",
+          "wide": false,
+          "tall": false,
+          "locDna": "Felix betrachtet die Backsteine, die Nieten. Er klopft mit einer Antenne dagegen.",
+          "story": "Er fragt.",
+          "skript": "**DIALOG** Felix: „Und heute? Ist der noch wichtig?“",
+          "caption": ""
         },
         {
           "bild": "3_4_P4.jpg",
-          "locDna": "Detailaufnahme: Ein Wassertropfen fällt von einem frischen Salatkopf direkt vor Luna auf den Boden. Das Licht bricht sich darin.",
-          "story": "Luna findet einen Moment der Stille im Trubel.",
-          "skript": "Luna: (flüstert) \"In jedem Tropfen spiegelt sich der ganze Markt.\" Felix: \"Und in jedem Blatt ein Buffet!\"",
-          "members": false,
-          "bonus": false
-        },
-        {
-          "bild": "3_4_P5.jpg",
-          "locDna": "Mittlere Einstellung: Ein Markthändler geht achtlos vorbei (nur Beine sichtbar). Die Schnecken ziehen sich eng an einen Pfosten zurück.",
-          "story": "Die Gruppe muss den Gefahren der 'Giganten' ausweichen.",
-          "skript": "Stella: \"Vorsicht, Felix! Diese Lederschuhe sind viel zu nah an meinem Gehäuse!\" Archie: \"Die Ignoranz der Giganten. Ein Klassiker der Evolution.\"",
-          "members": false,
-          "bonus": false
-        },
-        {
-          "bild": "3_4_P6.jpg",
-          "locDna": "Felix hat einen kleinen Zweig mit Orangenblüten gefunden und hält ihn wie eine Trophäe hoch.",
-          "story": "Felix findet ein Souvenir, das die Stimmung aufhellt.",
-          "skript": "Felix: \"Guckt mal! Unser neues Maskottchen!\" Stella: \"Es passt farblich zumindest zu deinem Teint, Felix. Akzeptiert.\"",
-          "members": false,
-          "bonus": false
-        },
-        {
-          "bild": "3_4_P7.jpg",
-          "weight": 1.5,
-          "wide": true,
-          "locDna": "Weite Totale: Die Gruppe gleitet unter den Markttischen hervor Richtung einer schattigen Gasse. Im Hintergrund die Silhouette der Kirche.",
-          "story": "Die Gruppe verlässt den lauten Markt für ruhigere Gefilde.",
-          "skript": "Archie: \"Genug des Feilschens. Suchen wir einen Ort für einen kühlen Martini.\" Felix: \"Aber die Blume kommt mit!\"",
-          "members": false,
-          "bonus": false
+          "format": "3:5",
+          "wide": false,
+          "tall": false,
+          "locDna": "Archie blickt auf den Turm, dann auf die Stadt. Ein leises Seufzen.",
+          "story": "Seine Antwort.",
+          "skript": "**DIALOG** Archie: „Er erinnert an die Zeit, als die Engländer hier Orangen kauften. Und an uns.“",
+          "caption": ""
         }
-      ],
-      "members": false
+      ]
     },
     {
+      "nummer": 5,
+      "titel": "Die Markthalle",
+      "akt": "AKT 2 – KONFRONTATION: Die Stadt entdecken",
       "panels": [
         {
           "bild": "3_5_P1.jpg",
-          "locDna": "Die Markthalle von Gandia (Mercat Municipal) – von außen ein historisches Gebäude mit Bögen. Auf dem Vorplatz stehen Stände mit Obst und Gemüse.",
-          "story": "Die Gruppe erreicht die Markthalle. Felix ist von den Farben der Früchte begeistert.",
-          "skript": "Felix: \"Guckt mal! Orangen! Zitronen! So bunt!\" Stella: \"Diese Farben… intensiv. Fast wie die meines Harnesses.\" Archie: \"Die Huerta Valenciana ist berühmt für ihre Zitrusfrüchte.\"",
-          "members": false,
-          "bonus": false
+          "format": "16:9",
+          "wide": true,
+          "tall": false,
+          "locDna": "Mercat Municipal del Prado – die Markthalle von außen. Historische Fassade mit der Jahreszahl 1933, moderne Glastüren. Davor die Plaza del Prado mit Platanen. Mittagssonne wirft Muster.",
+          "story": "Die vier gleiten über den Platz. Felix bleibt stehen, liest die Jahreszahl. Stella blickt interessiert.",
+          "skript": "**BILDTEXT:** (Stadtgeräusche, entferntes Markttreiben)",
+          "caption": ""
         },
         {
           "bild": "3_5_P2.jpg",
-          "locDna": "Nahaufnahme von Stella vor einem Stand mit Paprika und Tomaten. Sie vergleicht die Farben mit ihrem Harness.",
-          "story": "Stella findet Inspiration für neue Farbkombinationen.",
-          "skript": "Stella: \"Dieses Rot… dieses Gelb… perfekt für ein neues Harness-Design.\" Felix: \"Du willst Gemüse anziehen?\" Stella: \"Inspiration, Felix. Inspiration.\"",
-          "members": false,
-          "bonus": false
+          "format": "3:5",
+          "wide": false,
+          "tall": false,
+          "locDna": "Felix reckt die Antennen, versucht, durch die Glastür zu sehen. Sein Grinsen wird breit.",
+          "story": "Er ist neugierig.",
+          "skript": "**DIALOG** Felix: „1933. Der ist fast so alt wie Archie!“",
+          "caption": ""
         },
         {
           "bild": "3_5_P3.jpg",
-          "locDna": "Luna hat sich an einem ruhigen Eck des Marktplatzes niedergelassen, wo eine kleine Palme wächst.",
-          "story": "Luna genießt die Ruhe abseits des Trubels.",
-          "skript": "(kein Dialog)",
-          "members": false,
-          "bonus": false
+          "format": "3:5",
+          "wide": false,
+          "tall": false,
+          "locDna": "Stella mustert die Fassade, die Mischung aus Alt und Neu. Sie lächelt anerkennend.",
+          "story": "Sie kommentiert.",
+          "skript": "**DIALOG** Stella: „Respekt vor der Geschichte, aber modern. Fast wie mein Harness.“",
+          "caption": ""
+        },
+        {
+          "bild": "3_5_P4.jpg",
+          "format": "16:9",
+          "wide": true,
+          "tall": false,
+          "locDna": "Archie deutet auf einen unscheinbaren Kellerzugang links neben der Tür. Ein Schild weist auf den Bunker hin.",
+          "story": "Er weist auf den Bunker hin.",
+          "skript": "**DIALOG** Archie: „Darunter der Luftschutzbunker. Vielleicht besuchen wir ihn ein andermal.“",
+          "caption": ""
         }
-      ],
-      "nummer": 5,
-      "members": false
+      ]
     },
     {
       "nummer": 6,
+      "titel": "Im Inneren der Markthalle",
+      "akt": "AKT 2 – KONFRONTATION: Die Stadt entdecken",
       "panels": [
         {
           "bild": "3_6_P1.jpg",
-          "weight": 1,
+          "format": "16:9",
           "wide": true,
-          "locDna": "Die Altstadt von Gandia im späten Nachmittagslicht. Enge Gassen, alte Häuser mit schmiedeeisernen Balkonen, Kopfsteinpflaster. Im Hintergrund die Turmspitze der Kirche Santa María. Die vier Schnecken gleiten im Gänsemarsch am Rand des Pflasters.",
-          "story": "Die Gruppe erreicht das historische Herz der Stadt. Felix ist fasziniert von den schluchtartigen Gassen.",
-          "skript": "Felix: \"Boah, eng hier! Richtig alt!\" Archie: \"Das ist die Vila Comtal. Die historischen Wurzeln Gandias. Hier residierten einst die Borja.\"",
-          "members": false,
-          "bonus": false
+          "tall": false,
+          "locDna": "Im Inneren des Mercat del Prado – helle Halle, moderne Stände mit Obst, Gemüse, Fleisch, Fisch. In der Mitte Shared Tables, an denen Menschen essen (Silhouetten). Licht fällt durch die Decke.",
+          "story": "Die vier gleiten zwischen den Ständen hindurch. Felix bleibt vor einem Obststand stehen.",
+          "skript": "**BILDTEXT:** (Stimmengewirr, Klappern von Tellern)",
+          "caption": ""
         },
         {
           "bild": "3_6_P2.jpg",
-          "locDna": "Froschperspektive: Stella blickt an einer sonnenbeschienenen Fassade hoch zu einem kunstvollen, schmiedeeisernen Balkongeländer. Ihr glänzendes Harness reflektiert das Licht.",
-          "story": "Stella analysiert die Architektur aus modischer Sicht.",
-          "skript": "Stella: \"Diese Balkone… filigran, unnachgiebig, elegant. Die Struktur erinnert mich stark an ein gut sitzendes Brust-Harness.\" Felix: \"Kann man das essen?\"",
-          "members": false,
-          "bonus": false
+          "format": "1:1",
+          "wide": false,
+          "tall": false,
+          "locDna": "Felix reckt die Antennen, betrachtet die Orangen, die riesigen Tomaten. Sein Mund ist offen.",
+          "story": "Er ist begeistert.",
+          "skript": "**DIALOG** Felix: „Die sind ja riesig! Größer als wir!“",
+          "caption": ""
         },
         {
           "bild": "3_6_P3.jpg",
-          "locDna": "Archie (mit Burgschale und Strohhut) hat vor einem alten, in Stein gehauenen Wappen an einer Hauswand Halt gemacht. Er nippt an seinem Martini.",
-          "story": "Archie hält einen kurzen historischen Vortrag, während die anderen mäßig interessiert zuhören.",
-          "skript": "Archie: \"Das Wappen der Borja. Stier, Flammen, die päpstliche Tiara. Adel verpflichtet.\" Felix: \"Stiere? Hoffentlich laufen die hier nicht frei rum!\"",
-          "members": false,
-          "bonus": false
+          "format": "1:1",
+          "wide": false,
+          "tall": false,
+          "locDna": "Stella betrachtet die farbenprächtige Auslage. Ihre Antennen folgen den Linien der Früchte.",
+          "story": "Sie nickt.",
+          "skript": "**DIALOG** Stella: „Farben, Formen, Präsentation. Das ist Kunst. Fast wie ein Harness-Design.“",
+          "caption": ""
         },
         {
           "bild": "3_6_P4.jpg",
-          "locDna": "Nahaufnahme: Felix beugt sich begeistert über eine einzelne, glänzende grüne Olive, die auf dem Kopfsteinpflaster liegt.",
-          "story": "Felix findet einen \"Schatz\", wird aber von Stella zurückgepfiffen.",
-          "skript": "Felix: \"Hey, seht mal! Eine verirrte Olive! Mein Abendessen ist gerettet!\" Stella: \"Fass das nicht an, Felix. Wer weiß, an welchen Schuhen das schon klebte.\"",
-          "members": false,
-          "bonus": false
-        },
-        {
-          "bild": "3_6_P5.jpg",
-          "locDna": "Luna an einer massiven, verwitterten Holztür. Ein goldener Lichtstrahl der Abendsonne fällt genau auf sie. Sie berührt das Holz sanft mit einem Fühler.",
-          "story": "Luna spürt die Geschichte des Ortes auf ihre eigene, stille Art.",
-          "skript": "Luna: (flüstert) \"Die Zeit schläft in diesem Holz.\" Archie: \"Sehr poetisch, Luna. Und sehr zutreffend für diesen Ort.\"",
-          "members": false,
-          "bonus": false
-        },
-        {
-          "bild": "3_6_P6.jpg",
-          "locDna": "Mittlere Einstellung: Eine massige spanische Straßenkatze streift im Hintergrund durch die Gasse. Die vier Schnecken pressen sich im Vordergrund stocksteif an die Steinmauer.",
-          "story": "Ein kurzer Moment der Spannung. Ein lokaler „Gigant“ kreuzt ihren Weg.",
-          "skript": "Stella: \"Nicht bewegen! Eine gigantische Fellbestie!\" Felix: (zitternd) \"Ich bin nur ein Stein... ein sehr harter, völlig ungenießbarer Stein...\"",
-          "members": false,
-          "bonus": false
-        },
-        {
-          "bild": "3_6_P7.jpg",
-          "weight": 1.5,
-          "wide": true,
-          "locDna": "Weite Totale: Die Katze ist verschwunden. Die Gasse liegt in tiefem Schatten, der Himmel oben färbt sich violett (Blaue Stunde). Luna gleitet zielsicher voran.",
-          "story": "Die Gefahr ist vorüber, der Tag neigt sich dem Ende zu. Die Gruppe braucht einen Schlafplatz.",
-          "skript": "Archie: \"Die Bestie ist weg. Die Sonne auch bald.\" Felix: \"Puh. Wo schlafen wir heute?\" Luna: (gleitet stumm in Richtung einer dunklen Mauernische)",
-          "members": false,
-          "bonus": false
+          "format": "9:16",
+          "wide": false,
+          "tall": true,
+          "locDna": "Nahaufnahme eines Obststandes mit Orangen, Zitronen, Paprika. Die Farben leuchten im Licht. Die Schnecken winzig davor.",
+          "story": "Ein Moment der Farbenpracht.",
+          "skript": "**BILDTEXT:** (kein Dialog) – *Kamera hält auf die leuchtenden Früchte.*",
+          "caption": ""
         }
-      ],
-      "members": false
+      ]
     },
     {
+      "nummer": 7,
+      "titel": "Die Fischtheke",
+      "akt": "AKT 2 – KONFRONTATION: Die Stadt entdecken",
       "panels": [
         {
           "bild": "3_7_P1.jpg",
-          "locDna": "Eine kleine, geschützte Nische in einer alten Stadtmauer in der Altstadt. Moos und Flechten, weich und trocken. Die Sonne geht unter, der Himmel färbt sich orange.",
-          "story": "Die Gruppe hat einen Schlafplatz gefunden. Felix ist zufrieden, Stella pflegt ihr Harness, Archie nippt am letzten Martini, Luna lächelt.",
-          "skript": "Felix: \"Hier ist es perfekt! Trocken, weich, sicher.\" Stella: \"Das Moos ist sanft zu meinem Harness.\" Archie: \"Ein guter Ort. Wir haben viel gesehen heute.\"",
-          "members": false,
-          "bonus": false
+          "format": "16:9",
+          "wide": true,
+          "tall": false,
+          "locDna": "Eine Fischtheke, auf der Eis liegt, darauf Garnelen, Sardinen, ein ganzer Thunfischkopf. Ein Fischhändler (nur schemenhaft) bedient Kunden. Der Geruch von Meer liegt in der Luft.",
+          "story": "Die vier gleiten vorsichtig heran. Felix will die Garnelen berühren.",
+          "skript": "**BILDTEXT:** (Stimmen, Eis klirrt)",
+          "caption": ""
         },
         {
           "bild": "3_7_P2.jpg",
-          "locDna": "Großaufnahme von Luna in der Nische. Ihre Augen sind geschlossen, die Antennen leicht gesenkt, das Lächeln friedlich.",
-          "story": "Luna-Pause. Sie genießt den Frieden des Abends.",
-          "skript": "(kein Dialog)",
-          "members": false,
-          "bonus": false
+          "format": "1:1",
+          "wide": false,
+          "tall": false,
+          "locDna": "Stella hält Felix mit einer Antenne zurück. Ihr Blick ist streng, aber nicht böse.",
+          "story": "Sie warnt.",
+          "skript": "**DIALOG** Stella: „Nicht anfassen, Felix. Die riechen nach Fisch.“",
+          "caption": ""
         },
         {
           "bild": "3_7_P3.jpg",
-          "locDna": "Weite Totale – die vier Schnecken in der Mauernische. Über ihnen der Abendhimmel mit den ersten Sternen. Im Hintergrund die silhouettenhafte Altstadt von Gandia.",
-          "story": "Die Gruppe schläft ein.",
-          "skript": "Felix: \"Morgen… Café… Kaffee…\" Stella: \"Träum süß, Felix.\" Archie: \"Gute Nacht.\"",
-          "members": false,
-          "bonus": false
+          "format": "1:1",
+          "wide": false,
+          "tall": false,
+          "locDna": "Archie tritt näher, betrachtet den Thunfischkopf mit Fachwissen. Seine Antenne fährt über die Schuppen.",
+          "story": "Er erklärt.",
+          "skript": "**DIALOG** Archie: „Thunnus thynnus. Roter Thun. Früher häufig. Heute selten.“",
+          "caption": ""
+        },
+        {
+          "bild": "3_7_P4.jpg",
+          "format": "16:9",
+          "wide": true,
+          "tall": false,
+          "locDna": "Felix reckt die Antennen, versucht, den Geruch zu ignorieren. Er seufzt enttäuscht.",
+          "story": "Er ist enttäuscht.",
+          "skript": "**DIALOG** Felix: „Schade. Sieht lecker aus.“",
+          "caption": ""
         }
-      ],
-      "nummer": 7,
-      "members": false
+      ]
+    },
+    {
+      "nummer": 8,
+      "titel": "Die Altstadt (Vila Comtal)",
+      "akt": "AKT 2 – KONFRONTATION: Die Stadt entdecken",
+      "panels": [
+        {
+          "bild": "3_8_P1.jpg",
+          "format": "16:9",
+          "wide": true,
+          "tall": false,
+          "locDna": "Die Altstadt von Gandia – enge Gassen mit Kopfsteinpflaster, weiße Häuser, schmiedeeiserne Balkone. Im Hintergrund der Turm der Colegiata Santa María. Abendlicht fällt warm.",
+          "story": "Die vier gleiten die Calle San Miguel hinauf. Felix bleibt vor einem alten Wappen stehen.",
+          "skript": "**BILDTEXT:** (Stadtgeräusche, leise Gitarre aus einer Bar)",
+          "caption": ""
+        },
+        {
+          "bild": "3_8_P2.jpg",
+          "format": "3:5",
+          "wide": false,
+          "tall": false,
+          "locDna": "Archie betrachtet das Wappen, seine Antenne folgt den Linien des Stieres.",
+          "story": "Er liest.",
+          "skript": "**DIALOG** Archie: „Das Wappen der Borgia. Der Stier, die Flammen, die päpstliche Tiara.“",
+          "caption": ""
+        },
+        {
+          "bild": "3_8_P3.jpg",
+          "format": "3:5",
+          "wide": false,
+          "tall": false,
+          "locDna": "Stella mustert die schmiedeeisernen Balkone, die Blumenkästen. Ihr Blick schweift über die Gasse.",
+          "story": "Sie ist beeindruckt.",
+          "skript": "**DIALOG** Stella: „Jede Gasse ein Bild. Perfekt für ein Shooting. Zeitlos elegant.“",
+          "caption": ""
+        },
+        {
+          "bild": "3_8_P4.jpg",
+          "format": "16:9",
+          "wide": true,
+          "tall": false,
+          "locDna": "Blick durch eine enge Gasse auf den Kirchturm. Die vier Schnecken sind winzige Punkte im Vordergrund. Das Licht fällt warm.",
+          "story": "Ein Moment der Ruhe.",
+          "skript": "**BILDTEXT:** (kein Dialog) – *Kamera hält auf die verwinkelten Gassen.*",
+          "caption": ""
+        }
+      ]
+    },
+    {
+      "nummer": 9,
+      "titel": "Die Colegiata Santa María",
+      "akt": "AKT 2 – KONFRONTATION: Die Stadt entdecken",
+      "panels": [
+        {
+          "bild": "3_9_P1.jpg",
+          "format": "16:9",
+          "wide": true,
+          "tall": false,
+          "locDna": "Die Fassade der Colegiata Santa María – gotische Elemente, Renaissance-Einflüsse, der Glockenturm. Davor eine kleine Plaza mit Palmen. Die Glocken läuten leise.",
+          "story": "Die vier gleiten über den Platz. Archie bleibt stehen, blickt nach oben.",
+          "skript": "**BILDTEXT:** (Kirchenglocken in der Ferne)",
+          "caption": ""
+        },
+        {
+          "bild": "3_9_P2.jpg",
+          "format": "1:1",
+          "wide": false,
+          "tall": false,
+          "locDna": "Archie erklärt mit ehrfürchtiger Stimme, seine Antennen sind ruhig.",
+          "story": "Er doziert.",
+          "skript": "**DIALOG** Archie: „Die Colegiata. 14. Jahrhundert. Hier wurden die Borgia getauft und beerdigt.“",
+          "caption": ""
+        },
+        {
+          "bild": "3_9_P3.jpg",
+          "format": "3:5",
+          "wide": false,
+          "tall": false,
+          "locDna": "Felix reckt die Antennen, versucht, die Turmspitze zu sehen. Sein Mund steht offen.",
+          "story": "Er ist beeindruckt.",
+          "skript": "**DIALOG** Felix: „Das ist eine Kirche? Sieht aus wie eine Burg!“",
+          "caption": ""
+        },
+        {
+          "bild": "3_9_P4.jpg",
+          "format": "3:5",
+          "wide": false,
+          "tall": false,
+          "locDna": "Stella deutet mit einer Antenne auf das Portal.",
+          "story": "Sie fragt.",
+          "skript": "**DIALOG** Stella: „Können wir rein?“",
+          "caption": ""
+        }
+      ]
+    },
+    {
+      "nummer": 10,
+      "titel": "Im Inneren der Kirche",
+      "akt": "AKT 2 – KONFRONTATION: Die Stadt entdecken",
+      "panels": [
+        {
+          "bild": "3_10_P1.jpg",
+          "format": "16:9",
+          "wide": true,
+          "tall": false,
+          "locDna": "Im Inneren der Colegiata – hohe Decken, gedämpftes Licht, Kerzen flackern. Das Echo von Schritten verhallt. Eine Kapelle mit einem Altarbild.",
+          "story": "Die vier gleiten leise über den Steinboden. Luna bleibt kurz vor einer Statue stehen.",
+          "skript": "**BILDTEXT:** (Orgelmusik in der Ferne)",
+          "caption": ""
+        },
+        {
+          "bild": "3_10_P2.jpg",
+          "format": "1:1",
+          "wide": false,
+          "tall": false,
+          "locDna": "Stella betrachtet die Decke, die kunstvollen Verzierungen.",
+          "story": "Sie flüstert.",
+          "skript": "**DIALOG** Stella: „Die Akustik… wie eine zweite Haut. Mein Harness würde hier singen.“",
+          "caption": ""
+        },
+        {
+          "bild": "3_10_P3.jpg",
+          "format": "1:1",
+          "wide": false,
+          "tall": false,
+          "locDna": "Felix reckt die Antennen, versucht, den Altar zu sehen. Er flüstert.",
+          "story": "Er ist ehrfürchtig.",
+          "skript": "**DIALOG** Felix: „So still. Fast wie bei Luna.“",
+          "caption": ""
+        },
+        {
+          "bild": "3_10_P4.jpg",
+          "format": "9:16",
+          "wide": false,
+          "tall": true,
+          "locDna": "Luna steht vor dem Altar, die Augen geschlossen, Hände gefaltet. Kerzenlicht umspielt ihr Gesicht. Die anderen bleiben im Hintergrund.",
+          "story": "Ein Moment der Stille.",
+          "skript": "**BILDTEXT:** (kein Dialog) – *Kamera hält auf Lunas friedliches Lächeln.*",
+          "caption": ""
+        }
+      ]
+    },
+    {
+      "nummer": 11,
+      "titel": "Die Plaça Major",
+      "akt": "AKT 2 – KONFRONTATION: Die Stadt entdecken",
+      "panels": [
+        {
+          "bild": "3_11_P1.jpg",
+          "format": "16:9",
+          "wide": true,
+          "tall": false,
+          "locDna": "Plaça Major – der Hauptplatz von Gandia, umgeben von historischen Gebäuden. Im Hintergrund die Colegiata, im Vordergrund Brunnen und Bänke. Abendlicht, die ersten Lichter gehen an.",
+          "story": "Die vier gleiten über den Platz. Felix reckt die Antennen, genießt die Weite.",
+          "skript": "**BILDTEXT:** (Stadtgeräusche, leise Musik aus einem Restaurant)",
+          "caption": ""
+        },
+        {
+          "bild": "3_11_P2.jpg",
+          "format": "3:5",
+          "wide": false,
+          "tall": false,
+          "locDna": "Archie setzt sich auf eine Bank (gleitet), nippt an Martini.",
+          "story": "Er blickt zufrieden.",
+          "skript": "**DIALOG** Archie: „Hier endet die Reise. Morgen geht es weiter.“",
+          "caption": ""
+        },
+        {
+          "bild": "3_11_P3.jpg",
+          "format": "3:5",
+          "wide": false,
+          "tall": false,
+          "locDna": "Stella gleitet neben ihn, richtet ihr `[ASSET: STELLA_MESH_HARNESS_V1]`.",
+          "story": "Sie lächelt.",
+          "skript": "**DIALOG** Stella: „Ein guter Tag. Voller Eindrücke. Voller Stil.“",
+          "caption": ""
+        },
+        {
+          "bild": "3_11_P4.jpg",
+          "format": "16:9",
+          "wide": true,
+          "tall": false,
+          "locDna": "Blick über den Platz. Die vier Schnecken sitzen auf der Bank, winzig in der großen Stadt. Die Sonne sinkt.",
+          "story": "Ein friedlicher Abschluss.",
+          "skript": "**BILDTEXT:** (kein Dialog) – *Kamera hält auf die erleuchteten Fenster der Colegiata.*",
+          "caption": ""
+        }
+      ]
+    },
+    {
+      "nummer": 12,
+      "titel": "Café am Busbahnhof",
+      "akt": "AKT 3 – AUFLÖSUNG: Ausblick",
+      "panels": [
+        {
+          "bild": "3_12_P1.jpg",
+          "format": "16:9",
+          "wide": true,
+          "tall": false,
+          "locDna": "Café Bar Bus, Gandia – Avinguda del Marqués de Campo. Abendlich, die ersten Gäste sitzen drinnen. Durch die Fenster Blick auf die Bushaltestelle `[ASSET: CAFE_BUS_HALT_V1]`. Warmes Licht.",
+          "story": "Die vier gleiten auf die Tür zu. Felix voraus, Stella, Archie, Luna.",
+          "skript": "**BILDTEXT:** (Café-Geräusche, Tassenklappern)",
+          "caption": ""
+        },
+        {
+          "bild": "3_12_P2.jpg",
+          "format": "1:1",
+          "wide": false,
+          "tall": false,
+          "locDna": "Felix reckt die Antennen, schnuppert in die Luft.",
+          "story": "Er ist hungrig.",
+          "skript": "**DIALOG** Felix: „Kaffee! Ich rieche Kaffee!“",
+          "caption": ""
+        },
+        {
+          "bild": "3_12_P3.jpg",
+          "format": "1:1",
+          "wide": false,
+          "tall": false,
+          "locDna": "Stella hält ihn mit einer Antenne zurück, lächelt.",
+          "story": "Sie mahnt.",
+          "skript": "**DIALOG** Stella: „Nur eine Pause, Felix. Nicht die ganze Nacht.“",
+          "caption": ""
+        },
+        {
+          "bild": "3_12_P4.jpg",
+          "format": "16:9",
+          "wide": true,
+          "tall": false,
+          "locDna": "Die Tür öffnet sich, warmes Licht strömt heraus. Die vier gleiten hinein.",
+          "story": "Ein neuer Ort, neue Geschichten.",
+          "skript": "**BILDTEXT:** (kein Dialog) – *Kamera hält auf die offene Tür.*",
+          "caption": ""
+        }
+      ]
+    },
+    {
+      "nummer": 13,
+      "titel": "Am Tisch",
+      "akt": "AKT 3 – AUFLÖSUNG: Ausblick",
+      "panels": [
+        {
+          "bild": "3_13_P1.jpg",
+          "format": "16:9",
+          "wide": true,
+          "tall": false,
+          "locDna": "Im Café, am Tisch. Die vier sitzen (gleiten) auf den Stühlen. Bestellungen wurden aufgegeben. Kerzenlicht flackert.",
+          "story": "Felix studiert die Karte mit seinem `[ASSET: FELIX_HANDY_V1]`.",
+          "skript": "**BILDTEXT:** (Café-Geräusche, spanisches Gemurmel)",
+          "caption": ""
+        },
+        {
+          "bild": "3_13_P2.jpg",
+          "format": "1:1",
+          "wide": false,
+          "tall": false,
+          "locDna": "Felix zeigt auf die Karte, seine Antennen zittern.",
+          "story": "Er hat etwas entdeckt.",
+          "skript": "**DIALOG** Felix: „Die haben hier Paella! Mit Schnecken!“",
+          "caption": ""
+        },
+        {
+          "bild": "3_13_P3.jpg",
+          "format": "3:5",
+          "wide": false,
+          "tall": false,
+          "locDna": "Archie runzelt die Stirn (so gut das geht), nippt an Martini.",
+          "story": "Er antwortet trocken.",
+          "skript": "**DIALOG** Archie: „Wir sind Schnecken, Felix.“",
+          "caption": ""
+        },
+        {
+          "bild": "3_13_P4.jpg",
+          "format": "3:5",
+          "wide": false,
+          "tall": false,
+          "locDna": "Stella lacht leise, schüttelt den Kopf.",
+          "story": "Sie kommentiert.",
+          "skript": "**DIALOG** Stella: „Felix, du willst deine Verwandten essen.“",
+          "caption": ""
+        }
+      ]
+    },
+    {
+      "nummer": 14,
+      "titel": "Die Bestellung",
+      "akt": "AKT 3 – AUFLÖSUNG: Ausblick",
+      "panels": [
+        {
+          "bild": "3_14_P1.jpg",
+          "format": "16:9",
+          "wide": true,
+          "tall": false,
+          "locDna": "Der Kellner (nur Hand) bringt Getränke: einen Kaffee für Felix, einen Cocktail für Stella, einen Martini für Archie, Wasser für Luna.",
+          "story": "Alle vier bedanken sich mit einer Antenne.",
+          "skript": "**BILDTEXT:** (Tassenklappern, leises Plätschern)",
+          "caption": ""
+        },
+        {
+          "bild": "3_14_P2.jpg",
+          "format": "1:1",
+          "wide": false,
+          "tall": false,
+          "locDna": "Felix nippt an seinem Kaffee, seine Antennen entspannen sich.",
+          "story": "Er ist zufrieden.",
+          "skript": "**DIALOG** Felix: „Das war ein weiter Weg. Von den Hügeln bis hierher.“",
+          "caption": ""
+        },
+        {
+          "bild": "3_14_P3.jpg",
+          "format": "1:1",
+          "wide": false,
+          "tall": false,
+          "locDna": "Stella betrachtet ihr `[ASSET: STELLA_MESH_HARNESS_V1]` im Licht der Kerze.",
+          "story": "Sie lächelt.",
+          "skript": "**DIALOG** Stella: „Ein weiter Weg. Aber mit Stil.“",
+          "caption": ""
+        },
+        {
+          "bild": "3_14_P4.jpg",
+          "format": "16:9",
+          "wide": true,
+          "tall": false,
+          "locDna": "Archie stellt sein Glas ab, blickt auf die anderen.",
+          "story": "Er lächelt.",
+          "skript": "**DIALOG** Archie: „Gandia hat uns empfangen. Morgen sehen wir mehr.“",
+          "caption": ""
+        }
+      ]
+    },
+    {
+      "nummer": 15,
+      "titel": "Lunas Blick",
+      "akt": "AKT 3 – AUFLÖSUNG: Ausblick",
+      "panels": [
+        {
+          "bild": "3_15_P1.jpg",
+          "format": "16:9",
+          "wide": true,
+          "tall": false,
+          "locDna": "Café, am Tisch. Luna sitzt (gleitet) etwas abseits, blickt aus dem Fenster. Die anderen unterhalten sich leise.",
+          "story": "Sie genießt die Stille.",
+          "skript": "**BILDTEXT:** (Café-Geräusche im Hintergrund)",
+          "caption": ""
+        },
+        {
+          "bild": "3_15_P2.jpg",
+          "format": "1:1",
+          "wide": false,
+          "tall": false,
+          "locDna": "Felix bemerkt ihren Blick, beugt sich zu Stella.",
+          "story": "Er flüstert.",
+          "skript": "**DIALOG** Felix: „Luna sieht wieder in die Ferne.“",
+          "caption": ""
+        },
+        {
+          "bild": "3_15_P3.jpg",
+          "format": "1:1",
+          "wide": false,
+          "tall": false,
+          "locDna": "Archie antwortet leise, ohne aufzublicken.",
+          "story": "Er erklärt.",
+          "skript": "**DIALOG** Archie: „Sie sieht, was kommt. Bevor wir es wissen.“",
+          "caption": ""
+        },
+        {
+          "bild": "3_15_P4.jpg",
+          "format": "9:16",
+          "wide": false,
+          "tall": true,
+          "locDna": "Nahaufnahme Luna, geschlossene Augen, sanftes Lächeln. Im Hintergrund die Stadt im Abendlicht.",
+          "story": "Ein Moment der Ruhe.",
+          "skript": "**BILDTEXT:** (kein Dialog) – *Kamera hält auf Lunas friedliches Gesicht.*",
+          "caption": ""
+        }
+      ]
+    },
+    {
+      "nummer": 16,
+      "titel": "Ende",
+      "akt": "AKT 3 – AUFLÖSUNG: Ausblick",
+      "panels": [
+        {
+          "bild": "3_16_P1.jpg",
+          "format": "16:9",
+          "wide": true,
+          "tall": false,
+          "locDna": "Blick aus dem Café auf die Bushaltestelle. Ein Bus fährt vor, Menschen steigen aus. Die Lichter der Stadt glitzern.",
+          "story": "Die vier sitzen noch am Tisch, lassen den Abend ausklingen.",
+          "skript": "**BILDTEXT:** (Café-Geräusche, entfernte Busgeräusche)",
+          "caption": ""
+        },
+        {
+          "bild": "3_16_P2.jpg",
+          "format": "1:1",
+          "wide": false,
+          "tall": false,
+          "locDna": "Felix hält sein `[ASSET: FELIX_HANDY_V1]` hoch, knipst ein Foto des Sonnenuntergangs.",
+          "story": "Dieses Mal fragt er nicht.",
+          "skript": "**DIALOG** Felix: „Für das Album. Für die Ankunft.“",
+          "caption": ""
+        },
+        {
+          "bild": "3_16_P3.jpg",
+          "format": "1:1",
+          "wide": false,
+          "tall": false,
+          "locDna": "Stella legt eine Antenne auf sein Handy.",
+          "story": "Sie lächelt.",
+          "skript": "**DIALOG** Stella: „Für die Erinnerung an Gandia.“",
+          "caption": ""
+        },
+        {
+          "bild": "3_16_P4.jpg",
+          "format": "9:16",
+          "wide": false,
+          "tall": true,
+          "locDna": "Weite Totale vom Café aus. Die vier sitzen im warmen Licht. Ganz am Bildrand, kaum sichtbar, eine Silhouette mit bernsteinfarbenen Fühlern – Salome – die von der Bushaltestelle aus zusieht.",
+          "story": "Ein geheimnisvolles Funkeln, dann löst sie sich auf.",
+          "skript": "**DIALOG** Luna (aus dem Off): „…bis zum nächsten Mal.“",
+          "caption": ""
+        }
+      ]
     }
   ],
-  "members": true,
-  "level": "gold"
+  "coverStory": "Nach langer Wanderung erreichen die vier Schnecken endlich die Stadt Gandia. Strand, Hafen, Markthalle und die geheimnisvollen Gassen der Altstadt warten auf sie. Felix will alles fotografieren, Stella sucht nach dem perfekten Licht, Archie doziert über die Geschichte – und Luna genießt die Stille an den alten Mauern."
 };
