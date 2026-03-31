@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SnailsStons | Engine v6.5 (Modular)</title>
+    <title>SnailsStons | Engine v6.6 (Modular)</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@900&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     
     <script src="hefte.js"></script>
@@ -199,10 +199,12 @@ NEVER: No shell. No legs. No feet. No static standing pose.` },
                     b.title = 'Human character – no snail features';
                 }
                 // ── Click handler ──
+                b._manualActive = false;
                 b.addEventListener('click', () => {
-                    b.classList.toggle('active');
+                    b._manualActive = !b._manualActive;
+                    b.classList.toggle('active', b._manualActive);
                     if (name === 'MRS_DRAG') {
-                        if (b.classList.contains('active')) {
+                        if (b._manualActive) {
                             b.style.borderColor = '#fff';
                             b.style.color = '#000';
                             b.style.background = '#c0392b';
@@ -412,9 +414,20 @@ NEVER: No shell. No legs. No feet. No static standing pose.` },
             const full = (story + script + locDna + caption).toUpperCase();
             let team = []; Object.keys(dnaPool).forEach(name => {
                 const b = document.getElementById(`btn-${name}`);
-                if (b) {
-                    if (full.includes(name)) { b.classList.add('active'); team.push(name); } else b.classList.remove('active');
+                if (!b) return;
+                const inText = full.includes(name) || full.includes(name.replace('_', ' '));
+                const manual = b._manualActive === true;
+                const isActive = inText || manual;
+                b.classList.toggle('active', isActive);
+                // Restore MRS_DRAG styling
+                if (name === 'MRS_DRAG') {
+                    if (isActive) {
+                        b.style.borderColor = '#fff'; b.style.color = '#000'; b.style.background = '#c0392b';
+                    } else {
+                        b.style.borderColor = '#c0392b'; b.style.color = '#c0392b'; b.style.background = '';
+                    }
                 }
+                if (isActive) team.push(name);
             });
             const p = new URLSearchParams(window.location.search);
             const type = p.get('type') || 'panel';
