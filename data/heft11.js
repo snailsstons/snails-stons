@@ -1,257 +1,358 @@
 hefte["11"] = {
-  "titel": "Heft 11",
-  "cover": "cover.jpg",
+  "titel": "Die Stadttour durch Gandia (V11 – flexibles Layout)",
+  "teaser": "Von den Spuren der Borgias bis zum geheimnisvollen Torreón del Pino 🐌🏰 Felix scannt QR-Codes, Stella sucht nach Couture-Inspiration und Archie doziert über Päpste. Doch wer beobachtet sie aus der Ferne? Ein Tag voller Geschichte und Stil in Gandia.",
   "released": true,
-  "locDna": "",
-  "teaser": "Von den Spuren der Borgias bis zum geheimnisvollen Torreón del Pino 🐌🏰 Felix scannt QR-Codes, Stella sucht nach Couture-Inspiration und Archie doziert über Päpste. Doch wer beobachtet sie aus der Ferne? Ein Tag voller Geschichte und Stil in Gandia. #SoundSteel #SnailsStons #Gandia #Borgia",
-  "coverStory": "",
+  "cover": "cover.jpg",
   "seiten": [
     {
+      "nummer": 1,
+      "titel": "Einstieg: Antigua Universidad",
+      "akt": "AKT 1 – SETUP: Die Universität",
       "panels": [
         {
           "bild": "11_1_P1.jpg",
-          "locDna": "Vorplatz der Antigua Universidad in Gandia. Historisches Gebäude mit Steinbögen, davor fünf Statuen der Familie Borja. Morgensonne, ruhige Atmosphäre, pickende Tauben.",
-          "story": "Die vier Schnecken erreichen den Platz. Felix gleitet aufgeregt auf ein Infoschild mit QR-Code zu. Archie betrachtet ehrfürchtig die Statuen.",
-          "skript": "Felix: \"Ein QR-Code! Die Tour gibt's aufs Handy! Perfekt!\" Archie: \"Die Borjas. Einer wurde Papst. Francisco de Borja – Schutzpatron von Gandia. Er gründete diese Uni.\" Stella: \"Steinern… aber edel. Fast wie Couture aus dem 16. Jahrhundert. Fast so edel wie mein Harness.\""
+          "format": "16:9",
+          "wide": true,
+          "tall": false,
+          "locDna": "Vorplatz der Antigua Universidad in Gandia. Historisches Gebäude mit Steinbögen, davor fünf Statuen der Familie Borja. Morgensonne, ruhige Atmosphäre, pickende Tauben. Das **Saug-Geräusch** der Gleitbasen auf dem Pflaster.",
+          "story": "Weite Totale. Die vier Schnecken erreichen den Platz. Felix gleitet aufgeregt auf ein Infoschild mit QR-Code zu. Archie betrachtet ehrfürchtig die Statuen.",
+          "skript": "**BILDTEXT:** (Vogelgezwitscher, Stadtgeräusche)",
+          "caption": ""
         },
         {
           "bild": "11_1_P2.jpg",
-          "locDna": "Nahaufnahme vor den fünf Statuen der Borja-Familie.",
-          "story": "Archie steht mit seinem Martini vor der zentralen Statue und erklärt die Historie. Luna gleitet ruhig an der alten Steinmauer entlang und spürt die Energie des Ortes.",
-          "skript": "Archie: \"Die Borjas herrschten über halb Europa. Intrigen, Macht, Glanz – und das alles begann hier in Gandia.\" Luna: (schweigt, berührt mit einer Antenne den Stein) Stella: \"Mein Harness würde in diesem Licht perfekt leuchten.\""
+          "format": "1:1",
+          "wide": false,
+          "tall": false,
+          "locDna": "Nahaufnahme von Felix am Infoschild. Sein `[ASSET: FELIX_HANDY_V1]` ist bereits gezückt, seine Antennen zittern vor Aufregung.",
+          "story": "Er hält das Handy vor den Code.",
+          "skript": "**DIALOG** Felix: „Ein QR-Code! Die Tour gibt's aufs Handy! Perfekt!“",
+          "caption": ""
         },
         {
           "bild": "11_1_P3.jpg",
-          "locDna": "Vorplatz der Universität, Blickrichtung Altstadt.",
-          "story": "Felix hält stolz sein Handy hoch, das die Route anzeigt, und deutet voller Tatendrang nach vorne.",
-          "skript": "Felix: \"Erste Station: Torreón del Pino! Ein Turm mit Baum! Los geht's!\" Archie: \"Der Torreón del Pino. Ein Wachturm aus dem 16. Jahrhundert.\" Stella: \"Ein Turm mit Baum? Das muss ich sehen.\" ---"
+          "format": "3:5",
+          "wide": false,
+          "tall": false,
+          "locDna": "Archie vor den fünf Statuen, Martini in der Hand. Die Sonne zeichnet seine Silhouette.",
+          "story": "Er deutet mit einer Antenne auf die zentrale Statue.",
+          "skript": "**DIALOG** Archie: „Die Borjas. Einer wurde Papst. Francisco de Borja – Schutzpatron von Gandia. Er gründete diese Uni.“",
+          "caption": ""
         },
         {
           "bild": "11_1_P4.jpg",
-          "locDna": "",
-          "story": "",
-          "skript": ""
-        },
-        {
-          "bild": "11_1_P5.jpg",
-          "locDna": "",
-          "story": "",
-          "skript": ""
+          "format": "9:16",
+          "wide": false,
+          "tall": true,
+          "locDna": "Nahaufnahme Stella, die eine Statue mustert. Ihr `[ASSET: STELLA_MESH_HARNESS_V1]` glänzt im Morgenlicht. Im Hintergrund die anderen.",
+          "story": "Sie vergleicht die steinernen Gewänder mit ihrem Harness.",
+          "skript": "**DIALOG** Stella: „Steinern… aber edel. Fast wie Couture aus dem 16. Jahrhundert.“ – *Kamera hält auf ihr nachdenkliches Gesicht.*",
+          "caption": ""
         }
-      ],
-      "nummer": 1
+      ]
     },
     {
+      "nummer": 2,
+      "titel": "Dialog: Die Tour beginnt",
+      "akt": "AKT 1 – SETUP: Die Universität",
       "panels": [
         {
           "bild": "11_2_P1.jpg",
-          "locDna": "Der Torreón del Pino – ein mittelalterlicher Wachturm, aus dessen Spitze eine echte grüne Kiefer wächst.",
-          "story": "Die vier Schnecken wirken winzig vor dem massiven Bauwerk. Alle starren mit gereckten Antennen nach oben.",
-          "skript": "Felix: \"Ein Turm… MIT BAUM! Das ist das Verrückteste, was ich je gesehen habe!\" Stella: \"Stein und Grün. Roh und lebendig. Das könnte auch ein Design-Konzept sein.\" Archie: \"Niemand weiß genau, wann die Kiefer dort oben zu wachsen begann. Aber sie ist jetzt Teil der Geschichte.\""
+          "format": "1:1",
+          "wide": false,
+          "tall": false,
+          "locDna": "Felix hält sein `[ASSET: FELIX_HANDY_V1]` hoch, auf dem Display die Tour-Route. Er zeigt nach vorne.",
+          "story": "Seine Antennen sind maximal aufgerichtet.",
+          "skript": "**DIALOG** Felix: „Erste Station: Torreón del Pino! Ein Turm mit Baum! Los geht's!“",
+          "caption": ""
         },
         {
           "bild": "11_2_P2.jpg",
-          "locDna": "Nahaufnahme von Archie im Profil vor dem Turm.",
-          "story": "Er blickt nachdenklich nach oben und philosophiert über die Zeit, während die anderen im Hintergrund wuseln.",
-          "skript": "Archie: \"Ein Turm, der länger steht als jedes Menschenleben. Und ein Baum, der auf ihm wächst. Die Natur holt sich alles zurück.\" Felix: \"Tiefgründig, Archie. Aber der Baum sieht cool aus!\""
+          "format": "1:1",
+          "wide": false,
+          "tall": false,
+          "locDna": "Stella, eine Braue hochgezogen, blickt skeptisch.",
+          "story": "Sie ordnet ihr Harness.",
+          "skript": "**DIALOG** Stella: „Ein Turm mit Baum? Das muss ich sehen.“",
+          "caption": ""
         },
         {
           "bild": "11_2_P3.jpg",
-          "locDna": "Großaufnahme von Lunas Gesicht am rauen Stein des Turms.",
-          "story": "Sie berührt den Stein mit einer Antenne. Augen geschlossen, ein tiefes, friedliches Lächeln. Sie spürt die Jahrhunderte.",
-          "skript": "(kein Dialog) ---"
+          "format": "3:5",
+          "wide": false,
+          "tall": false,
+          "locDna": "Archie gleitet neben Felix, nippt an Martini.",
+          "story": "Er zitiert Fakten.",
+          "skript": "**DIALOG** Archie: „Torreón del Pino. 16. Jahrhundert. Die Kiefer kam später. Niemand weiß genau wann.“",
+          "caption": ""
         },
         {
           "bild": "11_2_P4.jpg",
-          "locDna": "",
-          "story": "",
-          "skript": ""
-        },
-        {
-          "bild": "11_2_P5.jpg",
-          "locDna": "",
-          "story": "",
-          "skript": ""
+          "format": "16:9",
+          "wide": true,
+          "tall": false,
+          "locDna": "Weite Totale auf die Altstadt. Die vier Schnecken gleiten in eine enge Gasse, die Sonne wirft lange Schatten.",
+          "story": "Sie verschwinden zwischen den Häusern.",
+          "skript": "**BILDTEXT:** (kein Dialog) – *Kamera hält auf die verwinkelten Gassen.*",
+          "caption": ""
         }
-      ],
-      "nummer": 2
+      ]
     },
     {
-      "panels": [
-        {
-          "bild": "11_3_P1.jpg",
-          "locDna": "Vor der Kirche Santa María. Fassade mit Stilbruch: links Gotik, rechts Renaissance.",
-          "story": "Felix vergleicht die Fassade mit den Infos auf seinem Handy. Stella analysiert die architektonischen Gegensätze.",
-          "skript": "Felix: \"Leute! Hier stand vorher 'ne Moschee! Und dann haben die einfach angebaut – zweimal!\" Stella: \"Gotik links, Renaissance rechts – die haben ihren Stil gewechselt. Mutig. Fast wie ich mit meinem Harness.\""
-        },
-        {
-          "bild": "11_3_P2.jpg",
-          "locDna": "Split-Screen: Archie links, Felix rechts mit Handy.",
-          "story": "Archie will gerade zu einem historischen Vortrag ansetzen, doch Felix ist mit seinen digitalen Fakten schneller.",
-          "skript": "Archie: \"Also, die erste Bauphase begann 14…\" Felix: \"1417! Steht hier! Und fertig war's 1499!\" Archie (schmunzelnd): \"Respekt, Felix. Du hast dein Handy doch mal sinnvoll genutzt.\""
-        },
-        {
-          "bild": "11_3_P3.jpg",
-          "locDna": "Halbtotale der Gruppe vor der Kirche.",
-          "story": "Alle halten inne, als Luna leise ihren einzigen Satz des Heftes spricht.",
-          "skript": "Luna: \"Zwei Gesichter, eine Seele. Wie bei uns.\" (Alle schweigen kurz, betroffen.) ---"
-        },
-        {
-          "bild": "11_3_P4.jpg",
-          "locDna": "",
-          "story": "",
-          "skript": ""
-        },
-        {
-          "bild": "11_3_P5.jpg",
-          "locDna": "",
-          "story": "",
-          "skript": ""
-        }
-      ],
-      "nummer": 3
-    },
-    {
-      "panels": [
-        {
-          "bild": "11_4_P1.jpg",
-          "locDna": "Vor dem Palau Ducal dels Borja. Eindrucksvolle gotische Fassade mit Zinnen und großem Portal.",
-          "story": "Die Gruppe erreicht den Herzogspalast. Felix liest die \"Dramen-Fakten\" vor, Stella ist von den Verzierungen fasziniert.",
-          "skript": "Felix: \"Palau Ducal dels Borja! 14. Jahrhundert! Die Borgias haben hier gelebt – Papst, Kardinäle, die ganze Dramafamilie!\" Stella: \"Gotik pur. Diese Bögen… mein Harness wäre hier der Star.\" Archie: \"Hier wurde Francisco de Borja geboren. Ein Heiliger in einer komplexen Familie.\""
-        },
-        {
-          "bild": "11_4_P2.jpg",
-          "locDna": "Nahaufnahme von Archie vor dem Palastportal.",
-          "story": "Er blickt fast demütig auf den Palast und vergleicht ihn mit seinem eigenen Haus.",
-          "skript": "Archie: \"Die Borgias herrschten über halb Europa. Ich herrsche über meine Burg… und das reicht.\" Felix: \"Deine Burg ist aber auch cool!\" Archie: \"Danke, Felix.\""
-        },
-        {
-          "bild": "11_4_P3.jpg",
-          "locDna": "Fokus auf Luna am Fuß des Portals.",
-          "story": "Sie blickt zu den hohen Türen hinauf, die Antennen leicht erhoben, und erkennt den Wert des Augenblicks.",
-          "skript": "Luna (leise): \"Hier gingen Päpste und Fürsten. Und jetzt wir. Schnecken. Vielleicht ist das der wahre Adel.\" ---"
-        },
-        {
-          "bild": "11_4_P4.jpg",
-          "locDna": "",
-          "story": "",
-          "skript": ""
-        },
-        {
-          "bild": "11_4_P5.jpg",
-          "locDna": "",
-          "story": "",
-          "skript": ""
-        }
-      ],
-      "nummer": 4
-    },
-    {
+      "nummer": 5,
+      "titel": "Dialog: Die Kirche Santa María",
+      "akt": "AKT 2 – KONFRONTATION: Entdeckungen",
       "panels": [
         {
           "bild": "11_5_P1.jpg",
-          "locDna": "Innenraum des Palastes – die Goldene Galerie. Goldverzierte Wände, prächtige Deckenmalereien, Kronleuchter.",
-          "story": "Die Gruppe betritt den Prunksaal. Das Gold spiegelt sich in ihren Schalen. Alle sind überwältigt.",
-          "skript": "Felix: \"Boah, alles gold! Das ist ja wie im Märchen!\" Stella: \"Goldene Ranken, Deckenmalereien… mein Harness würde hier perfekt harmonieren.\" Archie: \"Die Borgias liebten Prunk. Das hier war ihre Bühne.\""
+          "format": "16:9",
+          "wide": true,
+          "tall": false,
+          "locDna": "Fassade der Kirche Santa María mit den beiden Baustilen (gotisch links, Renaissance rechts). Morgensonne, ein paar Tauben.",
+          "story": "Die vier stehen davor. Felix vergleicht mit seinem Handy.",
+          "skript": "**BILDTEXT:** (Kirchenglocken in der Ferne)",
+          "caption": ""
         },
         {
           "bild": "11_5_P2.jpg",
-          "locDna": "Froschperspektive vom Boden der Galerie.",
-          "story": "Felix liegt flach auf dem Boden, um die Decke mit seinem Handy zu fotografieren. Stella schüttelt den Kopf.",
-          "skript": "Felix: \"Die Decke! Ganzes Gemälde! Ich brauch das für mein Handy!\" Stella: \"Felix, du liegst auf dem Boden.\" Felix: \"Für Kunst tut man alles!\""
+          "format": "1:1",
+          "wide": false,
+          "tall": false,
+          "locDna": "Felix reckt die Antennen, liest von seinem Handy ab.",
+          "story": "Er fällt Archie ins Wort.",
+          "skript": "**DIALOG** Felix: „1417! Steht hier! Und fertig war's 1499!“",
+          "caption": ""
         },
         {
           "bild": "11_5_P3.jpg",
-          "locDna": "Stella vor einer Wand aus handbemalten Azulejos (Fliesen) in Blau, Grün und Gelb.",
-          "story": "Sie fährt mit der Antenne die feinen Muster nach und ist sichtlich inspiriert.",
-          "skript": "Stella: \"Handbemalt… jedes Detail ein Unikat. Ich brauche sofort ein neues Harness in diesen Tönen.\" Archie: \"Die Fliesen sind Jahrhunderte alt. Sie haben schon Generationen überdauert.\" ---"
+          "format": "1:1",
+          "wide": false,
+          "tall": false,
+          "locDna": "Archie lächelt fast unmerklich, nippt an Martini.",
+          "story": "Er anerkennt Felix' Wissen.",
+          "skript": "**DIALOG** Archie: „Respekt, Felix. Du hast dein Handy doch mal sinnvoll genutzt.“",
+          "caption": ""
         },
         {
           "bild": "11_5_P4.jpg",
-          "locDna": "",
-          "story": "",
-          "skript": ""
+          "format": "3:5",
+          "wide": false,
+          "tall": false,
+          "locDna": "Luna steht etwas abseits, blickt zur Kirche. Sie spricht leise.",
+          "story": "Alle drehen sich um.",
+          "skript": "**DIALOG** Luna: „Zwei Gesichter, eine Seele. Wie bei uns.“",
+          "caption": ""
         },
         {
           "bild": "11_5_P5.jpg",
-          "locDna": "",
-          "story": "",
-          "skript": ""
+          "format": "9:16",
+          "wide": false,
+          "tall": true,
+          "locDna": "Nahaufnahme Luna, geschlossene Augen, sanftes Lächeln. Das Licht der Morgensonne umspielt ihr Gesicht.",
+          "story": "Ein Moment der Stille.",
+          "skript": "**BILDTEXT:** (kein Dialog) – *Kamera hält auf Lunas friedlichen Ausdruck.*",
+          "caption": ""
         }
-      ],
-      "nummer": 5
+      ]
     },
     {
-      "panels": [
-        {
-          "bild": "11_6_P1.jpg",
-          "locDna": "Die neugotische Kapelle im Palast. Gedämpftes, farbiges Licht durch Buntglasfenster, Goldstuck an der Decke.",
-          "story": "Die Gruppe wird beim Betreten schlagartig still. Die Atmosphäre ist heilig und friedlich.",
-          "skript": "Felix (flüsternd): \"Hier ist es… ganz still. Kein Handy-Empfang. Aber das ist okay.\" Stella: \"Dieses Licht durch die Fenster… mein Harness leuchtet wie die Goldene Galerie.\" Archie: \"Die Kapelle wurde im 19. Jahrhundert neu gestaltet. Aber der Ort war schon immer heilig.\""
-        },
-        {
-          "bild": "11_6_P2.jpg",
-          "locDna": "Archie in einer kleinen Seitenkapelle vor einem Altar.",
-          "story": "Er hält inne und reflektiert über seine eigene \"Burg\".",
-          "skript": "Archie: \"Meine Burg ist auch so 'ne Art Kapelle. Nur mit Martini statt Weihrauch.\" Felix: \"Hast du auch so bunte Fenster?\" Archie: \"Nein, Felix. Aber ich hab dich.\""
-        },
-        {
-          "bild": "11_6_P3.jpg",
-          "locDna": "Luna vor dem Hauptaltar.",
-          "story": "Sie hat die Hände (Vorderkörper) symbolisch gefaltet, die Augen geschlossen. Das farbige Licht der Fenster umspielt sie. Pure Präsenz.",
-          "skript": "(kein Dialog) ---"
-        },
-        {
-          "bild": "11_6_P4.jpg",
-          "locDna": "",
-          "story": "",
-          "skript": ""
-        },
-        {
-          "bild": "11_6_P5.jpg",
-          "locDna": "",
-          "story": "",
-          "skript": ""
-        }
-      ],
-      "nummer": 6
-    },
-    {
+      "nummer": 7,
+      "titel": "Action & Humor: Der Aufstieg",
+      "akt": "AKT 2 – KONFRONTATION: Entdeckungen",
       "panels": [
         {
           "bild": "11_7_P1.jpg",
-          "locDna": "Plaça Major in Gandia. Warmes Abendlicht, im Hintergrund die Silhouette der Kirche Santa María und das Rathaus.",
-          "story": "Die vier Schnecken rasten auf dem Platz und lassen den Tag Revue passieren.",
-          "skript": "Felix: \"Schöner Platz. Ruhig. Fast wie bei uns im Garten.\" Stella: \"Das Abendlicht… perfekt für mein Harness.\" Archie: \"Von der Uni bis hierher… wir haben Geschichte geschmeckt.\""
+          "format": "16:9",
+          "wide": true,
+          "tall": false,
+          "locDna": "Der Camino del Calvario – ein gewundener, weiß getünchter Weg mit Serpentinen. An jeder Biegung eine kleine Kapelle.",
+          "story": "Die vier beginnen den Aufstieg. Felix voraus.",
+          "skript": "**BILDTEXT:** (Vogelgezwitscher, leises Gleiten)",
+          "caption": ""
         },
         {
           "bild": "11_7_P2.jpg",
-          "locDna": "Luna auf einer Steinstufe, Blick starr nach Norden gerichtet.",
-          "story": "Die anderen bemerken ihre entschlossene Haltung. Sie weist den Weg für das nächste Abenteuer.",
-          "skript": "Felix: \"Da hinten… Valencia? Die Klöster?\" Archie: \"Die Route der Borgia. Geht weiter.\" Stella: \"Noch mehr Geschichte? Noch mehr Fotomotive?\" Luna: (schweigt, lächelt, zeigt nach Norden)"
+          "format": "3:5",
+          "wide": false,
+          "tall": false,
+          "locDna": "Felix bleibt kurz stehen, schnauft (so gut das geht). Seine Antennen hängen.",
+          "story": "Er blickt zurück.",
+          "skript": "**DIALOG** Felix: „Puh… 14 Stationen… und wir sind erst bei Nummer 4…“",
+          "caption": ""
         },
         {
           "bild": "11_7_P3.jpg",
-          "locDna": "Weite Totale über die Plaça Major im Sonnenuntergang.",
-          "story": "Die vier winzigen Schnecken im Vordergrund. Ganz weit im Hintergrund, fast unsichtbar im Schatten einer Säule: die schlanke Silhouette von Salome mit ihren bernsteinfarbenen Fühlern.",
-          "skript": "(kein Dialog)"
+          "format": "1:1",
+          "wide": false,
+          "tall": false,
+          "locDna": "Stella gleitet vorbei, ein Lächeln.",
+          "story": "Sie kommentiert.",
+          "skript": "**DIALOG** Stella: „Deine Ausdauer ist legendär, Felix.“",
+          "caption": ""
         },
         {
           "bild": "11_7_P4.jpg",
-          "locDna": "",
-          "story": "",
-          "skript": ""
+          "format": "3:5",
+          "wide": false,
+          "tall": false,
+          "locDna": "Archie betrachtet eine Kreuzwegstation, die Keramiktafel.",
+          "story": "Er spricht, ohne aufzublicken.",
+          "skript": "**DIALOG** Archie: „Der Kreuzweg wurde im 18. Jahrhundert angelegt. Die Menschen gingen ihn barfuß.“",
+          "caption": ""
         },
         {
           "bild": "11_7_P5.jpg",
-          "locDna": "",
-          "story": "",
-          "skript": ""
+          "format": "16:9",
+          "wide": true,
+          "tall": false,
+          "locDna": "Blick von einer höheren Stelle auf die Bucht von Cullera. Das Meer glitzert. Die vier Schnecken sind winzige Punkte am Rand des Panels.",
+          "story": "Ein Moment der Weite.",
+          "skript": "**BILDTEXT:** (kein Dialog) – *Kamera hält auf das Panorama.*",
+          "caption": ""
         }
-      ],
-      "nummer": 7
+      ]
+    },
+    {
+      "nummer": 9,
+      "titel": "Ruhe: Palau Ducal",
+      "akt": "AKT 2 – KONFRONTATION: Entdeckungen",
+      "panels": [
+        {
+          "bild": "11_9_P1.jpg",
+          "format": "16:9",
+          "wide": true,
+          "tall": false,
+          "locDna": "Die gotische Fassade des Palau Ducal dels Borja mit Zinnen und Portal. Mittagssonne, der Platz ist ruhig.",
+          "story": "Die vier gleiten auf das Portal zu.",
+          "skript": "**BILDTEXT:** (leise)",
+          "caption": ""
+        },
+        {
+          "bild": "11_9_P2.jpg",
+          "format": "3:5",
+          "wide": false,
+          "tall": false,
+          "locDna": "Felix reckt die Antennen, sein Grinsen breit.",
+          "story": "Er liest von seinem Handy.",
+          "skript": "**DIALOG** Felix: „Palau Ducal dels Borja! 14. Jahrhundert! Die Borgias haben hier gelebt – die ganze Dramafamilie!“",
+          "caption": ""
+        },
+        {
+          "bild": "11_9_P3.jpg",
+          "format": "1:1",
+          "wide": false,
+          "tall": false,
+          "locDna": "Stella betrachtet die Steinmetzarbeiten.",
+          "story": "Sie ist beeindruckt.",
+          "skript": "**DIALOG** Stella: „Gotik pur. Diese Bögen… zeitlos elegant.“",
+          "caption": ""
+        },
+        {
+          "bild": "11_9_P4.jpg",
+          "format": "9:16",
+          "wide": false,
+          "tall": true,
+          "locDna": "Nahaufnahme Luna, die mit einer Antenne den Stein des Portals berührt. Ihre Augen sind geschlossen.",
+          "story": "Sie spürt die Geschichte.",
+          "skript": "**BILDTEXT:** (kein Dialog) – *Kamera hält auf Lunas ruhige Berührung.*",
+          "caption": ""
+        }
+      ]
+    },
+    {
+      "nummer": 13,
+      "titel": "Abschluss: Plaça Major",
+      "akt": "AKT 3 – AUFLÖSUNG: Abschied von Gandia",
+      "panels": [
+        {
+          "bild": "11_13_P1.jpg",
+          "format": "16:9",
+          "wide": true,
+          "tall": false,
+          "locDna": "Plaça Major, der Hauptplatz von Gandia. Abendsonne, lange Schatten. Im Hintergrund die Colegiata Santa María.",
+          "story": "Die vier gleiten über den Platz. Felix reckt die Antennen.",
+          "skript": "**BILDTEXT:** (Stadtgeräusche, leise Musik)",
+          "caption": ""
+        },
+        {
+          "bild": "11_13_P2.jpg",
+          "format": "1:1",
+          "wide": false,
+          "tall": false,
+          "locDna": "Felix legt sein `[ASSET: FELIX_HANDY_V1]` auf eine Bank.",
+          "story": "Er genießt den Moment.",
+          "skript": "**DIALOG** Felix: „Schöner Platz. Ruhig.“",
+          "caption": ""
+        },
+        {
+          "bild": "11_13_P3.jpg",
+          "format": "3:5",
+          "wide": false,
+          "tall": false,
+          "locDna": "Archie blickt auf die Kirche, nippt an Martini.",
+          "story": "Er fasst den Tag zusammen.",
+          "skript": "**DIALOG** Archie: „Von der Uni bis hierher… wir haben Geschichte geschmeckt. Und ich hab sie nicht allein erklärt.“",
+          "caption": ""
+        },
+        {
+          "bild": "11_13_P4.jpg",
+          "format": "9:16",
+          "wide": false,
+          "tall": true,
+          "locDna": "Weite Totale vom Platz. Die vier sitzen auf der Bank. Ganz am Bildrand, kaum sichtbar, eine Silhouette mit bernsteinfarbenen Fühlern – Salome – die aus einer Seitenstraße zusieht.",
+          "story": "Ein geheimnisvolles Funkeln, dann löst sie sich auf.",
+          "skript": "**BILDTEXT:** (kein Dialog) – *Kamera hält auf die unerkannte Beobachterin.*",
+          "caption": ""
+        }
+      ]
+    },
+    {
+      "nummer": 15,
+      "titel": "Ausklang: Café am Busbahnhof",
+      "akt": "AKT 3 – AUFLÖSUNG: Abschied von Gandia",
+      "panels": [
+        {
+          "bild": "11_15_P1.jpg",
+          "format": "16:9",
+          "wide": true,
+          "tall": false,
+          "locDna": "Café Bar Bus, Gandia – Avinguda del Marqués de Campo. Abendlich, die ersten Lichter. Durch die Fenster Blick auf die Bushaltestelle `[ASSET: CAFE_BUS_HALT_V1]`.",
+          "story": "Die vier gleiten zur Tür.",
+          "skript": "**BILDTEXT:** (Café-Geräusche, Tassenklappern)",
+          "caption": ""
+        },
+        {
+          "bild": "11_15_P2.jpg",
+          "format": "1:1",
+          "wide": false,
+          "tall": false,
+          "locDna": "Felix reckt die Antennen, schnuppert.",
+          "story": "Er ist bereit.",
+          "skript": "**DIALOG** Felix: „Kaffee! Ich rieche Kaffee!“",
+          "caption": ""
+        },
+        {
+          "bild": "11_15_P3.jpg",
+          "format": "1:1",
+          "wide": false,
+          "tall": false,
+          "locDna": "Stella hält ihn mit einer Antenne zurück.",
+          "story": "Sie lächelt.",
+          "skript": "**DIALOG** Stella: „Nur eine Pause, Felix. Nicht die ganze Nacht.“",
+          "caption": ""
+        },
+        {
+          "bild": "11_15_P4.jpg",
+          "format": "16:9",
+          "wide": true,
+          "tall": false,
+          "locDna": "Die Tür öffnet sich, warmes Licht strömt heraus. Die vier gleiten hinein.",
+          "story": "Ein neuer Ort, neue Geschichten.",
+          "skript": "**BILDTEXT:** (kein Dialog) – *Kamera hält auf die offene Tür.*",
+          "caption": ""
+        }
+      ]
     }
   ],
-  "members": true,
-  "level": "gold"
+  "coverStory": "Von den Spuren der Borgias bis zum geheimnisvollen Torreón del Pino 🐌🏰 Felix scannt QR-Codes, Stella sucht nach Couture-Inspiration und Archie doziert über Päpste. Doch wer beobachtet sie aus der Ferne? Ein Tag voller Geschichte und Stil in Gandia."
 };
