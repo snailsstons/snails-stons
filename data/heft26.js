@@ -143,7 +143,9 @@ hefte["26"] = {
           "skript": "**BILDTEXT:** (kein Dialog) – *Kamera hält auf das funkelnde Stück.*",
           "caption": ""
         }
-      ]
+      ],
+      "members": true,
+      "level": "silver"
     },
     {
       "nummer": 6,
@@ -190,7 +192,9 @@ hefte["26"] = {
           "skript": "**DIALOG** Mrs. Drag: „Deshalb liebe ich meine Arbeit.“ – *Kamera hält auf ihr zufriedenes Gesicht.*",
           "caption": ""
         }
-      ]
+      ],
+      "members": true,
+      "level": "silver"
     },
     {
       "nummer": 9,
@@ -237,7 +241,9 @@ hefte["26"] = {
           "skript": "**DIALOG** Stella: „Ich will dabei sein. Wenn du mich trägst.“ – *Kamera hält auf ihre ernsten Augen.*",
           "caption": ""
         }
-      ]
+      ],
+      "members": true,
+      "level": "silver"
     },
     {
       "nummer": 10,
@@ -284,7 +290,9 @@ hefte["26"] = {
           "skript": "**DIALOG** Stella: „Dann werde ich es tragen. Wie immer.“ – *Kamera hält auf das stille Einverständnis.*",
           "caption": ""
         }
-      ]
+      ],
+      "members": true,
+      "level": "silver"
     },
     {
       "nummer": 12,
@@ -331,7 +339,9 @@ hefte["26"] = {
           "skript": "**DIALOG** Mrs. Drag: „Geduld, Felix. Alles zu seiner Zeit.“ – *Kamera hält auf Felix' enttäuschtes, aber neugieriges Gesicht.*",
           "caption": ""
         }
-      ]
+      ],
+      "members": true,
+      "level": "silver"
     },
     {
       "nummer": 13,
@@ -378,7 +388,9 @@ hefte["26"] = {
           "skript": "**BILDTEXT:** (kein Dialog) – *Kamera hält auf Lunas ruhiges Gesicht.*",
           "caption": ""
         }
-      ]
+      ],
+      "members": true,
+      "level": "silver"
     },
     {
       "nummer": 14,
@@ -425,7 +437,9 @@ hefte["26"] = {
           "skript": "**DIALOG** Mrs. Drag: „Ich muss gehen. Der Termin für die Präsentation steht. Ich schicke dir die Details, Stella.“ – *Kamera hält auf ihre elegante Bewegung.*",
           "caption": ""
         }
-      ]
+      ],
+      "members": true,
+      "level": "silver"
     },
     {
       "nummer": 15,
@@ -472,7 +486,9 @@ hefte["26"] = {
           "skript": "**BILDTEXT:** (kein Dialog) – *Kamera hält auf die vereinte Gruppe.*",
           "caption": ""
         }
-      ]
+      ],
+      "members": true,
+      "level": "silver"
     },
     {
       "nummer": 16,
@@ -519,7 +535,9 @@ hefte["26"] = {
           "skript": "**DIALOG** Luna (aus dem Off): „…bis zum nächsten Mal.“",
           "caption": ""
         }
-      ]
+      ],
+      "members": true,
+      "level": "silver"
     }
   ],
   "coverStory": "Stella trägt ihr Mesh-Harness mit Stolz – doch wo kommt es eigentlich her? Ein Treffen im Café am Busbahnhof bringt sie mit Mrs. Drag zusammen, der Designerin hinter Dragons Chain. Zwischen Martini und Kaffee entsteht ein Gespräch über Handwerk, Stil und die Kunst, sich in Szene zu setzen."
