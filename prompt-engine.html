@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SnailsStons | Engine v6.2 (Modular)</title>
+    <title>SnailsStons | Engine v6.3 (Modular)</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@900&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     
     <script src="hefte.js"></script>
@@ -153,6 +153,22 @@
                     b.style.color = '#c0392b';
                     b.title = 'Human character – no snail features';
                 }
+                // ── Click handler ──
+                b.addEventListener('click', () => {
+                    b.classList.toggle('active');
+                    if (name === 'MRS_DRAG') {
+                        if (b.classList.contains('active')) {
+                            b.style.borderColor = '#fff';
+                            b.style.color = '#000';
+                            b.style.background = '#c0392b';
+                        } else {
+                            b.style.borderColor = '#c0392b';
+                            b.style.color = '#c0392b';
+                            b.style.background = '';
+                        }
+                    }
+                    runSync();
+                });
                 cl.appendChild(b);
             });
 
