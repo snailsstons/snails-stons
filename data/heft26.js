@@ -540,5 +540,7 @@ hefte["26"] = {
       "level": "silver"
     }
   ],
-  "coverStory": "Stella trägt ihr Mesh-Harness mit Stolz – doch wo kommt es eigentlich her? Ein Treffen im Café am Busbahnhof bringt sie mit Mrs. Drag zusammen, der Designerin hinter Dragons Chain. Zwischen Martini und Kaffee entsteht ein Gespräch über Handwerk, Stil und die Kunst, sich in Szene zu setzen."
+  "coverStory": "Stella trägt ihr Mesh-Harness mit Stolz – doch wo kommt es eigentlich her? Ein Treffen im Café am Busbahnhof bringt sie mit Mrs. Drag zusammen, der Designerin hinter Dragons Chain. Zwischen Martini und Kaffee entsteht ein Gespräch über Handwerk, Stil und die Kunst, sich in Szene zu setzen.",
+  "members": true,
+  "level": "gold"
 };
