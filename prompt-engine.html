@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SnailsStons | Engine v6.3 (Modular)</title>
+    <title>SnailsStons | Engine v6.4 (Modular)</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@900&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     
     <script src="hefte.js"></script>
@@ -118,6 +118,9 @@
 
         let currentAR = "1:1";
 
+        // Manual character overrides (button clicks)
+        const activeChars = new Set();
+
         function initEngine() {
             const p = new URLSearchParams(window.location.search);
             const heftId = p.get('heft') || '1';
@@ -155,16 +158,21 @@
                 }
                 // ── Click handler ──
                 b.addEventListener('click', () => {
-                    b.classList.toggle('active');
-                    if (name === 'MRS_DRAG') {
-                        if (b.classList.contains('active')) {
-                            b.style.borderColor = '#fff';
-                            b.style.color = '#000';
-                            b.style.background = '#c0392b';
-                        } else {
+                    if (activeChars.has(name)) {
+                        activeChars.delete(name);
+                        b.classList.remove('active');
+                        if (name === 'MRS_DRAG') {
                             b.style.borderColor = '#c0392b';
                             b.style.color = '#c0392b';
                             b.style.background = '';
+                        }
+                    } else {
+                        activeChars.add(name);
+                        b.classList.add('active');
+                        if (name === 'MRS_DRAG') {
+                            b.style.borderColor = '#fff';
+                            b.style.color = '#000';
+                            b.style.background = '#c0392b';
                         }
                     }
                     runSync();
@@ -367,8 +375,26 @@
             const full = (story + script + locDna + caption).toUpperCase();
             let team = []; Object.keys(dnaPool).forEach(name => {
                 const b = document.getElementById(`btn-${name}`);
-                if (b) {
-                    if (full.includes(name)) { b.classList.add('active'); team.push(name); } else b.classList.remove('active');
+                if (!b) return;
+                // Active if: manually toggled OR name found in text
+                const inText = full.includes(name) || full.includes(name.replace('_',' '));
+                const inSet  = activeChars.has(name);
+                if (inText || inSet) {
+                    if (!inSet) activeChars.add(name); // sync set with text detection
+                    b.classList.add('active');
+                    if (name === 'MRS_DRAG') {
+                        b.style.borderColor = '#fff';
+                        b.style.color = '#000';
+                        b.style.background = '#c0392b';
+                    }
+                    team.push(name);
+                } else {
+                    b.classList.remove('active');
+                    if (name === 'MRS_DRAG') {
+                        b.style.borderColor = '#c0392b';
+                        b.style.color = '#c0392b';
+                        b.style.background = '';
+                    }
                 }
             });
             const p = new URLSearchParams(window.location.search);
