@@ -112,7 +112,8 @@
             'STELLA': { id: 2, desc: 'slender elegant snail – NOT round, NOT chubby. Beige-cream skin, rosy cheeks, lashes. Red hibiscus flower at left antenna base. Dark brown-purple spiral shell on back. Dragons Chain Harness: thin BLACK NYLON STRAPS across chest, silver metal O-rings, delicate silver chains hanging. Lightweight fashion harness – NOT heavy chain armor. NOT bondage. NO legs. Snail glide base only.' },
             'ARCHIE': { id: 3, desc: 'slender snail, scaly beige-olive skin, heavy-lidded smirk. Worn straw hat with dark band, both antennas through hat. Green martini in hand. His shell IS a full medieval CASTLE – stone walls, tower, battlements, terracotta roof – MOUNTED ON HIS BACK. NOT held in hand. NOT a separate object. On his back. Always. NO legs. Snail glide base only.' },
             'LUNA': { id: 4, desc: 'slender delicate snail, warm beige skin, rosy cheeks, long lashes. Eyes peacefully CLOSED – always. Soft zen smile. Small compact dark spiral shell on back. Wide flat snail base resting LOW on ground – NOT lotus pose, NOT crossed legs, NOT human sitting. Hands folded in front, prayer pose. NO legs. SNAIL BASE ONLY.' },
-            'SALOME': { id: 6, desc: 'slender shell-less slug, NO shell on back. Warm beige smooth skin. Amber-gold round knob antenna tips. Smaragd-gold headband tiara. Thorn-collar necklace. One arm raised in elegant dance pose. NOT standing still. NO legs. Snail glide base only.' }
+            'SALOME': { id: 6, desc: 'slender shell-less slug, NO shell on back. Warm beige smooth skin. Amber-gold round knob antenna tips. Smaragd-gold headband tiara. Thorn-collar necklace. One arm raised in elegant dance pose. NOT standing still. NO legs. Snail glide base only.' },
+            'MRS_DRAG': { id: 7, desc: 'HUMAN WOMAN – NO snail features, NO antennas, NO shell, NO glide base. Athletic, tall and slender figure with feminine curves. Confident upright posture, professional presence. Hair: short voluminous bob with dense dark (dark brown to black) curls and waves. Face: striking features, defined cheekbones, expressive dark eyes with subtle eye makeup, bold classic red lipstick, a sovereign slightly knowing smile. OUTFIT – BASE LOOK: tight dark (black or deep brown) V-neck tank top, tight black leather leggings with realistic crease texture, classic black stiletto high heels. OUTFIT – HARNESS LOOK: complex chest harness from leather: leather choker necklace with silver O-ring, connected leather straps with rivets, prominent hanging silver chains and chainmail elements over chest and waist. ART STYLE: cartoon character in ultra-realistic 3D CGI render, Blue Sky Studios / Pixar quality – warm cartoon-cute proportions, hyper-detailed material textures (leather, metal, skin). Fits exactly into the SnailsStons universe energy.' }
         };
 
         let currentAR = "1:1";
@@ -143,7 +144,16 @@
 
             const cl = document.getElementById('crew-list');
             Object.keys(dnaPool).forEach(name => {
-                const b = document.createElement('div'); b.className = 'crew-btn'; b.id = `btn-${name}`; b.innerText = name; cl.appendChild(b);
+                const b = document.createElement('div');
+                b.className = 'crew-btn';
+                b.id = `btn-${name}`;
+                b.innerText = name;
+                if (name === 'MRS_DRAG') {
+                    b.style.borderColor = '#c0392b';
+                    b.style.color = '#c0392b';
+                    b.title = 'Human character – no snail features';
+                }
+                cl.appendChild(b);
             });
 
             // Dynamische Panel-Buttons generieren
@@ -404,7 +414,16 @@
                 res += `Expressive cartoon eyes IN the face – not on antenna tips.\n`;
                 res += `Antennas end in small round smooth KNOB tips only – NOT eye-balls.\n\n`;
                 res += `SCENE:\n${story}\n\nLOCATION DNA:\n${locDna}\n\n`;
-                if (team.length > 0) { res += `CHARACTERS:\n`; team.forEach(name => res += `${name}: ${dnaPool[name].desc}\n`); res += `\n`; }
+                if (team.length > 0) {
+                    res += `CHARACTERS:\n`;
+                    team.forEach(name => {
+                        res += `${name}: ${dnaPool[name].desc}\n`;
+                        if (name === 'MRS_DRAG') {
+                            res += `MRS_DRAG ADDITIONAL RULES: She is a HUMAN – render her proportions as human, NOT as snail. She stands on two legs with high heels. She may interact with the snail characters naturally. She wears either BASE LOOK or HARNESS LOOK depending on scene context. HARNESS LOOK when scene mentions harness, jewelry, Dragons Chain, or fashion editorial. BASE LOOK for casual scenes. Always: red lipstick, black leather leggings, black stiletto heels.\n`;
+                        }
+                    });
+                    res += `\n`;
+                }
                 
                 if (script) {
                   res += `SPEECH BUBBLES – strict style rules:\n`;
