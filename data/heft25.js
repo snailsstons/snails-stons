@@ -102,8 +102,7 @@ hefte["25"] = {
           "caption": ""
         }
       ],
-      "members": true,
-      "level": "silver"
+      "members": false
     },
     {
       "nummer": 3,
@@ -151,8 +150,7 @@ hefte["25"] = {
           "caption": ""
         }
       ],
-      "members": true,
-      "level": "silver"
+      "members": false
     },
     {
       "nummer": 4,
@@ -200,8 +198,7 @@ hefte["25"] = {
           "caption": ""
         }
       ],
-      "members": true,
-      "level": "silver"
+      "members": false
     },
     {
       "nummer": 5,
