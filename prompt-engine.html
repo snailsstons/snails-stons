@@ -368,7 +368,9 @@
 
                 res += `FORMAT: 9:16 vertical portrait – smartphone optimized. Comic book cover layout.\n\n`;
                 res += `Referenz Angaben zu den Charakteren sind unter "SnailsStons DNA" im Gedächtnis von Gemini hinterlegt.\n\n`;
-                team.forEach(name => res += `IMAGE ${dnaPool[name].id} = ${name} – character reference -> match exactly.\n`);
+                team.forEach(name => res += name === 'MRS_DRAG'
+                            ? `IMAGE ${dnaPool[name].id} = MRS_DRAG – human character reference -> match exactly. She is HUMAN, NOT a snail.\n`
+                            : `IMAGE ${dnaPool[name].id} = ${name} – character reference -> match exactly.\n`);
                 if (team.length > 0) res += `IMAGE 5 = LOCATION DNA.\n`;
                 res += `Do NOT invent characters. Do NOT invent locations.\n\n`;
 
@@ -377,8 +379,14 @@
                 res += `Cinematic comic book cover. Dramatic composition. Strong focal point.\n`;
                 res += `NOT a panel. NOT a scene. A COVER – one iconic image.\n\n`;
 
-                res += `ANATOMY RULES – apply to every character:\n`;
-                res += `NO legs, NO feet on any character. Snail glide base only.\n`;
+                const hasMrsDrag1 = team.includes('MRS_DRAG');
+                res += `ANATOMY RULES – apply to snail characters:\n`;
+                res += `NO legs, NO feet on snail characters. Snail glide base only.\n`;
+                res += `Expressive cartoon eyes IN the face – not on antenna tips.\n`;
+                res += `Antennas end in small round smooth KNOB tips only – NOT eye-balls.\n`;
+                if (hasMrsDrag1) {
+                    res += `EXCEPTION – MRS_DRAG: She is a HUMAN. She has two legs, stands in stiletto heels. Render her as a full human body. Do NOT give her snail features.\n`;
+                }
                 res += `Expressive cartoon eyes IN the face – not on antenna tips.\n`;
                 res += `Antennas end in small round smooth KNOB tips only.\n\n`;
 
@@ -403,14 +411,22 @@
 
             } else {
                 res += `Referenz Angaben zu den Charakteren sind unter "SnailsStons DNA" im Gedächtnis von Gemini hinterlegt.\n\n`;
-                team.forEach(name => res += `IMAGE ${dnaPool[name].id} = ${name} – character reference -> match exactly.\n`);
+                team.forEach(name => res += name === 'MRS_DRAG'
+                            ? `IMAGE ${dnaPool[name].id} = MRS_DRAG – human character reference -> match exactly. She is HUMAN, NOT a snail.\n`
+                            : `IMAGE ${dnaPool[name].id} = ${name} – character reference -> match exactly.\n`);
                 res += `IMAGE 5 = LOCATION DNA.\n`;
                 res += `Do NOT invent characters. Do NOT invent locations.\n\n`;
                 res += `TYPE: Ultra-realistic 3D CGI render, Blue Sky Studios style, hyper-detailed.\n`;
                 res += `FORMAT: ${currentAR} aspect ratio.\n`;
                 res += `CODE: ${code} – render small, top right corner of image.\n\n`;
-                res += `ANATOMY RULES – apply to every character without exception:\n`;
-                res += `NO legs, NO feet on any character. Snail glide base only.\n`;
+                const hasMrsDrag2 = team.includes('MRS_DRAG');
+                res += `ANATOMY RULES – apply to snail characters only:\n`;
+                res += `NO legs, NO feet on snail characters. Snail glide base only.\n`;
+                res += `Expressive cartoon eyes IN the face – not on antenna tips.\n`;
+                res += `Antennas end in small round smooth KNOB tips only – NOT eye-balls.\n`;
+                if (hasMrsDrag2) {
+                    res += `EXCEPTION – MRS_DRAG: She is a HUMAN. She has two legs, stands in stiletto heels. Render her as a full human body. Do NOT give her snail features, NO antennas, NO shell.\n`;
+                }
                 res += `Expressive cartoon eyes IN the face – not on antenna tips.\n`;
                 res += `Antennas end in small round smooth KNOB tips only – NOT eye-balls.\n\n`;
                 res += `SCENE:\n${story}\n\nLOCATION DNA:\n${locDna}\n\n`;
