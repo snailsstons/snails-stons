@@ -11,7 +11,7 @@ hefte["26"] = {
       "panels": [
         {
           "bild": "26_1_P1.jpg",
-          "format": "9:16",
+          "format": "16:9",
           "wide": true,
           "tall": false,
           "locDna": "Café Bar Bus, Gandia – Avinguda del Marqués de Campo. Später Vormittag, die Sonne steht hoch, fällt durch die großen Fenster auf die spanischen Fliesen `[ASSET: CAFE_BUS_V1]`. Durch die Scheiben Blick auf die Bushaltestelle `[ASSET: CAFE_BUS_HALT_V1]`. Das Café ist gut gefüllt, Tassen klappern, leises Gemurmel.",
@@ -27,7 +27,10 @@ hefte["26"] = {
           "locDna": "Stella bleibt kurz vor der Tür stehen, späht hinein. Ihre Antennen zucken leicht.",
           "story": "Sie sucht jemanden.",
           "skript": "(kein Dialog)",
-          "caption": ""
+          "caption": "",
+          "members": true,
+          "bonus": true,
+          "level": "gold"
         },
         {
           "bild": "26_1_P3.jpg",
@@ -37,7 +40,10 @@ hefte["26"] = {
           "locDna": "Im Hintergrund, an einem Tisch in der Ecke, sitzt eine Schnecke mit elegantem, dunklem Harness – Leder, silberne Ketten, ein schwarzer Schleier über dem Kopf, der nur ihre scharfen Augen freigibt. Mrs. Drag. Sie trägt eine kleine Aktentasche aus Leder neben sich. Sie nippt an einem Kaffee.",
           "story": "Sie bemerkt Stella und hebt eine Antenne zum Gruß.",
           "skript": "**DIALOG** Mrs. Drag: „Stella. Du bist pünktlich. Selten bei einer Mode-Ikone.“",
-          "caption": ""
+          "caption": "",
+          "members": true,
+          "bonus": true,
+          "level": "gold"
         },
         {
           "bild": "26_1_P4.jpg",
@@ -47,7 +53,10 @@ hefte["26"] = {
           "locDna": "Nahaufnahme Stella, ein geheimnisvolles Lächeln auf ihren Lippen. Ihre Antennen entspannen sich.",
           "story": "Sie gleitet auf den Tisch zu.",
           "skript": "**DIALOG** Stella: „Bei dir komme ich immer gern.“",
-          "caption": ""
+          "caption": "",
+          "members": true,
+          "bonus": true,
+          "level": "gold"
         }
       ]
     },
@@ -96,7 +105,9 @@ hefte["26"] = {
           "skript": "**DIALOG** Stella: „Du hast etwas Neues? Ich spüre es.“ – *Kamera hält auf Mrs. Drags ruhiges Gesicht.*",
           "caption": ""
         }
-      ]
+      ],
+      "members": true,
+      "level": "silver"
     },
     {
       "nummer": 5,
@@ -541,6 +552,5 @@ hefte["26"] = {
     }
   ],
   "coverStory": "Stella trägt ihr Mesh-Harness mit Stolz – doch wo kommt es eigentlich her? Ein Treffen im Café am Busbahnhof bringt sie mit Mrs. Drag zusammen, der Designerin hinter Dragons Chain. Zwischen Martini und Kaffee entsteht ein Gespräch über Handwerk, Stil und die Kunst, sich in Szene zu setzen.",
-  "members": true,
-  "level": "gold"
+  "members": false
 };
