@@ -11,7 +11,7 @@ hefte["26"] = {
       "panels": [
         {
           "bild": "26_1_P1.jpg",
-          "format": "16:9",
+          "format": "9:16",
           "wide": true,
           "tall": false,
           "locDna": "Café Bar Bus, Gandia – Avinguda del Marqués de Campo. Später Vormittag, die Sonne steht hoch, fällt durch die großen Fenster auf die spanischen Fliesen `[ASSET: CAFE_BUS_V1]`. Durch die Scheiben Blick auf die Bushaltestelle `[ASSET: CAFE_BUS_HALT_V1]`. Das Café ist gut gefüllt, Tassen klappern, leises Gemurmel.",
