@@ -3,222 +3,438 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>SnailsStons - Flex-Expander Pro v3.0</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+<title>SnailsStons | Flex Expander v4.0</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
-  :root { --gold: #d4af37; --bg: #000; --card: #111; --danger: #ff4444; --success: #28a745; }
+  :root {
+    --gold: #d4af37; --bg: #000; --card: #0e0e0e;
+    --danger: #ff4444; --success: #28a745; --border: #1e1e1e;
+  }
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-  body { font-family: 'Inter', sans-serif; background: var(--bg); color: #eee; margin: 0; padding: 20px; background-image: url('blatt_textur.jpg'); background-size: cover; background-blend-mode: multiply; }
-  .app-container { max-width: 500px; margin: 0 auto; }
-  h1 { font-weight: 900; color: var(--gold); text-align: center; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; }
-  .card { background: var(--card); border: 1px solid #222; border-radius: 15px; padding: 20px; margin-bottom: 15px; }
-  label { font-weight: 900; color: var(--gold); display: block; margin-bottom: 5px; font-size: 0.7rem; text-transform: uppercase; }
-  input { width: 100%; padding: 12px; background: #000; border: 1px solid #333; color: var(--gold); border-radius: 10px; font-size: 1.2rem; font-weight: 900; text-align: center; margin-bottom: 10px; }
-  .btn { width: 100%; border: none; padding: 18px; border-radius: 12px; font-weight: 900; cursor: pointer; text-transform: uppercase; font-size: 0.9rem; margin-bottom: 10px; }
-  .btn-load { background: #333; color: #fff; border: 1px solid #444; }
-  .btn-gold { background: var(--gold); color: #000; display: none; }
-  #info-box { background: #1a1a1a; border-left: 4px solid var(--gold); padding: 15px; border-radius: 8px; margin-bottom: 15px; display: none; font-size: 0.85rem; line-height: 1.8; }
-  #status { padding: 15px; border-radius: 10px; display: none; font-size: 0.85rem; font-weight: 700; }
-  .success { background: var(--success); display: block !important; }
-  .error { background: var(--danger); display: block !important; }
-  .stat-val { color: var(--gold); font-weight: 900; }
-  .section-label { font-size: 0.6rem; font-weight: 900; color: #555; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; display: block; }
-  hr { border: none; border-top: 1px solid #222; margin: 5px 0 15px; }
+  body {
+    font-family: 'JetBrains Mono', monospace;
+    background: var(--bg); color: #eee; margin: 0; padding: 16px;
+    background-image: url('blatt_textur.jpg');
+    background-size: cover; background-blend-mode: multiply;
+    min-height: 100vh;
+  }
+  .app { max-width: 560px; margin: 0 auto; }
+  h1 {
+    font-family: 'Playfair Display', serif;
+    color: var(--gold); text-align: center;
+    text-transform: uppercase; letter-spacing: 3px;
+    font-size: 1.6rem; margin-bottom: 4px;
+  }
+  .subtitle { text-align: center; color: #444; font-size: 0.55rem; letter-spacing: 2px; margin-bottom: 20px; }
+
+  .card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 16px; margin-bottom: 12px;
+  }
+  .card-title {
+    font-size: 0.55rem; font-weight: 700; color: var(--gold);
+    text-transform: uppercase; letter-spacing: 2px;
+    margin-bottom: 12px; display: flex; align-items: center; gap: 6px;
+  }
+
+  label { font-size: 0.6rem; color: #666; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 4px; }
+  input, select {
+    width: 100%; padding: 10px 12px; background: #050505;
+    border: 1px solid #2a2a2a; color: #fff; border-radius: 8px;
+    font-family: 'JetBrains Mono', monospace; font-size: 0.85rem;
+    margin-bottom: 10px; outline: none; transition: border-color 0.2s;
+  }
+  input:focus, select:focus { border-color: var(--gold); }
+  input[type=number] { text-align: center; font-size: 1.1rem; font-weight: 700; color: var(--gold); }
+
+  .btn {
+    width: 100%; border: none; padding: 14px;
+    border-radius: 10px; font-weight: 700; cursor: pointer;
+    text-transform: uppercase; font-size: 0.7rem; letter-spacing: 1px;
+    margin-bottom: 8px; transition: opacity 0.2s, transform 0.1s;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .btn:active { transform: scale(0.97); }
+  .btn-load   { background: #1a1a1a; color: #aaa; border: 1px solid #333; }
+  .btn-gold   { background: var(--gold); color: #000; }
+  .btn-push   { background: var(--success); color: #fff; }
+  .btn-danger { background: var(--danger); color: #fff; }
+  .btn-sec    { background: #1a1a1a; color: #777; border: 1px solid #333; }
+
+  .info-grid {
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px; margin-bottom: 12px;
+  }
+  .info-cell {
+    background: #050505; border: 1px solid #222; border-radius: 8px;
+    padding: 10px 8px; text-align: center;
+  }
+  .info-val { font-size: 1.2rem; font-weight: 700; color: var(--gold); }
+  .info-lbl { font-size: 0.5rem; color: #444; text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
+
+  .seiten-list { display: flex; flex-direction: column; gap: 6px; }
+  .seite-row {
+    background: #050505; border: 1px solid #1a1a1a; border-radius: 8px;
+    padding: 10px 12px; display: grid;
+    grid-template-columns: 40px 1fr 80px 36px 36px;
+    gap: 8px; align-items: center;
+  }
+  .seite-num { font-size: 0.65rem; font-weight: 700; color: var(--gold); }
+  .seite-info { font-size: 0.6rem; color: #555; }
+  .seite-panels-input {
+    padding: 6px; background: #0a0a0a; border: 1px solid #2a2a2a;
+    color: var(--gold); border-radius: 6px; font-size: 0.75rem;
+    font-weight: 700; text-align: center; width: 100%;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .seite-del-btn {
+    background: none; border: 1px solid #2a2a2a; color: #444;
+    border-radius: 6px; cursor: pointer; padding: 4px; font-size: 0.8rem;
+    transition: all 0.2s; width: 36px; height: 36px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .seite-del-btn:hover { border-color: var(--danger); color: var(--danger); }
+  .seite-add-btn {
+    background: none; border: 1px solid #2a2a2a; color: #555;
+    border-radius: 6px; cursor: pointer; padding: 4px; font-size: 0.9rem;
+    transition: all 0.2s; width: 36px; height: 36px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .seite-add-btn:hover { border-color: var(--success); color: var(--success); }
+
+  .fmt-select {
+    padding: 4px 6px; background: #0a0a0a; border: 1px solid #2a2a2a;
+    color: #aaa; border-radius: 6px; font-size: 0.6rem; width: 100%;
+    font-family: 'JetBrains Mono', monospace; margin-bottom: 0;
+  }
+
+  .toast {
+    padding: 12px 16px; border-radius: 10px; font-size: 0.75rem;
+    font-weight: 700; margin-top: 8px; display: none; text-align: center;
+  }
+  .toast.show { display: block; }
+  .toast.success { background: #0d2e18; border: 1px solid var(--success); color: var(--success); }
+  .toast.error   { background: #2e0d0d; border: 1px solid var(--danger); color: var(--danger); }
+  .toast.info    { background: #1a1500; border: 1px solid var(--gold); color: var(--gold); }
+
+  .warn-box {
+    background: #1a0f00; border: 1px solid #554000; border-radius: 8px;
+    padding: 10px 12px; font-size: 0.65rem; color: #aa8800;
+    margin-bottom: 10px; display: none;
+  }
+  .divider { border: none; border-top: 1px solid #1a1a1a; margin: 12px 0; }
+
+  .hidden { display: none; }
+  .tag {
+    display: inline-block; padding: 2px 6px; border-radius: 4px;
+    font-size: 0.5rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.5px; background: #1a2a1a; color: var(--success);
+  }
+  .tag.has-content { background: #2a1a00; color: #d4a037; }
 </style>
 </head>
 <body>
-<div class="app-container">
-  <h1>Flex<span style="color:#fff;">Expander</span> <span style="color:#555;font-size:0.5em;font-weight:400;">v3.0</span></h1>
+<div class="app">
+  <h1>Flex<span style="color:#fff;">Expander</span></h1>
+  <div class="subtitle">v4.0 · SnailsStons Seiten & Panel Manager</div>
 
+  <!-- HEFT LADEN -->
   <div class="card">
+    <div class="card-title">🔍 Heft laden</div>
     <label>Heft ID</label>
-    <input type="number" id="heftIdInput" value="1" min="0">
-    <button id="loadBtn" class="btn btn-load">🔍 Heft-Daten prüfen</button>
+    <input type="number" id="heftId" value="1" min="0" max="99">
+    <button class="btn btn-load" onclick="loadHeft()">🔍 Heft-Daten laden</button>
   </div>
 
-  <div id="info-box">
-    <div>Titel: <span id="info-titel" class="stat-val">-</span></div>
-    <div>Seiten aktuell: <span id="info-seiten" class="stat-val">-</span></div>
-    <div>Panels pro Seite: <span id="info-panels" class="stat-val">-</span></div>
-  </div>
-
-  <div id="modify-box" style="display:none;">
+  <!-- INFO -->
+  <div id="info-section" class="hidden">
     <div class="card">
-      <span class="section-label">📄 Seiten-Anzahl ändern</span>
-      <label>Neue Seiten-Anzahl</label>
-      <input type="number" id="targetSeiten" value="7" min="1">
-      <button id="seitenBtn" class="btn btn-gold">📄 Seiten anpassen & Speichern</button>
+      <div class="card-title">📊 Heft-Übersicht</div>
+      <div id="heft-name" style="font-size:0.75rem;color:#fff;margin-bottom:10px;"></div>
+      <div class="info-grid">
+        <div class="info-cell"><div class="info-val" id="stat-seiten">-</div><div class="info-lbl">Seiten</div></div>
+        <div class="info-cell"><div class="info-val" id="stat-panels">-</div><div class="info-lbl">Ø Panels</div></div>
+        <div class="info-cell"><div class="info-val" id="stat-content">-</div><div class="info-lbl">Mit Inhalt</div></div>
+      </div>
     </div>
-    <hr>
+
+    <!-- SEITEN MANAGER -->
     <div class="card">
-      <span class="section-label">📦 Panel-Anzahl pro Seite ändern</span>
-      <label>Neue Panel-Anzahl pro Seite</label>
-      <input type="number" id="targetPanels" value="7" min="1">
-      <button id="processBtn" class="btn btn-gold">📦 Panels anpassen & Speichern</button>
+      <div class="card-title">📄 Seiten Manager</div>
+      <div id="seiten-list" class="seiten-list"></div>
+      <hr class="divider">
+      <button class="btn btn-sec" onclick="addSeite()">+ Neue Seite hinzufügen</button>
+    </div>
+
+    <!-- BULK TOOLS -->
+    <div class="card">
+      <div class="card-title">⚙️ Bulk-Operationen</div>
+      <label>Alle Seiten auf X Panels setzen</label>
+      <div style="display:flex;gap:8px;">
+        <input type="number" id="bulk-panels" value="4" min="1" max="20" style="flex:1;">
+        <button class="btn btn-sec" style="width:auto;padding:0 16px;margin-bottom:10px;" onclick="bulkSetPanels()">Setzen</button>
+      </div>
+      <div id="warn-box" class="warn-box"></div>
+    </div>
+
+    <!-- EXPORT / PUSH -->
+    <div class="card">
+      <div class="card-title">🚀 Export & GitHub Push</div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn btn-gold" style="flex:1;" onclick="downloadHeft()">💾 DOWNLOAD</button>
+        <button class="btn btn-push" style="flex:1;" onclick="pushToGitHub()">🚀 → GITHUB</button>
+      </div>
+      <div id="push-toast" class="toast"></div>
     </div>
   </div>
 
-  <div id="status"></div>
+  <div id="load-toast" class="toast"></div>
 </div>
 
 <script>
+// ── Globals ──────────────────────────────────────────
 let currentData = null;
+let heftId = '1';
 
-async function fetchHeft(id) {
-    return new Promise((resolve) => {
-        if(!window.hefte) window.hefte = {};
-        const script = document.createElement('script');
-        script.src = 'data/heft' + id + '.js?v=' + Date.now();
-        script.onload = () => resolve(window.hefte[id] || null);
-        script.onerror = () => resolve(null);
-        document.head.appendChild(script);
+// ── GitHub ───────────────────────────────────────────
+function ghCfg() {
+    return {
+        repo:   localStorage.getItem('gh_repo'),
+        branch: localStorage.getItem('gh_branch') || 'main',
+        token:  localStorage.getItem('gh_token')
+    };
+}
+
+async function ghGetSHA(path) {
+    const { repo, branch, token } = ghCfg();
+    try {
+        const r = await fetch(`https://api.github.com/repos/${repo}/contents/${path}?ref=${branch}`, {
+            headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json' }
+        });
+        if (r.ok) return (await r.json()).sha;
+    } catch(e) {}
+    return null;
+}
+
+async function ghPush(path, content, msg) {
+    const { repo, branch, token } = ghCfg();
+    if (!repo || !token) return false;
+    const sha = await ghGetSHA(path);
+    const body = { message: msg, content: btoa(unescape(encodeURIComponent(content))), branch };
+    if (sha) body.sha = sha;
+    const r = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, {
+        method: 'PUT',
+        headers: {
+            Authorization: `token ${token}`,
+            Accept: 'application/vnd.github.v3+json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+    });
+    return r.ok;
+}
+
+// ── Heft laden ───────────────────────────────────────
+async function loadHeft() {
+    heftId = document.getElementById('heftId').value;
+    showToast('load-toast', `Lade heft${heftId}.js...`, 'info');
+    window.hefte = window.hefte || {};
+    await new Promise(resolve => {
+        const s = document.createElement('script');
+        s.src = `data/heft${heftId}.js?v=` + Date.now();
+        s.onload = resolve; s.onerror = resolve;
+        document.head.appendChild(s);
+    });
+    currentData = window.hefte[heftId] ? JSON.parse(JSON.stringify(window.hefte[heftId])) : null;
+    if (!currentData) {
+        showToast('load-toast', `Heft ${heftId} nicht gefunden.`, 'error');
+        return;
+    }
+    showToast('load-toast', `✅ Heft ${heftId} geladen.`, 'success');
+    document.getElementById('info-section').classList.remove('hidden');
+    renderAll();
+}
+
+// ── Render ───────────────────────────────────────────
+function renderAll() {
+    document.getElementById('heft-name').textContent = `"${currentData.titel || '?'}"`;
+
+    const seiten = currentData.seiten || [];
+    const totalPanels = seiten.reduce((s, p) => s + p.panels.length, 0);
+    const withContent = seiten.reduce((s, p) =>
+        s + p.panels.filter(x => x.locDna || x.story || x.skript).length, 0);
+
+    document.getElementById('stat-seiten').textContent  = seiten.length;
+    document.getElementById('stat-panels').textContent  = seiten.length ? (totalPanels / seiten.length).toFixed(1) : '0';
+    document.getElementById('stat-content').textContent = withContent;
+
+    const list = document.getElementById('seiten-list');
+    list.innerHTML = '';
+    seiten.forEach((seite, sIdx) => {
+        const panelsWithContent = seite.panels.filter(p => p.locDna || p.story || p.skript).length;
+        const hasContent = panelsWithContent > 0;
+        const row = document.createElement('div');
+        row.className = 'seite-row';
+        row.innerHTML = `
+            <div class="seite-num">S${seite.nummer || sIdx + 1}</div>
+            <div class="seite-info">
+                ${seite.titel ? `<span style="color:#777;font-size:0.55rem;">${seite.titel.substring(0,20)}</span><br>` : ''}
+                <span class="tag ${hasContent ? 'has-content' : ''}">${panelsWithContent}/${seite.panels.length} Inhalt</span>
+            </div>
+            <input class="seite-panels-input" type="number" min="1" max="20"
+                value="${seite.panels.length}"
+                onchange="setPanelCount(${sIdx}, parseInt(this.value))"
+                title="Panels für Seite ${seite.nummer || sIdx + 1}">
+            <button class="seite-add-btn" onclick="addPanelToSeite(${sIdx})" title="Panel hinzufügen">+</button>
+            <button class="seite-del-btn" onclick="deleteSeite(${sIdx})" title="Seite löschen">✕</button>
+        `;
+        list.appendChild(row);
     });
 }
 
-function updateInfoBox() {
-    document.getElementById('info-titel').innerText = currentData.titel || 'Kein Titel';
-    document.getElementById('info-seiten').innerText = currentData.seiten ? currentData.seiten.length : 0;
-    if (currentData.seiten && currentData.seiten.length > 0) {
-        const firstCount = currentData.seiten[0].panels.length;
-        const allSame = currentData.seiten.every(s => s.panels.length === firstCount);
-        document.getElementById('info-panels').innerText = allSame ? firstCount : 'Gemischt';
-        document.getElementById('targetPanels').value = firstCount;
+// ── Operationen ──────────────────────────────────────
+function addSeite() {
+    const seiten = currentData.seiten;
+    const lastNum = seiten.length > 0 ? (seiten[seiten.length - 1].nummer || seiten.length) : 0;
+    const newNum = lastNum + 1;
+    const refPanelCount = seiten.length > 0 ? seiten[0].panels.length : 4;
+    const panels = [];
+    for (let p = 1; p <= refPanelCount; p++) {
+        panels.push(makePanel(heftId, newNum, p, p === 1));
     }
-    const seitenCount = currentData.seiten ? currentData.seiten.length : 0;
-    document.getElementById('targetSeiten').value = Math.max(1, seitenCount);
+    seiten.push({ nummer: newNum, titel: '', akt: '', panels });
+    renderAll();
 }
 
-function downloadHeft(hId) {
-    const output = 'hefte["' + hId + '"] = ' + JSON.stringify(currentData, null, 2) + ';';
-    const blob = new Blob([output], { type: 'application/javascript' });
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = 'heft' + hId + '.js';
-    a.click();
+function deleteSeite(sIdx) {
+    const seite = currentData.seiten[sIdx];
+    const hasContent = seite.panels.some(p => p.locDna || p.story || p.skript);
+    if (hasContent) {
+        if (!confirm(`Seite ${seite.nummer || sIdx + 1} hat Inhalt. Wirklich löschen?`)) return;
+    }
+    currentData.seiten.splice(sIdx, 1);
+    renderAll();
 }
 
-document.getElementById('loadBtn').addEventListener('click', async function() {
-    const hId = document.getElementById('heftIdInput').value;
-    this.innerText = 'Lade...';
-    currentData = await fetchHeft(hId);
-    this.innerText = '🔍 Heft-Daten prüfen';
-    if (currentData) {
-        updateInfoBox();
-        document.getElementById('info-box').style.display = 'block';
-        document.getElementById('modify-box').style.display = 'block';
-        document.getElementById('seitenBtn').style.display = 'block';
-        document.getElementById('processBtn').style.display = 'block';
-        document.getElementById('status').style.display = 'none';
-    } else {
-        alert('Heft ' + hId + ' nicht gefunden in /data/');
-    }
-});
+function setPanelCount(sIdx, target) {
+    if (isNaN(target) || target < 1 || target > 20) return;
+    const seite = currentData.seiten[sIdx];
+    const cur = seite.panels.length;
+    const pageNum = seite.nummer || sIdx + 1;
 
-document.getElementById('seitenBtn').addEventListener('click', function() {
-    const hId = document.getElementById('heftIdInput').value;
-    const targetSeiten = parseInt(document.getElementById('targetSeiten').value);
-    const currentSeiten = currentData.seiten ? currentData.seiten.length : 0;
-    const statusDiv = document.getElementById('status');
-
-    if (targetSeiten < 1 || targetSeiten > 99) {
-        statusDiv.className = 'error';
-        statusDiv.innerText = targetSeiten < 1 ? 'Mindestens 1 Seite erforderlich.' : 'Maximum 99 Seiten.';
-        statusDiv.style.display = 'block';
-        return;
-    }
-    if (targetSeiten === currentSeiten) {
-        statusDiv.className = 'error';
-        statusDiv.innerText = 'Keine Änderung – Seiten-Anzahl ist bereits ' + currentSeiten + '.';
-        statusDiv.style.display = 'block';
-        return;
-    }
-
-    if (targetSeiten > currentSeiten) {
-        const panelsProSeite = currentData.seiten && currentData.seiten.length > 0 ? currentData.seiten[0].panels.length : 7;
-        for (let s = currentSeiten + 1; s <= targetSeiten; s++) {
-            const panels = [];
-            for (let p = 1; p <= panelsProSeite; p++) {
-                panels.push({ bild: hId + '_' + s + '_P' + p + '.jpg', wide: p === 1, tall: false, format: p === 1 ? '16:9' : '1:1', locDna: '', story: '', skript: '', caption: '' });
-            }
-            currentData.seiten.push({ nummer: s, panels: panels });
+    if (target > cur) {
+        for (let p = cur + 1; p <= target; p++) {
+            seite.panels.push(makePanel(heftId, pageNum, p, false));
         }
-        const added = targetSeiten - currentSeiten;
-        updateInfoBox();
-        downloadHeft(hId);
-        statusDiv.className = 'success';
-        statusDiv.innerText = '+' + added + ' Seiten hinzugefügt. heft' + hId + '.js heruntergeladen.';
-    } else {
-        const contentLoss = [];
-        for (let s = targetSeiten; s < currentSeiten; s++) {
-            currentData.seiten[s].panels.forEach(function(p, pIdx) {
-                if (p.locDna || p.story || p.skript || p.caption) {
-                    contentLoss.push('Seite ' + (s + 1) + ' / Panel ' + (pIdx + 1));
+    } else if (target < cur) {
+        const loss = seite.panels.slice(target).filter(p => p.locDna || p.story || p.skript);
+        if (loss.length > 0) {
+            if (!confirm(`${loss.length} Panel(s) mit Inhalt werden gelöscht. Fortfahren?`)) {
+                renderAll(); return;
+            }
+        }
+        seite.panels.splice(target);
+    }
+    renderAll();
+}
+
+function addPanelToSeite(sIdx) {
+    const seite = currentData.seiten[sIdx];
+    const pageNum = seite.nummer || sIdx + 1;
+    seite.panels.push(makePanel(heftId, pageNum, seite.panels.length + 1, false));
+    renderAll();
+}
+
+function bulkSetPanels() {
+    const target = parseInt(document.getElementById('bulk-panels').value);
+    if (isNaN(target) || target < 1 || target > 20) return;
+
+    // Warnung bei Inhaltsverlust
+    const lossList = [];
+    currentData.seiten.forEach((seite, sIdx) => {
+        if (seite.panels.length > target) {
+            seite.panels.slice(target).forEach((p, pIdx) => {
+                if (p.locDna || p.story || p.skript) {
+                    lossList.push(`S${seite.nummer || sIdx + 1}/P${target + pIdx + 1}`);
                 }
             });
         }
-        if (contentLoss.length > 0) {
-            if (!confirm('ACHTUNG – Diese Panels haben Inhalt und werden GELOESCHT:\n\n' + contentLoss.join('\n') + '\n\nTrotzdem fortfahren?')) return;
-        }
-        const removed = currentSeiten - targetSeiten;
-        currentData.seiten.splice(targetSeiten, removed);
-        updateInfoBox();
-        downloadHeft(hId);
-        statusDiv.className = 'success';
-        statusDiv.innerText = '-' + removed + ' Seiten entfernt. heft' + hId + '.js heruntergeladen.';
-    }
-    statusDiv.style.display = 'block';
-});
+    });
 
-document.getElementById('processBtn').addEventListener('click', function() {
-    const hId = document.getElementById('heftIdInput').value;
-    const target = parseInt(document.getElementById('targetPanels').value);
-    const statusDiv = document.getElementById('status');
-    if (target < 1 || target > 20) {
-        statusDiv.className = 'error';
-        statusDiv.innerText = target < 1 ? 'Mindestens 1 Panel erforderlich.' : 'Maximum 20 Panels pro Seite.';
-        statusDiv.style.display = 'block';
+    if (lossList.length > 0) {
+        const warnBox = document.getElementById('warn-box');
+        warnBox.style.display = 'block';
+        warnBox.textContent = `⚠️ Inhalt wird gelöscht: ${lossList.join(', ')}`;
+        if (!confirm(`${lossList.length} Panel(s) mit Inhalt werden gelöscht:\n${lossList.join('\n')}\n\nFortfahren?`)) {
+            warnBox.style.display = 'none'; return;
+        }
+        warnBox.style.display = 'none';
+    }
+
+    currentData.seiten.forEach((seite, sIdx) => {
+        const cur = seite.panels.length;
+        const pageNum = seite.nummer || sIdx + 1;
+        if (target > cur) {
+            for (let p = cur + 1; p <= target; p++) {
+                seite.panels.push(makePanel(heftId, pageNum, p, false));
+            }
+        } else if (target < cur) {
+            seite.panels.splice(target);
+        }
+    });
+    renderAll();
+}
+
+// ── Panel-Template ────────────────────────────────────
+function makePanel(hId, sNum, pNum, isFirst) {
+    return {
+        bild:    `${hId}_${sNum}_P${pNum}.jpg`,
+        format:  isFirst ? '16:9' : '1:1',
+        wide:    isFirst,
+        tall:    false,
+        locDna:  '',
+        story:   '',
+        skript:  '',
+        caption: ''
+    };
+}
+
+// ── Export ───────────────────────────────────────────
+function buildJS() {
+    return `hefte["${heftId}"] = ${JSON.stringify(currentData, null, 2)};\n`;
+}
+
+function downloadHeft() {
+    const blob = new Blob([buildJS()], { type: 'application/javascript' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `heft${heftId}.js`;
+    a.click();
+    showToast('push-toast', `💾 heft${heftId}.js heruntergeladen.`, 'success');
+}
+
+async function pushToGitHub() {
+    const { repo, token } = ghCfg();
+    if (!repo || !token) {
+        showToast('push-toast', '⚠️ GitHub nicht konfiguriert. Bitte im Admin-Tool einrichten.', 'error');
         return;
     }
-    let added = 0, removed = 0;
-    const contentLoss = [];
-
-    currentData.seiten.forEach(function(seite, sIdx) {
-        const currentCount = seite.panels.length;
-        const pageNum = seite.nummer || (sIdx + 1);
-        if (currentCount > target) {
-            for (let i = target; i < currentCount; i++) {
-                const p = seite.panels[i];
-                if (p.locDna || p.story || p.skript || p.caption) {
-                    contentLoss.push('Seite ' + pageNum + ' / Panel ' + (i + 1));
-                }
-            }
-        }
-    });
-
-    if (contentLoss.length > 0) {
-        if (!confirm('ACHTUNG – Diese Panels haben Inhalt und werden GELOESCHT:\n\n' + contentLoss.join('\n') + '\n\nTrotzdem fortfahren?')) return;
+    showToast('push-toast', `⏳ Pushe data/heft${heftId}.js...`, 'info');
+    const ok = await ghPush(`data/heft${heftId}.js`, buildJS(), `FlexExpander: Update heft${heftId}.js`);
+    if (ok) {
+        showToast('push-toast', `✅ heft${heftId}.js → GitHub ✓ Cloudflare baut neu (~60s).`, 'success');
+    } else {
+        showToast('push-toast', '❌ Push fehlgeschlagen. Token prüfen.', 'error');
     }
+}
 
-    currentData.seiten.forEach(function(seite, sIdx) {
-        const currentCount = seite.panels.length;
-        const pageNum = seite.nummer || (sIdx + 1);
-        if (currentCount < target) {
-            for (let i = currentCount + 1; i <= target; i++) {
-                seite.panels.push({ bild: hId + '_' + pageNum + '_P' + i + '.jpg', locDna: '', story: '', skript: '', caption: '' });
-                added++;
-            }
-        } else if (currentCount > target) {
-            seite.panels.splice(target, currentCount - target);
-            removed += (currentCount - target);
-        }
-    });
-
-    updateInfoBox();
-    downloadHeft(hId);
-    statusDiv.className = 'success';
-    statusDiv.innerText = '+' + added + ' / -' + removed + ' Panels. heft' + hId + '.js heruntergeladen.';
-    statusDiv.style.display = 'block';
-});
+// ── Helpers ───────────────────────────────────────────
+function showToast(id, msg, type) {
+    const el = document.getElementById(id);
+    el.textContent = msg;
+    el.className = `toast show ${type}`;
+    if (type === 'success') setTimeout(() => el.classList.remove('show'), 4000);
+}
 </script>
 </body>
 </html>
