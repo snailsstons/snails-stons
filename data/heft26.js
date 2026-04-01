@@ -143,7 +143,9 @@ hefte["26"] = {
           "skript": "**DIALOG** Archie: „Interessant. Die Verwebung erinnert an die maurischen Kettenhemden aus dem 11. Jahrhundert. Funktion trifft Schutz.“",
           "caption": ""
         }
-      ]
+      ],
+      "members": true,
+      "level": "gold"
     },
     {
       "nummer": 16,
@@ -190,7 +192,9 @@ hefte["26"] = {
           "skript": "**DIALOG** Luna (aus dem Off): „…bis zum nächsten Mal.“",
           "caption": ""
         }
-      ]
+      ],
+      "members": true,
+      "level": "gold"
     }
   ],
   "coverStory": "Stella trägt ihr Mesh-Harness mit Stolz – doch wo kommt es eigentlich her? Ein Treffen im Café am Busbahnhof bringt sie mit Mrs. Drag zusammen, der Designerin hinter Dragons Chain. Ein Gespräch über Handwerk, Stil und die Kunst, sich in Szene zu setzen."
