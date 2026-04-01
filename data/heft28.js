@@ -193,5 +193,7 @@ hefte["28"] = {
       ]
     }
   ],
-  "coverStory": "Gurtband für Schwerlastkähne, Ketten für die Ewigkeit. Mrs. Drag präsentiert das \"Guardian\"-Dress. Stella erklärt, warum Bequemlichkeit für Amateure ist, Archie berechnet die Reißfestigkeit – und Felix lernt, dass man Edelstahl nicht kitzeln sollte."
+  "coverStory": "Gurtband für Schwerlastkähne, Ketten für die Ewigkeit. Mrs. Drag präsentiert das \"Guardian\"-Dress. Stella erklärt, warum Bequemlichkeit für Amateure ist, Archie berechnet die Reißfestigkeit – und Felix lernt, dass man Edelstahl nicht kitzeln sollte.",
+  "members": true,
+  "level": "gold"
 };
