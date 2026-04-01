@@ -23,7 +23,9 @@ window.playlistMap = [
   },
   {
     "titel": "Dragons Chain",
-    "hefte": [],
+    "hefte": [
+      27
+    ],
     "membersOnly": true
   },
   {
