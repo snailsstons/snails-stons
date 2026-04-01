@@ -22,14 +22,6 @@ window.playlistMap = [
     ]
   },
   {
-    "titel": "Dragons Chain Mrs. Drag",
-    "hefte": [
-      27,
-      28
-    ],
-    "membersOnly": true
-  },
-  {
     "titel": "🖇️ Experimente, Schmierheft",
     "hefte": [
       0
@@ -38,6 +30,14 @@ window.playlistMap = [
   {
     "titel": "⭐ Members Only",
     "hefte": [],
+    "membersOnly": true
+  },
+  {
+    "titel": "Dragons Chain Mrs. Drag",
+    "hefte": [
+      27,
+      28
+    ],
     "membersOnly": true
   }
 ];
