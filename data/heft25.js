@@ -285,7 +285,7 @@ hefte["25"] = {
         },
         {
           "bild": "25_6_P4.jpg",
-          "format": "3:5",
+          "format": "9:16",
           "wide": false,
           "tall": false,
           "locDna": "Archie, der sich ebenfalls duckte, richtet sich auf.",
@@ -333,7 +333,7 @@ hefte["25"] = {
         },
         {
           "bild": "25_7_P4.jpg",
-          "format": "3:5",
+          "format": "9:16",
           "wide": false,
           "tall": false,
           "locDna": "Felix hält sein `[ASSET: FELIX_HANDY_V1]` hoch, nimmt ein Foto der Instrumente auf.",
