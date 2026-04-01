@@ -22,6 +22,11 @@ window.playlistMap = [
     ]
   },
   {
+    "titel": "Dragons Chain",
+    "hefte": [],
+    "membersOnly": true
+  },
+  {
     "titel": "🖇️ Experimente, Schmierheft",
     "hefte": [
       0
