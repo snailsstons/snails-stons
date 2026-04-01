@@ -342,8 +342,7 @@ hefte["25"] = {
           "caption": ""
         }
       ],
-      "members": true,
-      "level": "silver"
+      "members": false
     },
     {
       "nummer": 8,
