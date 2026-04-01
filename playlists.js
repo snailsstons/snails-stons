@@ -24,7 +24,8 @@ window.playlistMap = [
   {
     "titel": "Dragons Chain",
     "hefte": [
-      27
+      27,
+      28
     ],
     "membersOnly": true
   },
