@@ -7,7 +7,7 @@ hefte["25"] = {
     {
       "nummer": 1,
       "titel": "Am Museum",
-      "akt": "AKT 1 – SETUP: Ein Haus der Erinnerung",
+      "akt": "AKT 1 – Ein Haus der Erinnerung",
       "panels": [
         {
           "bild": "25_1_P1.jpg",
@@ -59,7 +59,7 @@ hefte["25"] = {
     {
       "nummer": 2,
       "titel": "Der erste Raum",
-      "akt": "AKT 1 – SETUP: Ein Haus der Erinnerung",
+      "akt": "AKT 1 – Ein Haus der Erinnerung",
       "panels": [
         {
           "bild": "25_2_P1.jpg",
@@ -107,7 +107,7 @@ hefte["25"] = {
     {
       "nummer": 3,
       "titel": "Die Ninots",
-      "akt": "AKT 1 – SETUP: Ein Haus der Erinnerung",
+      "akt": "AKT 1 – Ein Haus der Erinnerung",
       "panels": [
         {
           "bild": "25_3_P1.jpg",
@@ -155,7 +155,7 @@ hefte["25"] = {
     {
       "nummer": 4,
       "titel": "Die Geretteten",
-      "akt": "AKT 1 – SETUP: Ein Haus der Erinnerung",
+      "akt": "AKT 1 – Ein Haus der Erinnerung",
       "panels": [
         {
           "bild": "25_4_P1.jpg",
