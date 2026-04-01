@@ -193,5 +193,7 @@ hefte["27"] = {
       ]
     }
   ],
-  "coverStory": "„Ein Harness ist kein Accessoire, es ist ein Statement.“ Mrs. Drag präsentiert höchstpersönlich das neueste Masterpiece von Dragons Chain. Zwischen technischer Brillanz und kühler Eleganz erklärt sie Stella und der Gruppe, warum Gurtband die neue Seide ist."
+  "coverStory": "„Ein Harness ist kein Accessoire, es ist ein Statement.“ Mrs. Drag präsentiert höchstpersönlich das neueste Masterpiece von Dragons Chain. Zwischen technischer Brillanz und kühler Eleganz erklärt sie Stella und der Gruppe, warum Gurtband die neue Seide ist.",
+  "members": true,
+  "level": "gold"
 };
