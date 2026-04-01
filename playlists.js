@@ -22,7 +22,7 @@ window.playlistMap = [
     ]
   },
   {
-    "titel": "Dragons Chain",
+    "titel": "Dragons Chain Mrs. Drag",
     "hefte": [
       27,
       28
