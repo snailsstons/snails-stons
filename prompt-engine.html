@@ -442,10 +442,10 @@ NEVER: No shell. No legs. No feet. No static standing pose.` },
 
                 res += `FORMAT: 9:16 vertical portrait – smartphone optimized. Comic book cover layout.\n\n`;
                 res += `Referenz Angaben zu den Charakteren sind unter "SnailsStons DNA" im Gedächtnis von Gemini hinterlegt.\n\n`;
-                team.forEach(name => res += name === 'MRS_DRAG'
-                            ? `IMAGE ${dnaPool[name].id} = MRS_DRAG – human character reference -> match exactly. She is HUMAN, NOT a snail.\n`
-                            : `IMAGE ${dnaPool[name].id} = ${name} – character reference -> match exactly.\n`);
-                if (team.length > 0) res += `IMAGE 5 = LOCATION DNA.\n`;
+                team.forEach((name, idx) => res += name === 'MRS_DRAG'
+                            ? `IMAGE ${idx + 1} = MRS_DRAG – human character reference -> match exactly. She is HUMAN, NOT a snail.\n`
+                            : `IMAGE ${idx + 1} = ${name} – character reference -> match exactly.\n`);
+                if (team.length > 0) res += `IMAGE ${team.length + 1} = LOCATION DNA.\n`;
                 res += `Do NOT invent characters. Do NOT invent locations.\n\n`;
 
                 res += `COVER CONCEPT:\n`;
@@ -485,10 +485,10 @@ NEVER: No shell. No legs. No feet. No static standing pose.` },
 
             } else {
                 res += `Referenz Angaben zu den Charakteren sind unter "SnailsStons DNA" im Gedächtnis von Gemini hinterlegt.\n\n`;
-                team.forEach(name => res += name === 'MRS_DRAG'
-                            ? `IMAGE ${dnaPool[name].id} = MRS_DRAG – human character reference -> match exactly. She is HUMAN, NOT a snail.\n`
-                            : `IMAGE ${dnaPool[name].id} = ${name} – character reference -> match exactly.\n`);
-                res += `IMAGE 5 = LOCATION DNA.\n`;
+                team.forEach((name, idx) => res += name === 'MRS_DRAG'
+                            ? `IMAGE ${idx + 1} = MRS_DRAG – human character reference -> match exactly. She is HUMAN, NOT a snail.\n`
+                            : `IMAGE ${idx + 1} = ${name} – character reference -> match exactly.\n`);
+                res += `IMAGE ${team.length + 1} = LOCATION DNA.\n`;
                 res += `Do NOT invent characters. Do NOT invent locations.\n\n`;
                 res += `TYPE: Ultra-realistic 3D CGI render, Blue Sky Studios style, hyper-detailed.\n`;
                 res += `FORMAT: ${currentAR} aspect ratio.\n`;
