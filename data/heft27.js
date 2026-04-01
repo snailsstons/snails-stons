@@ -49,7 +49,9 @@ hefte["27"] = {
           "skript": "**DIALOG** Stella: „Wollen wir sehen, ob die Ästhetik der Last standhält?“",
           "caption": ""
         }
-      ]
+      ],
+      "members": true,
+      "level": "gold"
     },
     {
       "nummer": 2,
@@ -96,7 +98,9 @@ hefte["27"] = {
           "skript": "**DIALOG** Felix: „Äh… Leute? Ich glaube, das Gurtband hat mich gerade adoptiert.“",
           "caption": ""
         }
-      ]
+      ],
+      "members": true,
+      "level": "gold"
     },
     {
       "nummer": 3,
@@ -143,7 +147,9 @@ hefte["27"] = {
           "skript": "**DIALOG** Stella: „Genug der Spielerei. Jetzt wird es ernst.“",
           "caption": ""
         }
-      ]
+      ],
+      "members": true,
+      "level": "gold"
     },
     {
       "nummer": 16,
@@ -190,8 +196,12 @@ hefte["27"] = {
           "skript": "**DIALOG** Luna (aus dem Off): „…bis zum nächsten Mal.“",
           "caption": ""
         }
-      ]
+      ],
+      "members": true,
+      "level": "gold"
     }
   ],
-  "coverStory": "Ein Harness ist kein Kleidungsstück, es ist eine Entscheidung. Stella präsentiert das neueste Werk von Mrs. Drag: Eine Symbiose aus industriellem Gurtband und kaltem Stahl. Archie analysiert, Felix verzweifelt am Verschluss – und Stella genießt die schwere Eleganz."
+  "coverStory": "Ein Harness ist kein Kleidungsstück, es ist eine Entscheidung. Stella präsentiert das neueste Werk von Mrs. Drag: Eine Symbiose aus industriellem Gurtband und kaltem Stahl. Archie analysiert, Felix verzweifelt am Verschluss – und Stella genießt die schwere Eleganz.",
+  "members": true,
+  "level": "gold"
 };
