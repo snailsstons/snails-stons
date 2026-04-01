@@ -21,7 +21,7 @@ hefte["26"] = {
         },
         {
           "bild": "26_1_P2.jpg",
-          "format": "1:1",
+          "format": "3:5",
           "wide": false,
           "tall": false,
           "locDna": "Nahaufnahme Stella vor der Glastür. Man sieht ihr Spiegelbild in der Scheibe.",
@@ -31,7 +31,7 @@ hefte["26"] = {
         },
         {
           "bild": "26_1_P3.jpg",
-          "format": "1:1",
+          "format": "3:5",
           "wide": false,
           "tall": false,
           "locDna": "Blick ins Innere des Cafés. An einem runden Marmortisch sitzt eine elegante Gestalt (Mrs. Drag), die einen Espresso trinkt.",
@@ -88,7 +88,7 @@ hefte["26"] = {
         },
         {
           "bild": "26_2_P4.jpg",
-          "format": "16:9",
+          "format": "9:16",
           "wide": true,
           "tall": false,
           "locDna": "Mrs. Drag rollt langsam die Skizzenrolle auf dem Tisch aus. Man sieht komplexe Entwürfe für ein neues, noch filigraneres Harness.",
