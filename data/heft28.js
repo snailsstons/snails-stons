@@ -1,22 +1,22 @@
 hefte["28"] = {
   "titel": "Die Architektur des Halts",
-  "teaser": "Gurtband für Schwerlastkähne, Ketten für die Ewigkeit. Mrs. Drag präsentiert das \"Guardian\"-Dress. Stella erklärt, warum Bequemlichkeit für Amateure ist, Archie berechnet die Reißfestigkeit – und Felix lernt, dass man Edelstahl nicht kitzeln sollte.",
+  "teaser": "„Ein Harness ist kein Accessoire, es ist ein Versprechen.“ Mrs. Drag präsentiert das „Guardian“-Dress. Eine exklusive Materialstudie über industrielles Gurtband, Edelstahl und die Kunst der absoluten Kontrolle. Willkommen in der Welt von Dragons Chain.",
   "released": true,
   "cover": "cover.jpg",
   "seiten": [
     {
       "nummer": 1,
-      "titel": "Die neue Strenge",
-      "akt": "AKT 1 – SETUP: Materialschlacht im Atelier",
+      "titel": "Das Spotlight",
+      "akt": "AKT 1 – SETUP: Die Manifestation",
       "panels": [
         {
           "bild": "28_1_P1.jpg",
-          "format": "9:16",
+          "format": "16:9",
           "wide": true,
           "tall": false,
-          "locDna": "Stellas Atelier in Gandia. Mrs. Drag gleitet ins Scheinwerferlicht, sie trägt das neue \"Guardian\"-Dress [ASSET: GUARDIAN_DRESS_V1]. Das Gurtband ist tiefschwarz, die Ketten werfen harte Reflexe an die Betonwand.",
-          "story": "Die Gruppe steht im Halbkreis. Stella fixiert das Gurtband-Kreuz auf Mrs. Drags Rücken. Ihre Antennen vibrieren vor kühler Begeisterung.",
-          "skript": "**DIALOG** Mrs. Drag: „Vergessen Sie Spitze. Das hier ist 40mm Sicherheitsgurtband. Bruchlast: Zwei Tonnen Snails.“",
+          "locDna": "Ein steriles High-Fashion-Studio in Gandia. Polierter Sichtbetonboden, harter weißer LED-Spot von oben `[ASSET: ATELIER_SPOTLIGHT_V1]`. Der Hintergrund ist tiefschwarz.",
+          "story": "Mrs. Drag gleitet majestätisch in den Lichtkegel. Sie trägt das „Guardian“-Dress [ASSET: GUARDIAN_DRESS_V1]. Die Edelstahlketten werfen scharfe Lichtblitze an die Wände.",
+          "skript": "**DIALOG** Mrs. Drag: „Guten Morgen. Vergessen Sie alles, was Sie über Bequemlichkeit zu wissen glaubten. Das hier ist Disziplin.“",
           "caption": ""
         },
         {
@@ -24,9 +24,9 @@ hefte["28"] = {
           "format": "1:1",
           "wide": false,
           "tall": false,
-          "locDna": "Nahaufnahme der Rückenpartie. Man sieht die präzisen, quadratischen Sicherheitsnähte (Box-Stitch), die das Gurtband an den Kreuzungspunkten fixieren.",
-          "story": "Archie haftet so nah am Material, dass er fast die Textur schmeckt.",
-          "skript": "**DIALOG** Archie: „Industriestandard. Polyester, thermisch fixiert. Dehnung unter 3%. Ein Harness für die Ewigkeit – oder den nächsten Orkan.“",
+          "locDna": "Nahaufnahme ihres Gesichts. Ihr Blick ist kühl, professionell und durchdringend.",
+          "story": "Sie hebt eine Antenne leicht an, während sie den Leser direkt fixiert.",
+          "skript": "**DIALOG** Mrs. Drag: „Ich bin Mrs. Drag. Und das hier ist die Architektur des Halts.“",
           "caption": ""
         },
         {
@@ -34,9 +34,9 @@ hefte["28"] = {
           "format": "1:1",
           "wide": false,
           "tall": false,
-          "locDna": "Felix blickt skeptisch auf die massiven Edelstahlketten, die von den Schultern herabhängen.",
-          "story": "Er stupst ein Kettenglied an, das mit einem schweren Klong gegen ein anderes schlägt.",
-          "skript": "**DIALOG** Felix: „Ist das nicht furchtbar schwer? Da gleitet man doch wie ein Stein mit Bremsfallschirm!“",
+          "locDna": "Detailaufnahme der Schulterpartie. Das schwarze Gurtband spannt sich straff über ihre beige-olive Haut.",
+          "story": "Sie bewegt ihren Oberkörper minimal, um die Unnachgiebigkeit des Materials zu demonstrieren.",
+          "skript": "**DIALOG** Mrs. Drag: „40mm Schwerlast-Gurtband. Polyester, thermisch fixiert. Es gibt nicht nach. Niemals.“",
           "caption": ""
         },
         {
@@ -44,26 +44,26 @@ hefte["28"] = {
           "format": "16:9",
           "wide": true,
           "tall": false,
-          "locDna": "Mrs. Drag dreht sich langsam um die eigene Achse. Das Klirren der Ketten ist das einzige Geräusch im Raum.",
-          "story": "Sie blickt Felix direkt in die Augen. Ihr Lächeln ist so scharf wie der Stahl an ihrer Flanke.",
-          "skript": "**DIALOG** Mrs. Drag: „Gewicht ist kein Hindernis, Felix. Es ist Erdung. Wer nichts spürt, hat keine Haltung.“",
+          "locDna": "Mrs. Drag dreht sich langsam um 180 Grad. Das markante Gurtband-Kreuz auf ihrem Rücken wird voll sichtbar.",
+          "story": "Das rhythmische Klirren der Ketten bricht die Stille des Studios.",
+          "skript": "**BILDTEXT:** (Ein sattes, metallisches Echo in der Leere des Raums)",
           "caption": ""
         }
       ]
     },
     {
       "nummer": 2,
-      "titel": "Anatomie aus Stahl",
-      "akt": "AKT 1 – SETUP: Materialschlacht im Atelier",
+      "titel": "Die harten Fakten",
+      "akt": "AKT 1 – SETUP: Die Manifestation",
       "panels": [
         {
           "bild": "28_2_P1.jpg",
           "format": "16:9",
           "wide": true,
           "tall": false,
-          "locDna": "Detailaufnahme der Frontpartie. Ein massiver, zentraler O-Ring aus gebürstetem Edelstahl hält die vertikalen Gurtbänder zusammen. Von ihm gehen feine, aber massive Kettenstränge aus.",
-          "story": "Stella führt eine Antenne entlang der Kettenglieder.",
-          "skript": "**DIALOG** Stella: „Siehst du die Schweißnähte an den Gliedern, Archie? Keine Schwachstellen. Absolute Disziplin in Metall.“",
+          "locDna": "Makro-Aufnahme der Rückenpartie. Die Kamera fokussiert auf die quadratischen Sicherheitsnähte (Box-Stitch), die das Gurtband fixieren.",
+          "story": "Mrs. Drag deutet mit einer Fühlerspitze auf die präzisen Stiche.",
+          "skript": "**DIALOG** Mrs. Drag: „Industriestandard. Bruchlast: Zwei Tonnen. Wer dieses Dress trägt, besitzt seinen Raum. Er besetzt ihn nicht nur.“",
           "caption": ""
         },
         {
@@ -71,9 +71,9 @@ hefte["28"] = {
           "format": "3:5",
           "wide": false,
           "tall": false,
-          "locDna": "Archie nippt an seinem Martini [ASSET: ARCHIE_MARTINI_V1], während er die seitlichen Karabinerhaken analysiert.",
-          "story": "Er wirkt fast berauscht von der technischen Redundanz des Dress.",
-          "skript": "**DIALOG** Archie: „V4A-Edelstahl, Stella. Rostfrei, säurebeständig, antimagnetisch. Falls du jemals von einem Riesenmagneten entführt wirst, bleibt wenigstens dein Harness am Boden.“",
+          "locDna": "Seitenansicht. Die Edelstahlketten hängen in perfekter Symmetrie von den Riemen herab.",
+          "story": "Sie lässt eine Kette durch ihre Fühlerspitzen gleiten. Das Metall glänzt kalt.",
+          "skript": "**DIALOG** Mrs. Drag: „V4A-Edelstahl. Säurebeständig. Salzwasserfest. Diese Ketten sind das Echo Ihrer Präsenz.“",
           "caption": ""
         },
         {
@@ -81,9 +81,9 @@ hefte["28"] = {
           "format": "3:5",
           "wide": false,
           "tall": false,
-          "locDna": "Stella wirft Archie einen trockenen Blick zu.",
-          "story": "Sie strafft ihren Oberkörper, das Licht bricht sich in ihren Augen.",
-          "skript": "**DIALOG** Stella: „Dein Sarkasmus ist fast so billig wie ein Klettverschluss, Archie. Das hier ist Kunst am Widerstand.“",
+          "locDna": "Frontalansicht. Der zentrale O-Ring bündelt die gesamte Spannung des Dress.",
+          "story": "Mrs. Drag strafft ihren Körper, wodurch die Ringe lautstark gegen die Schnallen schlagen.",
+          "skript": "**DIALOG** Mrs. Drag: „Ein Dragons Chain Harness korrigiert nicht nur Ihre Haltung. Es definiert sie neu.“",
           "caption": ""
         },
         {
@@ -91,26 +91,26 @@ hefte["28"] = {
           "format": "16:9",
           "wide": true,
           "tall": false,
-          "locDna": "Felix hat am Boden ein Reststück des Gurtbands gefunden und versucht, es mit den Zähnen zu zerreißen.",
-          "story": "Mrs. Drag beobachtet ihn mit herablassender Neugier, während sie einen massiven Schnappverschluss mit einem lauten Klack schließt.",
-          "skript": "**DIALOG** Mrs. Drag: „Versuch es ruhig, Felix. Die Fasern wurden für die Schifffahrt entwickelt. Dein Kiefer eher für Salat.“",
+          "locDna": "Mrs. Drag gleitet direkt auf die Kamera zu, bis ihr Gesicht das Bild fast ausfüllt.",
+          "story": "Ein scharfes, überlegenes Lächeln huscht über ihre Züge.",
+          "skript": "**DIALOG** Mrs. Drag: „Sind Sie bereit, das Gewicht der Würde zu tragen?“",
           "caption": ""
         }
       ]
     },
     {
       "nummer": 3,
-      "titel": "Das Gewicht der Würde",
-      "akt": "AKT 1 – SETUP: Materialschlacht im Atelier",
+      "titel": "Das Versprechen der Form",
+      "akt": "AKT 1 – SETUP: Die Manifestation",
       "panels": [
         {
           "bild": "28_3_P1.jpg",
           "format": "16:9",
           "wide": true,
           "tall": false,
-          "locDna": "Mrs. Drag demonstriert die Beweglichkeit im Dress. Trotz der schweren Ketten gleitet sie flüssig über den Beton.",
-          "story": "Die Ketten schwingen synchron zu ihrer Gleitbewegung. Ein metallischer Rhythmus erfüllt den Raum.",
-          "skript": "**BILDTEXT:** (Das schwere, dominante Klirren von Edelstahl auf Stein)",
+          "locDna": "Mrs. Drag gleitet in einer fließenden Achterbahn-Bewegung über den Runway. Die Ketten schwingen synchron.",
+          "story": "Die Bewegung wirkt trotz der schweren Ausrüstung absolut mühelos und elegant.",
+          "skript": "**BILDTEXT:** (Das dominante Klirren von Edelstahl auf Stein erfüllt das Studio)",
           "caption": ""
         },
         {
@@ -118,9 +118,9 @@ hefte["28"] = {
           "format": "1:1",
           "wide": false,
           "tall": false,
-          "locDna": "Nahaufnahme Felix, der sichtlich frustriert von dem unzerstörbaren Gurtband ist.",
-          "story": "Seine Antennen hängen schlaff zur Seite.",
-          "skript": "**DIALOG** Felix: „Das Zeug ist gemein. Es gibt gar nicht nach. Nicht mal einen Millimeter!“",
+          "locDna": "Detailaufnahme eines massiven Schnappverschlusses an ihrer Flanke.",
+          "story": "Sie öffnet und schließt ihn mit einem lauten, mechanischen *Klack*.",
+          "skript": "**DIALOG** Mrs. Drag: „Hören Sie das? Das ist das Geräusch von Sicherheit. Von Form, die keine Kompromisse macht.“",
           "caption": ""
         },
         {
@@ -128,9 +128,9 @@ hefte["28"] = {
           "format": "1:1",
           "wide": false,
           "tall": false,
-          "locDna": "Luna gleitet lautlos zwischen Mrs. Drag und Felix.",
-          "story": "Sie legt eine Antenne auf das Gurtband und lächelt Felix sanft an.",
-          "skript": "**DIALOG** Stella (Off): „Es gibt nicht nach, Felix, weil es dich führen soll. Ein Harness ist ein Versprechen, kein Kompromiss.“",
+          "locDna": "Mrs. Drag blickt über ihre Schulter zurück zur Kamera. Ihr Stolz ist beinahe greifbar.",
+          "story": "Das Licht der Spots bricht sich in den Edelstahlringen an ihrem Hals.",
+          "skript": "**DIALOG** Mrs. Drag: „Man trägt einen Guardian nicht für die anderen. Man trägt ihn für sich selbst.“",
           "caption": ""
         },
         {
@@ -138,26 +138,26 @@ hefte["28"] = {
           "format": "16:9",
           "wide": true,
           "tall": false,
-          "locDna": "Mrs. Drag öffnet eine der massiven Schnallen und hält das Dress Stella entgegen.",
-          "story": "Ein Moment der stillen Übergabe. Der Edelstahl glänzt im kalten Licht.",
-          "skript": "**DIALOG** Mrs. Drag: „Stella, zieh es an. Spür die Architektur. Werde zum Guardian deiner eigenen Ästhetik.“",
+          "locDna": "Sie hält ein zweites „Guardian“-Dress in den Fühlern und präsentiert es dem Betrachter wie ein wertvolles Artefakt.",
+          "story": "Der Edelstahl glänzt im harten Studiolicht.",
+          "skript": "**DIALOG** Mrs. Drag: „Wählen Sie Dragons Chain. Wählen Sie die Architektur des Halts.“",
           "caption": ""
         }
       ]
     },
     {
       "nummer": 16,
-      "titel": "Ende",
-      "akt": "AKT 1 – SETUP: Materialschlacht im Atelier",
+      "titel": "Finale",
+      "akt": "AKT 1 – SETUP: Die Manifestation",
       "panels": [
         {
           "bild": "28_16_P1.jpg",
           "format": "16:9",
           "wide": true,
           "tall": false,
-          "locDna": "Außenansicht des Ateliers. Die Nacht über Gandia ist kühl. Das Logo von Dragons Chain leuchtet blau an der Wand.",
-          "story": "Die Gruppe gleitet nach draußen. Stella trägt das neue Guardian-Dress. Das Klirren der Ketten ist noch in der nächsten Querstraße zu hören.",
-          "skript": "**BILDTEXT:** (Das Echo von Stahl auf Asphalt, die Stadt schläft)",
+          "locDna": "Mrs. Drag gleitet aus dem Lichtkegel zurück in die Dunkelheit des Ateliers. Nur ihre Silhouette ist noch sichtbar.",
+          "story": "Die Ketten klirren ein letztes Mal, leiser werdend.",
+          "skript": "**BILDTEXT:** (Das Echo der Ketten verhallt in der Dunkelheit)",
           "caption": ""
         },
         {
@@ -165,9 +165,9 @@ hefte["28"] = {
           "format": "1:1",
           "wide": false,
           "tall": false,
-          "locDna": "Felix macht ein letztes Foto von Stella. Das Gurtband bildet ein markantes 'X' auf ihrem Rücken.",
-          "story": "Stella blickt nicht zurück. Ihr Stolz ist beinahe greifbar.",
-          "skript": "**DIALOG** Felix: „Sieht verdammt gefährlich aus. Wie eine Schnecke, die ihre eigene Burg bewacht.“",
+          "locDna": "Nahaufnahme des Dragons Chain Logos an der Wand, das nun langsam verblasst.",
+          "story": "Mrs. Drags Stimme klingt aus dem Off, ruhig und autoritär.",
+          "skript": "**DIALOG** Mrs. Drag: „Weil Haltung kein Zufall ist.“",
           "caption": ""
         },
         {
@@ -175,9 +175,9 @@ hefte["28"] = {
           "format": "1:1",
           "wide": false,
           "tall": false,
-          "locDna": "Stella antwortet, ohne stehen zu bleiben.",
-          "story": "Ihre Stimme ist ruhig und resonant.",
-          "skript": "**DIALOG** Stella: „Nicht bewachen, Felix. Besitzen. Ich besitze den Raum, durch den ich gleite.“",
+          "locDna": "Ein letzter Blick auf den leeren, beleuchteten Runway.",
+          "story": "Die Szene wirkt wie ein stillgelegtes Denkmal.",
+          "skript": "**BILDTEXT:** (Absolute Stille)",
           "caption": ""
         },
         {
@@ -185,15 +185,13 @@ hefte["28"] = {
           "format": "9:16",
           "wide": false,
           "tall": true,
-          "locDna": "Vertikale Totale der leeren Avinguda. Die Gruppe gleitet in die Ferne, Stella leuchtet durch die Reflexionen der Ketten. Hoch oben auf einer verrosteten Straßenlaterne funkeln zwei bernsteinfarbene Fühler.",
-          "story": "Salome beobachtet den Aufzug der \"Gurtband-Kriegerin\". Ein kurzes Zittern ihrer Antennen, dann verlischt ihr Glanz.",
+          "locDna": "Epische vertikale Totale des dunklen Ateliers. Ganz oben unter der Decke, auf einer Lüftungsleitung, leuchten zwei bernsteinfarbene Fühler auf.",
+          "story": "Salome hat die gesamte Präsentation lautlos beobachtet. Ein kurzes Funkeln, dann verschwindet sie.",
           "skript": "**DIALOG** Luna (aus dem Off): „…bis zum nächsten Mal.“",
           "caption": ""
         }
       ]
     }
   ],
-  "coverStory": "Gurtband für Schwerlastkähne, Ketten für die Ewigkeit. Mrs. Drag präsentiert das \"Guardian\"-Dress. Stella erklärt, warum Bequemlichkeit für Amateure ist, Archie berechnet die Reißfestigkeit – und Felix lernt, dass man Edelstahl nicht kitzeln sollte.",
-  "members": true,
-  "level": "gold"
+  "coverStory": "„Ein Harness ist kein Accessoire, es ist ein Versprechen.“ Mrs. Drag präsentiert das „Guardian“-Dress. Eine exklusive Materialstudie über industrielles Gurtband, Edelstahl und die Kunst der absoluten Kontrolle. Willkommen in der Welt von Dragons Chain."
 };
