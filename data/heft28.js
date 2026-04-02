@@ -193,5 +193,7 @@ hefte["28"] = {
       ]
     }
   ],
-  "coverStory": "„Ein Harness ist kein Accessoire, es ist ein Versprechen.“ Mrs. Drag präsentiert das „Guardian“-Dress. Eine exklusive Materialstudie über industrielles Gurtband, Edelstahl und die Kunst der absoluten Kontrolle. Willkommen in der Welt von Dragons Chain."
+  "coverStory": "„Ein Harness ist kein Accessoire, es ist ein Versprechen.“ Mrs. Drag präsentiert das „Guardian“-Dress. Eine exklusive Materialstudie über industrielles Gurtband, Edelstahl und die Kunst der absoluten Kontrolle. Willkommen in der Welt von Dragons Chain.",
+  "members": true,
+  "level": "gold"
 };
