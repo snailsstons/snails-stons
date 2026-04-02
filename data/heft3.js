@@ -757,5 +757,7 @@ hefte["3"] = {
       ]
     }
   ],
-  "coverStory": "Nach langer Wanderung erreichen die vier Schnecken endlich die Stadt Gandia. Strand, Hafen, Markthalle und die geheimnisvollen Gassen der Altstadt warten auf sie. Felix will alles fotografieren, Stella sucht nach dem perfekten Licht, Archie doziert über die Geschichte – und Luna genießt die Stille an den alten Mauern."
+  "coverStory": "Nach langer Wanderung erreichen die vier Schnecken endlich die Stadt Gandia. Strand, Hafen, Markthalle und die geheimnisvollen Gassen der Altstadt warten auf sie. Felix will alles fotografieren, Stella sucht nach dem perfekten Licht, Archie doziert über die Geschichte – und Luna genießt die Stille an den alten Mauern.",
+  "members": true,
+  "level": "gold"
 };
