@@ -11,7 +11,7 @@ hefte["28"] = {
       "panels": [
         {
           "bild": "28_1_P1.jpg",
-          "format": "16:9",
+          "format": "9:16",
           "wide": true,
           "tall": false,
           "locDna": "Stellas Atelier in Gandia. Mrs. Drag gleitet ins Scheinwerferlicht, sie trägt das neue \"Guardian\"-Dress [ASSET: GUARDIAN_DRESS_V1]. Das Gurtband ist tiefschwarz, die Ketten werfen harte Reflexe an die Betonwand.",
