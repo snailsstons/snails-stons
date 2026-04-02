@@ -1,5 +1,3 @@
-Heft 28 – Die Architektur des Halts
-
 Das Licht im Atelier in Gandia war unbarmherzig. Es war dieses klinische, weiße LED-Licht, das keine Fehler verzieh und jede Pore der beige-oliven Schneckenhaut betonte. Inmitten dieses künstlichen Tageslichts stand Mrs. Drag, die Schöpferin hinter *Dragons Chain*, und sie glitt nicht einfach – sie inszenierte ihren Einzug.
 
 Sie trug das neue „Guardian“-Dress. Das tiefe Schwarz des Gurtbands absorbierte das Licht, während die schweren Edelstahlketten, die von ihren Schultern herabhangen, es in aggressiven Blitzen zurückwarfen.
