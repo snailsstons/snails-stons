@@ -39,3 +39,27 @@ Luna schloss im sanften Schaukeln des Busses wieder die Augen. Ihr Lächeln war 
 Hoch oben auf einem der Masten am Straßenrand funkelten zwei bernsteinfarbene Fühler im Vorbeifahren. Salome beobachtete den Bus. Ein kurzes Funkeln, dann verschwand sie in der Dunkelheit der aufziehenden Nacht.
 
 *„…bis zum nächsten Mal“*, flüsterte der Wind durch die Reisfelder der Marjal.
+
+
+# Quellenangaben & Locations: Heft 15 – Der Weg nach Valencia (und zurück)
+
+### 1. Café am Busbahnhof (Startpunkt)
+* **Ort:** Avinguda del Marqués de Campo, Gandia.
+* **Realer Hintergrund:** Das Viertel rund um den Bahnhof *Estació Intermodal de Gandia*. Hier starten die gelben ALSA-Busse und die Vorortzüge (Cercanías) Richtung Valencia. Die typischen Cafés mit Marmortischen und spanischen Fliesen prägen das Bild dieser Allee.
+
+### 2. Reisfelder der Marjal
+* **Ort:** Parque Natural de la Marjal de Pego-Oliva.
+* **Realer Hintergrund:** Ein ökologisch wertvolles Feuchtgebiet zwischen den Städten Oliva und Pego. Die Kanäle und Reisfelder sind Teil eines jahrtausendealten Bewässerungssystems, das maßgeblich die lokale Landwirtschaft und das Landschaftsbild prägt.
+
+### 3. Castell de Santa Anna
+* **Ort:** Oliva, Valencia.
+* **Realer Hintergrund:** Eine Festungsruine aus dem 16. Jahrhundert auf einem strategischen Hügel über der Altstadt von Oliva. Das Kastell bietet den im Roman beschriebenen Panoramablick über die Küstenlinie und die Reisfelder bis hinunter zum Meer.
+
+### 4. Font Salada (Thermalquelle)
+* **Ort:** Naturpark Marjal de Pego-Oliva.
+* **Realer Hintergrund:** Auch bekannt unter dem Namen *Ullal de la Font Salada*. Eine natürliche Quelle, deren Wasser aufgrund unterirdischer Thermalaktivität das ganze Jahr über eine konstante Temperatur von ca. 23 °C hält. Das Wasser ist leicht salzhaltig und für seine heilende Wirkung bekannt.
+
+### 5. Bushaltestelle Oliva (Endpunkt)
+* **Ort:** Stadtzentrum von Oliva, Hauptstraße (N-332).
+* **Realer Hintergrund:** Die zentrale Haltestelle für die Fernbusverbindungen an der Mittelmeerküste. Von hier aus verkehren die Busse im 17-Minuten-Takt zurück nach Gandia, womit sich der Kreis der Reise im Storyboard schließt.
+* 
