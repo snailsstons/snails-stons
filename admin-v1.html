@@ -117,6 +117,16 @@
         </h2>
         <div class="grid" style="grid-template-columns: 80px 1fr;">
             <div><label>ID</label><input type="text" id="h-id" readonly></div>
+            <div><label>Typ</label>
+                <select id="h-typ" oninput="updateMeta()" style="width:100%;padding:8px;background:#000;border:1px solid #333;color:var(--gold);border-radius:8px;font-weight:700;font-size:0.85rem;">
+                    <option value="">Heft (Standard)</option>
+                    <option value="Sonderheft">Sonderheft</option>
+                    <option value="Fanheft">Fanheft</option>
+                    <option value="Short">Short</option>
+                    <option value="Spezial">Spezial</option>
+                    <option value="Schmierheft">Schmierheft</option>
+                </select>
+            </div>
             <div><label>Titel</label><input type="text" id="h-titel" oninput="updateMeta()"></div>
         </div>
         <div style="margin-top:15px;">
@@ -315,6 +325,7 @@
         document.getElementById('h-id').value = id;
         document.getElementById('h-titel').value = h.titel || '';
         document.getElementById('h-teaser').value = h.teaser || '';
+        document.getElementById('h-typ').value = h.typ || '';
         
         const heftLvl = h.members ? (h.level || 'bronze') : 'free';
         document.getElementById('heft-lock-btn').value = heftLvl;
@@ -647,6 +658,7 @@
         h.titel = document.getElementById('h-titel').value;
         h.teaser = document.getElementById('h-teaser').value;
         h.coverStory = h.teaser;
+        h.typ = document.getElementById('h-typ').value;
         saveLocal();
     }
 
