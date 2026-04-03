@@ -8,46 +8,78 @@ hefte["0"] = {
   "coverStory": "Ehemalige YouTube Videos",
   "seiten": [
     {
-      "nummer": 1,
+      "nummer": 2,
+      "titel": "",
+      "akt": "",
       "panels": [
         {
-          "bild": "0_1_P1.jpg",
+          "bild": "0_2_P1.jpg",
+          "format": "16:9",
           "wide": true,
           "tall": false,
-          "format": "16:9",
           "locDna": "",
           "story": "",
           "skript": "",
-          "caption": "",
-          "members": false,
-          "bonus": false
+          "caption": ""
         },
         {
-          "bild": "0_1_P2.jpg",
+          "bild": "0_2_P2.jpg",
+          "format": "1:1",
+          "wide": false,
+          "tall": false,
           "locDna": "",
           "story": "",
           "skript": "",
-          "caption": "",
-          "members": false,
-          "bonus": false
+          "caption": ""
         },
         {
-          "bild": "0_1_P3.jpg",
+          "bild": "0_2_P3.jpg",
+          "format": "1:1",
+          "wide": false,
+          "tall": false,
           "locDna": "",
           "story": "",
           "skript": "",
-          "caption": "",
-          "members": false,
-          "bonus": false,
-          "werbung": {
-            "bild": "0_1_P0.jpg",
-            "link": "https://despistecafe.es/cafeteria/estacion-de-gandia/",
-            "alt": "Cafe am Busbahnhof Gandía"
-          },
-          "makingOf": "Die Aussichten auf das was Euch Mrs. Drag noch zeigen wird, wird cool ..."
+          "caption": ""
         }
-      ],
-      "members": false
+      ]
+    },
+    {
+      "nummer": 3,
+      "titel": "",
+      "akt": "",
+      "panels": [
+        {
+          "bild": "0_3_P1.jpg",
+          "format": "16:9",
+          "wide": true,
+          "tall": false,
+          "locDna": "",
+          "story": "",
+          "skript": "",
+          "caption": ""
+        },
+        {
+          "bild": "0_3_P2.jpg",
+          "format": "1:1",
+          "wide": false,
+          "tall": false,
+          "locDna": "",
+          "story": "",
+          "skript": "",
+          "caption": ""
+        },
+        {
+          "bild": "0_3_P3.jpg",
+          "format": "1:1",
+          "wide": false,
+          "tall": false,
+          "locDna": "",
+          "story": "",
+          "skript": "",
+          "caption": ""
+        }
+      ]
     }
   ],
   "members": false,
