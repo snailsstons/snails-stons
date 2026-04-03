@@ -31,16 +31,6 @@ hefte["0"] = {
           "story": "",
           "skript": "",
           "caption": ""
-        },
-        {
-          "bild": "0_2_P3.jpg",
-          "format": "1:1",
-          "wide": false,
-          "tall": false,
-          "locDna": "",
-          "story": "",
-          "skript": "",
-          "caption": ""
         }
       ]
     },
@@ -61,16 +51,6 @@ hefte["0"] = {
         },
         {
           "bild": "0_3_P2.jpg",
-          "format": "1:1",
-          "wide": false,
-          "tall": false,
-          "locDna": "",
-          "story": "",
-          "skript": "",
-          "caption": ""
-        },
-        {
-          "bild": "0_3_P3.jpg",
           "format": "1:1",
           "wide": false,
           "tall": false,
