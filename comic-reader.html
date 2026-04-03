@@ -587,9 +587,9 @@
         window.hefte = window.hefte || {};
 
         function getHeftLabel(id, data) {
+            if (data && data.typ) return `${data.typ.toUpperCase()} ${id}`;
             if (id === '0') return '✏️ SCHMIERHEFT';
-            const typ = data && data.typ ? data.typ.toUpperCase() : 'HEFT';
-            return `${typ} ${id}`;
+            return `HEFT ${id}`;
         }
 
         const pUrl = new URLSearchParams(window.location.search);
