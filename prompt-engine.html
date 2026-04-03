@@ -190,7 +190,7 @@ NEVER: No shell. No legs. No feet. No static standing pose.` },
                 if (bestLoc)   document.getElementById('loc-dna-in').value = bestLoc;
                 initialAR = '9:16';
             } else {
-                document.getElementById('display-status').innerText = `${getHeftLabel(heftId, heftData)} | SEITE ${sNum} | P${pNum}`;
+                // label wird nach heftData-Deklaration gesetzt
             }
 
             const cl = document.getElementById('crew-list');
@@ -230,6 +230,7 @@ NEVER: No shell. No legs. No feet. No static standing pose.` },
             const heftData = (typeof hefte !== 'undefined') ? hefte[heftId] : null;
 
             if(type !== 'cover') {
+                document.getElementById('display-status').innerText = `${getHeftLabel(heftId, heftData)} | SEITE ${sNum} | P${pNum}`;
                 let panelCount = 7; 
                 if (heftData && heftData.seiten) {
                     const pageObj = heftData.seiten.find(pg => pg.nummer == sNum || heftData.seiten.indexOf(pg) + 1 == sNum);
