@@ -586,6 +586,12 @@
     <script>
         window.hefte = window.hefte || {};
 
+        function getHeftLabel(id, data) {
+            if (id === '0') return '✏️ SCHMIERHEFT';
+            const typ = data && data.typ ? data.typ.toUpperCase() : 'HEFT';
+            return `${typ} ${id}`;
+        }
+
         const pUrl = new URLSearchParams(window.location.search);
         
         const LEVEL_RANK = { 'bronze': 1, 'silver': 2, 'gold': 3 };
@@ -629,7 +635,7 @@
             const seite = currentData.seiten[pageIndex];
             const firstPanel = seite.panels[0];
 
-            const heftLabel = HEFT_ID === '0' ? '✏️ SCHMIERHEFT' : `HEFT ${HEFT_ID}`; 
+            const heftLabel = getHeftLabel(HEFT_ID, currentData);
             document.getElementById('modal-heft-label').innerText = `${heftLabel}  ·  SEITE ${pageIndex + 1} VON ${currentData.seiten.length}`;
             document.getElementById('modal-page-title').innerText = currentData.titel || 'Die Legende';
 
@@ -666,7 +672,7 @@
             const romanUrl = `heft${HEFT_ID}/roman_${HEFT_ID}.md?nc=` + Date.now();
 
             const modal = document.getElementById('roman-modal');
-            document.getElementById('roman-label').innerText = `HEFT ${HEFT_ID} · ZUR GESCHICHTE`;
+            document.getElementById('roman-label').innerText = `${getHeftLabel(HEFT_ID, currentData)} · ZUR GESCHICHTE`;
             document.getElementById('roman-title').innerText =
                 (currentData && currentData.titel) ? currentData.titel : 'Roman';
             document.getElementById('roman-body').innerHTML =
@@ -882,7 +888,7 @@
                 container.appendChild(slide);
             });
 
-            document.getElementById('info-display').innerText = `HEFT ${HEFT_ID} | SEITE 1 von ${currentData.seiten.length}`;
+            document.getElementById('info-display').innerText = `${getHeftLabel(HEFT_ID, currentData)} | SEITE 1 von ${currentData.seiten.length}`;
             const s0 = currentData.seiten[0];
             const titelEl0 = document.getElementById('seite-titel');
             if (titelEl0) {
@@ -923,7 +929,7 @@
                 const curIndex = Math.round(container.scrollLeft / window.innerWidth);
                 currentPageIndex = curIndex;
                 if(currentData.seiten[curIndex]) {
-                    document.getElementById('info-display').innerText = `HEFT ${HEFT_ID} | SEITE ${curIndex + 1} von ${currentData.seiten.length}`;
+                    document.getElementById('info-display').innerText = `${getHeftLabel(HEFT_ID, currentData)} | SEITE ${curIndex + 1} von ${currentData.seiten.length}`;
                     const s = currentData.seiten[curIndex];
                     const titelEl = document.getElementById('seite-titel');
                     if (titelEl) {
@@ -1073,7 +1079,7 @@
             <div style="font-family:'Playfair Display',serif;color:var(--gold);font-size:1.1rem;font-weight:900;">🎨 PANEL PROMPT</div>
             <button onclick="closePromptModal()" style="background:none;border:none;color:#888;font-size:1.5rem;cursor:pointer;">✕</button>
         </div>
-        <div style="font-size:0.6rem;color:#555;margin-bottom:12px;letter-spacing:1px;text-transform:uppercase;">🥇 Gold Members – Experimentiere und sende deine Ergebnisse an SnailsStons@gmail.com</div>
+        <div style="font-size:0.6rem;color:#555;margin-bottom:12px;letter-spacing:1px;text-transform:uppercase;">🥇 Gold Members – Experimentiere und sende deine Ergebnisse an <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="a8fbc6c9c1c4dbfbdcc7c6dbe8cfc5c9c1c486cbc7c5">[email&#160;protected]</a></div>
         <div id="prompt-content" style="background:#0a0a0a;border:1px solid #333;border-radius:10px;padding:15px;font-family:monospace;font-size:0.7rem;color:#ccc;line-height:1.6;white-space:pre-wrap;word-break:break-word;"></div>
         <button onclick="copyPrompt()" style="margin-top:12px;width:100%;padding:12px;background:var(--gold);color:#000;border:none;border-radius:8px;font-weight:900;font-size:0.8rem;cursor:pointer;letter-spacing:1px;">📋 PROMPT KOPIEREN</button>
         <div id="prompt-copy-toast" style="display:none;text-align:center;color:var(--gold);font-size:0.7rem;margin-top:8px;font-weight:900;">✓ KOPIERT!</div>
@@ -1092,8 +1098,4 @@
             <div class="roman-body" id="roman-body">
                 <div class="roman-loading">WIRD GELADEN…</div>
             </div>
-            <button class="roman-close-btn" onclick="closeRomanModal()">✕ SCHLIESSEN</button>
-        </div>
-    </div>
-</body>
-</html>
+            <b
