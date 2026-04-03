@@ -1,5 +1,5 @@
 hefte["0"] = {
-  "titel": "Fanheft",
+  "titel": "Dies & Das",
   "released": true,
   "cover": "cover.jpg",
   "video": "",
@@ -51,5 +51,5 @@ hefte["0"] = {
     }
   ],
   "members": false,
-  "typ": "Fanheft"
+  "typ": "Dies & Das"
 };
