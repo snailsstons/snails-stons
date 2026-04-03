@@ -1,11 +1,11 @@
 hefte["0"] = {
-  "titel": "Dies & Das",
+  "titel": "Videos",
   "released": true,
   "cover": "cover.jpg",
   "video": "",
-  "teaser": "Fanheft von Chris",
+  "teaser": "Ehemalige YouTube Videos",
   "locDna": "",
-  "coverStory": "Fanheft von Chris",
+  "coverStory": "Ehemalige YouTube Videos",
   "seiten": [
     {
       "nummer": 1,
@@ -51,5 +51,5 @@ hefte["0"] = {
     }
   ],
   "members": false,
-  "typ": "Dies & Das"
+  "typ": "Videos"
 };
