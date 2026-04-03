@@ -13,7 +13,7 @@ hefte["0"] = {
       "akt": "",
       "panels": [
         {
-          "bild": "0_2_P1.jpg",
+          "bild": "0_2_P1.mp4",
           "format": "16:9",
           "wide": true,
           "tall": false,
