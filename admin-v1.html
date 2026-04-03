@@ -118,14 +118,17 @@
         <div class="grid" style="grid-template-columns: 80px 1fr;">
             <div><label>ID</label><input type="text" id="h-id" readonly></div>
             <div><label>Typ</label>
-                <select id="h-typ" oninput="updateMeta()" style="width:100%;padding:8px;background:#000;border:1px solid #333;color:var(--gold);border-radius:8px;font-weight:700;font-size:0.85rem;">
+                <select id="h-typ" onchange="onTypChange()" style="width:100%;padding:8px;background:#000;border:1px solid #333;color:var(--gold);border-radius:8px;font-weight:700;font-size:0.85rem;">
                     <option value="">Heft (Standard)</option>
                     <option value="Sonderheft">Sonderheft</option>
                     <option value="Fanheft">Fanheft</option>
                     <option value="Short">Short</option>
                     <option value="Spezial">Spezial</option>
                     <option value="Schmierheft">Schmierheft</option>
+                    <option value="__custom__">✏️ Eigener Name...</option>
                 </select>
+                <input type="text" id="h-typ-custom" placeholder="z.B. Magazin, Special Edition, Bonus..." oninput="updateMeta()"
+                    style="display:none; margin-top:6px; padding:8px; background:#000; border:1px solid var(--gold); color:var(--gold); border-radius:8px; font-weight:700; font-size:0.85rem; width:100%;">
             </div>
             <div><label>Titel</label><input type="text" id="h-titel" oninput="updateMeta()"></div>
         </div>
@@ -325,7 +328,18 @@
         document.getElementById('h-id').value = id;
         document.getElementById('h-titel').value = h.titel || '';
         document.getElementById('h-teaser').value = h.teaser || '';
-        document.getElementById('h-typ').value = h.typ || '';
+        // Typ laden – custom wenn nicht in Liste
+        const typVal = h.typ || '';
+        const sel = document.getElementById('h-typ');
+        const knownVals = Array.from(sel.options).map(o => o.value).filter(v => v !== '__custom__');
+        if (typVal && !knownVals.includes(typVal)) {
+            sel.value = '__custom__';
+            document.getElementById('h-typ-custom').style.display = 'block';
+            document.getElementById('h-typ-custom').value = typVal;
+        } else {
+            sel.value = typVal;
+            document.getElementById('h-typ-custom').style.display = 'none';
+        }
         
         const heftLvl = h.members ? (h.level || 'bronze') : 'free';
         document.getElementById('heft-lock-btn').value = heftLvl;
@@ -653,12 +667,29 @@
         setTimeout(() => s.classList.remove('show'), 2000);
     }
 
+    function onTypChange() {
+        const sel = document.getElementById('h-typ');
+        const custom = document.getElementById('h-typ-custom');
+        if (sel.value === '__custom__') {
+            custom.style.display = 'block';
+            custom.focus();
+        } else {
+            custom.style.display = 'none';
+        }
+        updateMeta();
+    }
+
     function updateMeta() {
         const h = hefte[currentHeftId];
         h.titel = document.getElementById('h-titel').value;
         h.teaser = document.getElementById('h-teaser').value;
         h.coverStory = h.teaser;
-        h.typ = document.getElementById('h-typ').value;
+        const sel = document.getElementById('h-typ');
+        if (sel.value === '__custom__') {
+            h.typ = document.getElementById('h-typ-custom').value.trim();
+        } else {
+            h.typ = sel.value;
+        }
         saveLocal();
     }
 
