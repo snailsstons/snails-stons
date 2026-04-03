@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>SnailsStons | Flex Expander v4.0</title>
+<title>SnailsStons | Flex Expander v4.1</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -257,7 +257,7 @@ async function loadHeft() {
 
 // ── Render ───────────────────────────────────────────
 function renderAll() {
-    document.getElementById('heft-name').textContent = `"${currentData.titel || '?'}"`;
+    document.getElementById('heft-name').textContent = `${currentData.typ ? currentData.typ.toUpperCase() : 'HEFT'} ${heftId} – "${currentData.titel || '?'}"`;
 
     const seiten = currentData.seiten || [];
     const totalPanels = seiten.reduce((s, p) => s + p.panels.length, 0);
