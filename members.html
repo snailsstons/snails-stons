@@ -119,6 +119,21 @@
         <div id="tier-display"></div>
         <div class="member-details" id="member-info"></div>
         <button class="btn" onclick="goBack()">📖 ZUR STORY ZURÜCK</button>
+
+        <!-- Fan Story Formular – nur Silver/Gold -->
+        <div id="fan-story-section" style="display:none; margin-top:20px; padding-top:20px; border-top:1px solid #222;">
+            <div style="font-family:'Playfair Display',serif; color:var(--gold); font-size:1.1rem; margin-bottom:6px;">✍️ Deine Story-Idee</div>
+            <p style="font-size:0.72rem; color:#888; margin-bottom:14px; line-height:1.5;">
+                Du hast eine Idee für ein Abenteuer der Crew? Schreib sie auf – wir lesen jede Idee. Ausgewählte Ideen kommen ins Heft.
+            </p>
+            <div style="font-size:0.6rem; color:var(--gold); font-weight:700; text-transform:uppercase; letter-spacing:1px; margin-bottom:4px;">Heft-Bezug (optional)</div>
+            <input type="text" id="story-heft" placeholder="z.B. Heft 28, oder freilassen" style="margin-bottom:10px;">
+            <div style="font-size:0.6rem; color:var(--gold); font-weight:700; text-transform:uppercase; letter-spacing:1px; margin-bottom:4px;">Deine Idee</div>
+            <textarea id="story-text" placeholder="Was soll passieren? Wo sind die Schnecken? Was erlebt die Crew?" rows="5" style="width:100%; background:#000; border:1px solid #333; color:#fff; border-radius:10px; padding:12px; font-size:0.85rem; font-family:'Inter',sans-serif; resize:vertical; outline:none; line-height:1.5;"></textarea>
+            <button class="btn" id="story-submit-btn" onclick="submitFanStory()" style="margin-top:10px;">🐌 IDEE EINSENDEN</button>
+            <div id="story-toast" style="display:none; margin-top:10px; padding:12px; border-radius:8px; font-size:0.75rem; font-weight:700; text-align:center;"></div>
+        </div>
+
         <button class="btn-logout" onclick="doLogout()">Abmelden & Startseite</button>
     </div>
 
@@ -201,6 +216,98 @@
             <div class="date-row">Aktiv von: ${formatDE(von)}</div>
             <div class="date-row">Gültig bis: ${formatDE(bis)}</div>
         `;
+        // Fan Story nur für Silver + Gold
+        if (level === 'silver' || level === 'gold') {
+            document.getElementById('fan-story-section').style.display = 'block';
+        }
+    }
+
+    // --- GitHub ---
+    function ghCfg() {
+        return {
+            repo:   localStorage.getItem('gh_repo'),
+            branch: localStorage.getItem('gh_branch') || 'main',
+            token:  localStorage.getItem('gh_token')
+        };
+    }
+
+    async function ghGetSHA(path) {
+        const { repo, branch, token } = ghCfg();
+        try {
+            const r = await fetch(`https://api.github.com/repos/${repo}/contents/${path}?ref=${branch}`, {
+                headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json' }
+            });
+            if (r.ok) return (await r.json()).sha;
+        } catch(e) {}
+        return null;
+    }
+
+    async function ghPush(path, content, msg) {
+        const { repo, branch, token } = ghCfg();
+        if (!repo || !token) return false;
+        const sha = await ghGetSHA(path);
+        const body = { message: msg, content: btoa(unescape(encodeURIComponent(content))), branch };
+        if (sha) body.sha = sha;
+        const r = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, {
+            method: 'PUT',
+            headers: {
+                Authorization: `token ${token}`,
+                Accept: 'application/vnd.github.v3+json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(body)
+        });
+        return r.ok;
+    }
+
+    async function submitFanStory() {
+        const token  = localStorage.getItem('ss_member_token') || 'anonym';
+        const heft   = document.getElementById('story-heft').value.trim() || '–';
+        const text   = document.getElementById('story-text').value.trim();
+        const toast  = document.getElementById('story-toast');
+        const btn    = document.getElementById('story-submit-btn');
+
+        if (!text || text.length < 20) {
+            showStoryToast('Bitte mindestens 20 Zeichen schreiben.', 'error');
+            return;
+        }
+
+        btn.innerText = 'SENDE...';
+        btn.disabled = true;
+
+        // Bestehende fan_stories.md laden
+        const { repo, branch, ghtoken } = { ...ghCfg(), ghtoken: ghCfg().token };
+        let existing = '';
+        try {
+            const r = await fetch(`https://raw.githubusercontent.com/${ghCfg().repo}/${ghCfg().branch}/fan_stories.md?v=` + Date.now());
+            if (r.ok) existing = await r.text();
+        } catch(e) {}
+
+        const datum = new Date().toISOString().split('T')[0];
+        const entry = `\n---\n**Member:** ${token.toUpperCase()}  \n**Datum:** ${datum}  \n**Heft-Bezug:** ${heft}  \n\n${text}\n`;
+        const newContent = (existing || '# SnailsStons – Fan Story Ideen\n') + entry;
+
+        const ok = await ghPush('fan_stories.md', newContent, `Fan Story: ${token} – ${datum}`);
+
+        if (ok) {
+            showStoryToast('✅ Danke! Deine Idee ist eingegangen. Wir lesen sie! 🐌', 'success');
+            document.getElementById('story-text').value = '';
+            document.getElementById('story-heft').value = '';
+        } else {
+            showStoryToast('❌ Senden fehlgeschlagen. Bitte später nochmal versuchen.', 'error');
+        }
+        btn.innerText = '🐌 IDEE EINSENDEN';
+        btn.disabled = false;
+    }
+
+    function showStoryToast(msg, type) {
+        const el = document.getElementById('story-toast');
+        el.textContent = msg;
+        el.style.display = 'block';
+        el.style.background = type === 'success' ? '#0d2e18' : '#2e0d0d';
+        el.style.border = `1px solid ${type === 'success' ? '#28a745' : '#ff4444'}`;
+        el.style.color = type === 'success' ? '#28a745' : '#ff4444';
+        if (type === 'success') setTimeout(() => { el.style.display = 'none'; }, 5000);
     }
 
     function doLogout() {
