@@ -1,11 +1,11 @@
 hefte["0"] = {
-  "titel": "Schmierheft",
+  "titel": "Fanheft",
   "released": true,
   "cover": "cover.jpg",
   "video": "",
-  "teaser": "",
+  "teaser": "Fanheft von Chris",
   "locDna": "",
-  "coverStory": "",
+  "coverStory": "Fanheft von Chris",
   "seiten": [
     {
       "nummer": 1,
@@ -50,5 +50,6 @@ hefte["0"] = {
       "members": false
     }
   ],
-  "members": false
+  "members": false,
+  "typ": "Fanheft"
 };
