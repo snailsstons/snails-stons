@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SnailsStons | Engine v6.6 (Modular)</title>
+    <title>SnailsStons | Engine v6.7 (Modular)</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@900&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     
     <script src="hefte.js"></script>
@@ -163,6 +163,12 @@ NEVER: No shell. No legs. No feet. No static standing pose.` },
 
         let currentAR = "1:1";
 
+        function getHeftLabel(id, data) {
+            if (data && data.typ) return `${data.typ.toUpperCase()} ${id}`;
+            if (id === '0') return 'SCHMIERHEFT 0';
+            return `HEFT ${id}`;
+        }
+
         function initEngine() {
             const p = new URLSearchParams(window.location.search);
             const heftId = p.get('heft') || '1';
@@ -173,8 +179,8 @@ NEVER: No shell. No legs. No feet. No static standing pose.` },
             let initialAR = p.get('ar'); // URL Parameter hat Prio (falls von Admin Tool forciert)
 
             if(type === 'cover') {
-                document.getElementById('display-status').innerText = `HEFT ${heftId} | COVER`;
                 const hd = (typeof hefte !== 'undefined') ? hefte[heftId] : null;
+                document.getElementById('display-status').innerText = `${getHeftLabel(heftId, hd)} | COVER`;
                 const urlStory = p.get('story') ? decodeURIComponent(p.get('story')) : '';
                 const urlTeaser = p.get('teaser') ? decodeURIComponent(p.get('teaser')) : '';
                 const urlLocDna = p.get('locDna') ? decodeURIComponent(p.get('locDna')) : '';
@@ -184,7 +190,7 @@ NEVER: No shell. No legs. No feet. No static standing pose.` },
                 if (bestLoc)   document.getElementById('loc-dna-in').value = bestLoc;
                 initialAR = '9:16';
             } else {
-                document.getElementById('display-status').innerText = `HEFT ${heftId} | SEITE ${sNum} | P${pNum}`;
+                document.getElementById('display-status').innerText = `${getHeftLabel(heftId, heftData)} | SEITE ${sNum} | P${pNum}`;
             }
 
             const cl = document.getElementById('crew-list');
@@ -340,9 +346,8 @@ NEVER: No shell. No legs. No feet. No static standing pose.` },
             newUrl.searchParams.set('panel', panelNum);
             window.history.pushState({}, '', newUrl);
 
-            document.getElementById('display-status').innerText = `HEFT ${h} | SEITE ${seite} | P${panelNum}`;
-            
             const heftData = typeof hefte !== 'undefined' ? hefte[h] : null;
+            document.getElementById('display-status').innerText = `${getHeftLabel(h, heftData)} | SEITE ${seite} | P${panelNum}`;
             if(heftData && heftData.seiten) {
                 const pageObj = heftData.seiten.find(pg => pg.nummer == seite || heftData.seiten.indexOf(pg) + 1 == seite);
                 if(pageObj && pageObj.panels[panelNum - 1]) {
