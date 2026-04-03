@@ -260,11 +260,13 @@
         return r.ok;
     }
 
+    // Worker-URL – nach Deployment eintragen:
+    const FAN_STORY_WORKER = 'https://fan-story.snailsstons.workers.dev';
+
     async function submitFanStory() {
         const token  = localStorage.getItem('ss_member_token') || 'anonym';
         const heft   = document.getElementById('story-heft').value.trim() || '–';
         const text   = document.getElementById('story-text').value.trim();
-        const toast  = document.getElementById('story-toast');
         const btn    = document.getElementById('story-submit-btn');
 
         if (!text || text.length < 20) {
@@ -275,27 +277,24 @@
         btn.innerText = 'SENDE...';
         btn.disabled = true;
 
-        // Bestehende fan_stories.md laden
-        const { repo, branch, ghtoken } = { ...ghCfg(), ghtoken: ghCfg().token };
-        let existing = '';
         try {
-            const r = await fetch(`https://raw.githubusercontent.com/${ghCfg().repo}/${ghCfg().branch}/fan_stories.md?v=` + Date.now());
-            if (r.ok) existing = await r.text();
-        } catch(e) {}
-
-        const datum = new Date().toISOString().split('T')[0];
-        const entry = `\n---\n**Member:** ${token.toUpperCase()}  \n**Datum:** ${datum}  \n**Heft-Bezug:** ${heft}  \n\n${text}\n`;
-        const newContent = (existing || '# SnailsStons – Fan Story Ideen\n') + entry;
-
-        const ok = await ghPush('fan_stories.md', newContent, `Fan Story: ${token} – ${datum}`);
-
-        if (ok) {
-            showStoryToast('✅ Danke! Deine Idee ist eingegangen. Wir lesen sie! 🐌', 'success');
-            document.getElementById('story-text').value = '';
-            document.getElementById('story-heft').value = '';
-        } else {
-            showStoryToast('❌ Senden fehlgeschlagen. Bitte später nochmal versuchen.', 'error');
+            const r = await fetch(FAN_STORY_WORKER, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ member: token, heft, text })
+            });
+            const j = await r.json();
+            if (j.ok) {
+                showStoryToast('✅ Danke! Deine Idee ist eingegangen. Wir lesen sie! 🐌', 'success');
+                document.getElementById('story-text').value = '';
+                document.getElementById('story-heft').value = '';
+            } else {
+                showStoryToast('❌ Senden fehlgeschlagen. Bitte später nochmal versuchen.', 'error');
+            }
+        } catch(e) {
+            showStoryToast('❌ Verbindungsfehler. Bitte später nochmal versuchen.', 'error');
         }
+
         btn.innerText = '🐌 IDEE EINSENDEN';
         btn.disabled = false;
     }
