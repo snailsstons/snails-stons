@@ -5,7 +5,7 @@
 //   GH_REPO   = snailsstons/snailsstons
 //   GH_BRANCH = main
 
-const ALLOWED_ORIGIN = 'https://snailsstons.pages.dev';
+const ALLOWED_ORIGIN = 'https://snailsstons.dragonschain.workers.dev';
 
 export default {
   async fetch(request, env) {
