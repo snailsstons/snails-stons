@@ -138,6 +138,12 @@
     </div>
 
 <script>
+    // SHA-256 via Web Crypto API
+    async function sha256(str) {
+        const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str.toLowerCase()));
+        return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
     // Datum formatieren: ISO -> Deutsch
     function formatDE(iso) {
         if (!iso || !iso.includes('-')) return iso;
@@ -185,9 +191,10 @@
         const input = document.getElementById('token-input').value.trim().toLowerCase();
         const loginBtn = document.getElementById('main-login-btn');
         loginBtn.innerText = "PRÜFE...";
-        
+
+        const hashed = await sha256(input);
         const members = await loadMembers();
-        const member = members[input];
+        const member = members[hashed];
 
         if (member) {
             const today = new Date().toISOString().split('T')[0];
