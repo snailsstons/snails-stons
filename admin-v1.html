@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>SnailsAdmin | v10.0 (Member & Guardian)</title>
+    <title>SnailsAdmin | v10.1 (Member & Guardian)</title>
     <link rel="manifest" href="manifest_admin.json">
     <meta name="theme-color" content="#d4af37">
     <meta name="mobile-web-app-capable" content="yes">
@@ -96,6 +96,11 @@
                 </select>
                 <button class="btn" onclick="addMember()">+</button>
             </div>
+            <div style="display:flex;gap:6px;margin-bottom:10px;align-items:center;">
+                <input type="text" id="hash-preview-input" placeholder="Token zum Hashen testen..." style="flex:1;font-size:0.7rem;padding:6px 8px;">
+                <button class="btn btn-sec" style="width:auto;padding:6px 10px;font-size:0.65rem;" onclick="previewHash()">🔒 HASH</button>
+            </div>
+            <div id="hash-preview-out" style="display:none;background:#050505;border:1px solid #222;border-radius:6px;padding:8px;font-size:0.55rem;color:#666;font-family:monospace;word-break:break-all;margin-bottom:10px;"></div>
             <table id="member-table">
                 <thead><tr><th>Token</th><th>Von</th><th>Bis</th><th>Level</th><th></th></tr></thead>
                 <tbody></tbody>
@@ -118,17 +123,14 @@
         <div class="grid" style="grid-template-columns: 80px 1fr;">
             <div><label>ID</label><input type="text" id="h-id" readonly></div>
             <div><label>Typ</label>
-                <select id="h-typ" onchange="onTypChange()" style="width:100%;padding:8px;background:#000;border:1px solid #333;color:var(--gold);border-radius:8px;font-weight:700;font-size:0.85rem;">
+                <select id="h-typ" oninput="updateMeta()" style="width:100%;padding:8px;background:#000;border:1px solid #333;color:var(--gold);border-radius:8px;font-weight:700;font-size:0.85rem;">
                     <option value="">Heft (Standard)</option>
                     <option value="Sonderheft">Sonderheft</option>
                     <option value="Fanheft">Fanheft</option>
                     <option value="Short">Short</option>
                     <option value="Spezial">Spezial</option>
                     <option value="Schmierheft">Schmierheft</option>
-                    <option value="__custom__">✏️ Eigener Name...</option>
                 </select>
-                <input type="text" id="h-typ-custom" placeholder="z.B. Magazin, Special Edition, Bonus..." oninput="updateMeta()"
-                    style="display:none; margin-top:6px; padding:8px; background:#000; border:1px solid var(--gold); color:var(--gold); border-radius:8px; font-weight:700; font-size:0.85rem; width:100%;">
             </div>
             <div><label>Titel</label><input type="text" id="h-titel" oninput="updateMeta()"></div>
         </div>
@@ -328,18 +330,7 @@
         document.getElementById('h-id').value = id;
         document.getElementById('h-titel').value = h.titel || '';
         document.getElementById('h-teaser').value = h.teaser || '';
-        // Typ laden – custom wenn nicht in Liste
-        const typVal = h.typ || '';
-        const sel = document.getElementById('h-typ');
-        const knownVals = Array.from(sel.options).map(o => o.value).filter(v => v !== '__custom__');
-        if (typVal && !knownVals.includes(typVal)) {
-            sel.value = '__custom__';
-            document.getElementById('h-typ-custom').style.display = 'block';
-            document.getElementById('h-typ-custom').value = typVal;
-        } else {
-            sel.value = typVal;
-            document.getElementById('h-typ-custom').style.display = 'none';
-        }
+        document.getElementById('h-typ').value = h.typ || '';
         
         const heftLvl = h.members ? (h.level || 'bronze') : 'free';
         document.getElementById('heft-lock-btn').value = heftLvl;
@@ -643,9 +634,33 @@
         };
     }
 
-    function exportMembers() {
-        let txt = "# SnailsStons Members\n# Format: token:von:bis:level\n\n";
-        members.forEach(m => txt += `${m.token}:${m.von}:${m.bis}:${m.level || 'bronze'}\n`);
+    async function previewHash() {
+        const val = document.getElementById('hash-preview-input').value.trim();
+        if (!val) return;
+        const h = await sha256(val);
+        const out = document.getElementById('hash-preview-out');
+        out.style.display = 'block';
+        out.innerHTML = `<span style="color:#555;">Token:</span> <span style="color:var(--gold);">${val}</span><br><span style="color:#555;">Hash:</span> ${h}`;
+    }
+
+    // SHA-256 via Web Crypto API
+    async function sha256(str) {
+        const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str.toLowerCase()));
+        return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    async function buildMembersContent() {
+        let txt = "# SnailsStons Members\n# Format: hash:von:bis:level\n# Tokens sind SHA-256 gehasht – Klartext nie speichern!\n\n";
+        for (const m of members) {
+            const hash = await sha256(m.token);
+            txt += `${hash}:${m.von}:${m.bis}:${m.level || 'bronze'}\n`;
+        }
+        return txt;
+    }
+
+    async function exportMembers() {
+        showStatus("Hashe Tokens...");
+        const txt = await buildMembersContent();
         downloadFile(txt, 'members.md', 'text/markdown');
         document.getElementById('export-reminder').style.display = 'block';
         showStatus("members.md heruntergeladen – jetzt auf Server hochladen!");
@@ -667,29 +682,12 @@
         setTimeout(() => s.classList.remove('show'), 2000);
     }
 
-    function onTypChange() {
-        const sel = document.getElementById('h-typ');
-        const custom = document.getElementById('h-typ-custom');
-        if (sel.value === '__custom__') {
-            custom.style.display = 'block';
-            custom.focus();
-        } else {
-            custom.style.display = 'none';
-        }
-        updateMeta();
-    }
-
     function updateMeta() {
         const h = hefte[currentHeftId];
         h.titel = document.getElementById('h-titel').value;
         h.teaser = document.getElementById('h-teaser').value;
         h.coverStory = h.teaser;
-        const sel = document.getElementById('h-typ');
-        if (sel.value === '__custom__') {
-            h.typ = document.getElementById('h-typ-custom').value.trim();
-        } else {
-            h.typ = sel.value;
-        }
+        h.typ = document.getElementById('h-typ').value;
         saveLocal();
     }
 
@@ -820,9 +818,8 @@
     }
 
     async function pushMembers() {
-        showPushStatus('⏳ Pushe members.md nach GitHub...', '#888');
-        let txt = "# SnailsStons Members\n# Format: token:von:bis:level\n\n";
-        members.forEach(m => txt += `${m.token}:${m.von}:${m.bis}:${m.level || 'bronze'}\n`);
+        showPushStatus('⏳ Hashe Tokens & pushe members.md...', '#888');
+        const txt = await buildMembersContent();
         const ok = await ghPushFile('members.md', txt, 'Admin: Update members.md');
         if (ok) {
             showPushStatus('✅ members.md → GitHub ✓ Sofort aktiv.', 'var(--success)');
