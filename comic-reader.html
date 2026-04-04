@@ -300,6 +300,8 @@
 
     <header>
         <h1>Snails<span>Stons</span></h1>
+        <div id="heft-typ-display" style="font-size:0.55rem;color:rgba(255,255,255,0.5);letter-spacing:2px;text-transform:uppercase;font-weight:700;"></div>
+        <div id="heft-titel-display" style="font-size:0.85rem;color:#fff;letter-spacing:1px;text-transform:uppercase;font-weight:900;text-shadow:0 1px 4px rgba(0,0,0,0.9);line-height:1.2;"></div>
         <div id="info-display" class="page-counter">STORY WIRD GELADEN...</div>
         <div id="seite-titel" style="font-size:0.65rem;color:rgba(255,255,255,0.7);letter-spacing:1px;text-transform:uppercase;margin-top:3px;min-height:0.8rem;text-shadow:0 1px 4px rgba(0,0,0,0.9);font-weight:700;"></div>
     </header>
@@ -587,9 +589,13 @@
         window.hefte = window.hefte || {};
 
         function getHeftLabel(id, data) {
-            if (data && data.typ) return `${data.typ.toUpperCase()} ${id}`;
+            if (data && data.typ) return data.typ.toUpperCase();
             if (id === '0') return '✏️ SCHMIERHEFT';
-            return `HEFT ${id}`;
+            return 'HEFT';
+        }
+
+        function getHeftTitel(data) {
+            return data && data.titel ? data.titel.toUpperCase() : '';
         }
 
         const pUrl = new URLSearchParams(window.location.search);
@@ -889,6 +895,11 @@
             });
 
             document.getElementById('info-display').innerText = `${getHeftLabel(HEFT_ID, currentData)} | SEITE 1 von ${currentData.seiten.length}`;
+            // Typ + Titel im Header
+            const typEl = document.getElementById('heft-typ-display');
+            const titEl = document.getElementById('heft-titel-display');
+            if (typEl) typEl.innerText = getHeftLabel(HEFT_ID, currentData);
+            if (titEl) titEl.innerText = currentData.titel || '';
             const s0 = currentData.seiten[0];
             const titelEl0 = document.getElementById('seite-titel');
             if (titelEl0) {
