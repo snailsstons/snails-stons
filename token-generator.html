@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>SnailsStons | Token Generator v1.0</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+    --gold: #d4af37;
+    --gold-dim: rgba(212,175,55,0.15);
+    --bg: #050505;
+    --card: #0c0c0c;
+    --border: #1c1c1c;
+    --silver: #b0b8c1;
+    --bronze: #cd7f32;
+    --success: #1a7a3a;
+    --success-bright: #2ecc71;
+    --mono: 'DM Mono', monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+body {
+    background: var(--bg);
+    color: #e0e0e0;
+    font-family: var(--mono);
+    min-height: 100vh;
+    padding: 24px 16px 60px;
+    background-image:
+        radial-gradient(ellipse 60% 40% at 50% 0%, rgba(212,175,55,0.07) 0%, transparent 60%);
+}
+
+.app { max-width: 480px; margin: 0 auto; }
+
+/* Header */
+.header {
+    text-align: center;
+    padding: 32px 0 40px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 32px;
+}
+.header-eyebrow {
+    font-size: 0.5rem; letter-spacing: 4px; text-transform: uppercase;
+    color: rgba(212,175,55,0.5); margin-bottom: 12px;
+}
+.header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem; font-weight: 900;
+    color: var(--gold); letter-spacing: 2px;
+    margin-bottom: 6px;
+}
+.header-sub {
+    font-size: 0.6rem; color: #333; letter-spacing: 2px; text-transform: uppercase;
+}
+
+/* Section */
+.section { margin-bottom: 20px; }
+.section-label {
+    font-size: 0.5rem; font-weight: 500; color: #444;
+    text-transform: uppercase; letter-spacing: 2px;
+    margin-bottom: 8px; display: block;
+}
+
+/* Inputs */
+input[type=text], input[type=number], input[type=email], select {
+    width: 100%; padding: 12px 14px;
+    background: var(--card); border: 1px solid var(--border);
+    color: #e0e0e0; border-radius: 8px;
+    font-family: var(--mono); font-size: 0.85rem;
+    outline: none; transition: border-color 0.2s;
+    -webkit-appearance: none;
+}
+input:focus, select:focus { border-color: rgba(212,175,55,0.4); }
+select { cursor: pointer; }
+select option { background: #111; }
+
+/* Tier Selector */
+.tier-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 8px; margin-bottom: 20px;
+}
+.tier-btn {
+    padding: 14px 8px; border-radius: 8px;
+    border: 1px solid var(--border); background: var(--card);
+    cursor: pointer; text-align: center;
+    transition: all 0.2s; font-family: var(--mono);
+}
+.tier-btn .tier-icon { font-size: 1.4rem; display: block; margin-bottom: 6px; }
+.tier-btn .tier-name {
+    font-size: 0.55rem; font-weight: 500;
+    text-transform: uppercase; letter-spacing: 1.5px;
+}
+.tier-btn.bronze { --tc: var(--bronze); }
+.tier-btn.silver { --tc: var(--silver); }
+.tier-btn.gold   { --tc: var(--gold); }
+.tier-btn .tier-name { color: var(--tc); }
+.tier-btn.active { border-color: var(--tc); background: color-mix(in srgb, var(--tc) 8%, transparent); }
+.tier-btn:active { transform: scale(0.97); }
+
+/* Duration */
+.dur-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 6px; margin-bottom: 20px;
+}
+.dur-btn {
+    padding: 10px 4px; border-radius: 8px;
+    border: 1px solid var(--border); background: var(--card);
+    cursor: pointer; text-align: center; font-family: var(--mono);
+    font-size: 0.6rem; color: #666;
+    transition: all 0.2s;
+}
+.dur-btn.active {
+    border-color: rgba(212,175,55,0.5);
+    background: var(--gold-dim); color: var(--gold);
+}
+.dur-btn:active { transform: scale(0.97); }
+
+/* Generate Button */
+.btn-generate {
+    width: 100%; padding: 16px;
+    background: var(--gold); color: #000;
+    border: none; border-radius: 10px;
+    font-family: var(--mono); font-size: 0.75rem; font-weight: 500;
+    letter-spacing: 2px; text-transform: uppercase;
+    cursor: pointer; transition: all 0.2s;
+    margin-bottom: 24px;
+}
+.btn-generate:active { transform: scale(0.98); opacity: 0.9; }
+.btn-generate:disabled { opacity: 0.4; cursor: default; }
+
+/* Result Panel */
+.result-panel {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; overflow: hidden;
+    display: none;
+    animation: slideIn 0.3s ease;
+}
+.result-panel.show { display: block; }
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.result-header {
+    padding: 14px 16px;
+    background: rgba(26, 122, 58, 0.15);
+    border-bottom: 1px solid rgba(46,204,113,0.2);
+    display: flex; align-items: center; gap: 8px;
+}
+.result-status {
+    font-size: 0.55rem; font-weight: 500; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--success-bright);
+}
+
+.result-row {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex; flex-direction: column; gap: 4px;
+}
+.result-row:last-child { border-bottom: none; }
+.result-key {
+    font-size: 0.48rem; color: #444; text-transform: uppercase;
+    letter-spacing: 2px;
+}
+.result-val {
+    font-size: 0.85rem; color: #e0e0e0;
+    word-break: break-all;
+}
+.result-val.token-val {
+    font-size: 1rem; color: var(--gold); font-weight: 500;
+    letter-spacing: 2px;
+}
+.result-val.hash-val {
+    font-size: 0.6rem; color: #555;
+}
+
+/* Action buttons */
+.action-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 8px; margin-top: 16px;
+}
+.btn-action {
+    padding: 12px; border-radius: 8px;
+    border: 1px solid var(--border); background: var(--card);
+    color: #888; font-family: var(--mono); font-size: 0.6rem;
+    font-weight: 500; letter-spacing: 1px; text-transform: uppercase;
+    cursor: pointer; transition: all 0.2s;
+}
+.btn-action:hover { border-color: var(--gold); color: var(--gold); }
+.btn-action:active { transform: scale(0.97); }
+.btn-action.primary {
+    background: var(--gold-dim); border-color: rgba(212,175,55,0.4);
+    color: var(--gold);
+}
+
+/* Email Template */
+.email-block {
+    margin-top: 24px; display: none;
+    animation: slideIn 0.3s ease;
+}
+.email-block.show { display: block; }
+.email-label {
+    font-size: 0.5rem; color: #444; text-transform: uppercase;
+    letter-spacing: 2px; margin-bottom: 8px; display: block;
+}
+.email-body {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 10px; padding: 16px;
+    font-size: 0.78rem; color: #aaa;
+    line-height: 1.7; white-space: pre-wrap;
+    word-break: break-word;
+}
+
+/* GitHub Push */
+.gh-block {
+    margin-top: 16px; display: none;
+}
+.gh-block.show { display: block; }
+.btn-push {
+    width: 100%; padding: 14px;
+    background: #0d2e18; border: 1px solid rgba(46,204,113,0.3);
+    color: var(--success-bright); border-radius: 10px;
+    font-family: var(--mono); font-size: 0.65rem;
+    font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase;
+    cursor: pointer; transition: all 0.2s;
+}
+.btn-push:active { transform: scale(0.98); }
+.btn-push:disabled { opacity: 0.4; cursor: default; }
+
+.push-status {
+    margin-top: 8px; padding: 10px 14px; border-radius: 8px;
+    font-size: 0.65rem; display: none; text-align: center;
+}
+
+/* Toast */
+.toast {
+    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+    background: #111; border: 1px solid var(--gold);
+    color: var(--gold); padding: 10px 20px; border-radius: 8px;
+    font-size: 0.65rem; letter-spacing: 1px; text-transform: uppercase;
+    opacity: 0; transition: opacity 0.2s; pointer-events: none;
+    white-space: nowrap;
+}
+.toast.show { opacity: 1; }
+
+/* Divider */
+.divider {
+    border: none; border-top: 1px solid var(--border);
+    margin: 28px 0;
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+    <div class="header">
+        <div class="header-eyebrow">SnailsStons Admin</div>
+        <h1>Token Generator</h1>
+        <div class="header-sub">v1.0 · Member Zugangsverwaltung</div>
+    </div>
+
+    <!-- Tier -->
+    <div class="section">
+        <span class="section-label">Level</span>
+        <div class="tier-grid">
+            <button class="tier-btn bronze" onclick="selectTier('bronze', this)">
+                <span class="tier-icon">🥉</span>
+                <span class="tier-name">Bronze</span>
+            </button>
+            <button class="tier-btn silver active" onclick="selectTier('silver', this)">
+                <span class="tier-icon">🥈</span>
+                <span class="tier-name">Silver</span>
+            </button>
+            <button class="tier-btn gold" onclick="selectTier('gold', this)">
+                <span class="tier-icon">🥇</span>
+                <span class="tier-name">Gold</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Name -->
+    <div class="section">
+        <span class="section-label">Name / Bezeichnung</span>
+        <input type="text" id="member-name" placeholder="z.B. Chris, Snail42, ...">
+    </div>
+
+    <!-- E-Mail -->
+    <div class="section">
+        <span class="section-label">E-Mail (für Vorlage)</span>
+        <input type="email" id="member-email" placeholder="name@example.com">
+    </div>
+
+    <!-- Dauer -->
+    <div class="section">
+        <span class="section-label">Zugangsdauer</span>
+        <div class="dur-grid">
+            <button class="dur-btn active" onclick="selectDur(1, this)">1 Mon</button>
+            <button class="dur-btn" onclick="selectDur(3, this)">3 Mon</button>
+            <button class="dur-btn" onclick="selectDur(6, this)">6 Mon</button>
+            <button class="dur-btn" onclick="selectDur(12, this)">1 Jahr</button>
+        </div>
+    </div>
+
+    <!-- Zahlungsreferenz -->
+    <div class="section">
+        <span class="section-label">Zahlungsreferenz (optional)</span>
+        <input type="text" id="payment-ref" placeholder="z.B. SumUp TX-12345">
+    </div>
+
+    <button class="btn-generate" onclick="generateToken()">🔑 TOKEN GENERIEREN</button>
+
+    <!-- Result -->
+    <div class="result-panel" id="result-panel">
+        <div class="result-header">
+            <span>✓</span>
+            <span class="result-status">Token erstellt</span>
+        </div>
+        <div class="result-row">
+            <span class="result-key">Token (Klartext – nur einmal sichtbar)</span>
+            <span class="result-val token-val" id="res-token">—</span>
+        </div>
+        <div class="result-row">
+            <span class="result-key">SHA-256 Hash (wird in members.md gespeichert)</span>
+            <span class="result-val hash-val" id="res-hash">—</span>
+        </div>
+        <div class="result-row">
+            <span class="result-key">Level</span>
+            <span class="result-val" id="res-level">—</span>
+        </div>
+        <div class="result-row">
+            <span class="result-key">Gültig von</span>
+            <span class="result-val" id="res-von">—</span>
+        </div>
+        <div class="result-row">
+            <span class="result-key">Gültig bis</span>
+            <span class="result-val" id="res-bis">—</span>
+        </div>
+        <div class="result-row">
+            <span class="result-key">Zahlungsreferenz</span>
+            <span class="result-val" id="res-ref">—</span>
+        </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="action-grid" id="action-grid" style="display:none;">
+        <button class="btn-action" onclick="copyToken()">📋 TOKEN KOPIEREN</button>
+        <button class="btn-action" onclick="showEmail()">✉️ E-MAIL VORLAGE</button>
+        <button class="btn-action primary" onclick="pushToGitHub()">🚀 → GITHUB</button>
+        <button class="btn-action" onclick="resetForm()">↺ NEU</button>
+    </div>
+
+    <!-- GitHub Push Status -->
+    <div class="gh-block" id="gh-block">
+        <div class="push-status" id="push-status"></div>
+    </div>
+
+    <!-- E-Mail Template -->
+    <div class="email-block" id="email-block">
+        <hr class="divider">
+        <span class="email-label">✉️ E-Mail Vorlage – kopieren & senden</span>
+        <div class="email-body" id="email-body"></div>
+        <div class="action-grid" style="margin-top:10px;">
+            <button class="btn-action primary" onclick="copyEmail()">📋 KOPIEREN</button>
+            <button class="btn-action" onclick="document.getElementById('email-block').classList.remove('show')">✕ SCHLIESSEN</button>
+        </div>
+    </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── State ─────────────────────────────────────────────
+let selectedTier = 'silver';
+let selectedDur  = 1;
+let currentToken = null;
+let currentHash  = null;
+let currentVon   = null;
+let currentBis   = null;
+
+// ── SHA-256 ───────────────────────────────────────────
+async function sha256(str) {
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str.toLowerCase()));
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+// ── Token generieren ──────────────────────────────────
+function randomToken(name) {
+    const chars = 'abcdefghjkmnpqrstuvwxyz23456789';
+    let rand = '';
+    for (let i = 0; i < 8; i++) rand += chars[Math.floor(Math.random() * chars.length)];
+    const prefix = name ? name.toLowerCase().replace(/[^a-z0-9]/g, '').substring(0, 4) : 'snail';
+    return `${prefix}-${rand}`;
+}
+
+function addMonths(date, months) {
+    const d = new Date(date);
+    d.setMonth(d.getMonth() + months);
+    return d.toISOString().split('T')[0];
+}
+
+// ── UI Helpers ────────────────────────────────────────
+function selectTier(tier, el) {
+    selectedTier = tier;
+    document.querySelectorAll('.tier-btn').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+}
+
+function selectDur(months, el) {
+    selectedDur = months;
+    document.querySelectorAll('.dur-btn').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+}
+
+function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+// ── Generate ──────────────────────────────────────────
+async function generateToken() {
+    const name  = document.getElementById('member-name').value.trim();
+    const email = document.getElementById('member-email').value.trim();
+    const ref   = document.getElementById('payment-ref').value.trim();
+
+    const token = randomToken(name);
+    const hash  = await sha256(token);
+    const von   = new Date().toISOString().split('T')[0];
+    const bis   = addMonths(von, selectedDur);
+
+    currentToken = token;
+    currentHash  = hash;
+    currentVon   = von;
+    currentBis   = bis;
+
+    // Result befüllen
+    document.getElementById('res-token').textContent = token;
+    document.getElementById('res-hash').textContent  = hash;
+    document.getElementById('res-level').textContent = selectedTier.toUpperCase();
+    document.getElementById('res-von').textContent   = formatDE(von);
+    document.getElementById('res-bis').textContent   = formatDE(bis);
+    document.getElementById('res-ref').textContent   = ref || '–';
+
+    document.getElementById('result-panel').classList.add('show');
+    document.getElementById('action-grid').style.display = 'grid';
+    document.getElementById('gh-block').classList.add('show');
+
+    // E-Mail Vorlage vorbereiten
+    const tierLabel = { bronze: 'Bronze', silver: 'Silver', gold: 'Gold' }[selectedTier];
+    const greeting  = name ? `Hallo ${name}` : 'Hallo';
+    const emailText = `${greeting},
+
+vielen Dank für deine Unterstützung! 🐌
+
+Hier ist dein persönlicher Zugangscode für SnailsStons:
+
+TOKEN: ${token}
+
+Tier:        ${tierLabel}
+Gültig bis:  ${formatDE(bis)}
+
+So loggst du dich ein:
+1. Öffne snailsstons.dragonschain.workers.dev
+2. Klicke auf „Member Login"
+3. Gib deinen Token ein
+4. Fertig – du hast Zugang zu allen ${tierLabel}-Inhalten
+
+Bewahre deinen Token sicher auf – er ist dein persönlicher Schlüssel.
+
+Bei Fragen: mrdrag.666@gmail.com
+
+Grüße aus dem Zelt 🐉🔗
+Dein Dragons Chain Kerl`;
+
+    document.getElementById('email-body').textContent = emailText;
+
+    // Scroll to result
+    document.getElementById('result-panel').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function formatDE(iso) {
+    const [y, m, d] = iso.split('-');
+    return `${d}.${m}.${y}`;
+}
+
+// ── Copy ──────────────────────────────────────────────
+function copyToken() {
+    if (!currentToken) return;
+    navigator.clipboard.writeText(currentToken).then(() => showToast('TOKEN KOPIERT'));
+}
+
+function showEmail() {
+    document.getElementById('email-block').classList.add('show');
+    document.getElementById('email-block').scrollIntoView({ behavior: 'smooth' });
+}
+
+function copyEmail() {
+    const text = document.getElementById('email-body').textContent;
+    navigator.clipboard.writeText(text).then(() => showToast('E-MAIL KOPIERT'));
+}
+
+// ── GitHub Push ───────────────────────────────────────
+function ghCfg() {
+    return {
+        repo:   localStorage.getItem('gh_repo'),
+        branch: localStorage.getItem('gh_branch') || 'main',
+        token:  localStorage.getItem('gh_token')
+    };
+}
+
+async function ghGetSHA(path) {
+    const { repo, branch, token } = ghCfg();
+    try {
+        const r = await fetch(`https://api.github.com/repos/${repo}/contents/${path}?ref=${branch}`, {
+            headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json' }
+        });
+        if (r.ok) return (await r.json()).sha;
+    } catch(e) {}
+    return null;
+}
+
+async function pushToGitHub() {
+    if (!currentToken || !currentHash) return;
+    const { repo, branch, token } = ghCfg();
+    if (!repo || !token) {
+        showPushStatus('⚠️ GitHub nicht konfiguriert. Bitte im Admin-Tool einrichten.', 'warn');
+        return;
+    }
+
+    showPushStatus('⏳ Lade members.md...', 'info');
+
+    // Bestehende members.md laden
+    const path = 'members.md';
+    const apiUrl = `https://api.github.com/repos/${repo}/contents/${path}?ref=${branch}`;
+    const ghHeaders = {
+        Authorization: `token ${token}`,
+        Accept: 'application/vnd.github.v3+json'
+    };
+
+    let existing = '# SnailsStons Members\n# Format: hash:von:bis:level\n# Tokens sind SHA-256 gehasht\n\n';
+    let sha = null;
+    try {
+        const r = await fetch(apiUrl, { headers: ghHeaders });
+        if (r.ok) {
+            const j = await r.json();
+            sha = j.sha;
+            existing = atob(j.content.replace(/\n/g, ''));
+        }
+    } catch(e) {}
+
+    // Neuen Eintrag anhängen
+    const newLine = `${currentHash}:${currentVon}:${currentBis}:${selectedTier}\n`;
+    const newContent = existing.trimEnd() + '\n' + newLine;
+
+    showPushStatus('⏳ Pushe members.md...', 'info');
+
+    const body = {
+        message: `Token Generator: neuer ${selectedTier} Member – ${currentVon}`,
+        content: btoa(unescape(encodeURIComponent(newContent))),
+        branch
+    };
+    if (sha) body.sha = sha;
+
+    const put = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, {
+        method: 'PUT',
+        headers: { ...ghHeaders, 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+    });
+
+    if (put.ok) {
+        showPushStatus('✅ members.md aktualisiert – Member kann sich einloggen.', 'success');
+    } else {
+        showPushStatus('❌ Push fehlgeschlagen. GitHub Token prüfen.', 'error');
+    }
+}
+
+function showPushStatus(msg, type) {
+    const el = document.getElementById('push-status');
+    el.style.display = 'block';
+    el.textContent = msg;
+    const styles = {
+        info:    'background:#111; border:1px solid #333; color:#666;',
+        success: 'background:#0d2e18; border:1px solid rgba(46,204,113,0.4); color:#2ecc71;',
+        error:   'background:#2e0d0d; border:1px solid rgba(255,68,68,0.4); color:#ff4444;',
+        warn:    'background:#1a1500; border:1px solid rgba(212,175,55,0.4); color:#d4af37;',
+    };
+    el.style.cssText += styles[type] || styles.info;
+}
+
+// ── Reset ─────────────────────────────────────────────
+function resetForm() {
+    currentToken = currentHash = currentVon = currentBis = null;
+    document.getElementById('member-name').value = '';
+    document.getElementById('member-email').value = '';
+    document.getElementById('payment-ref').value = '';
+    document.getElementById('result-panel').classList.remove('show');
+    document.getElementById('action-grid').style.display = 'none';
+    document.getElementById('email-block').classList.remove('show');
+    document.getElementById('gh-block').classList.remove('show');
+    document.getElementById('push-status').style.display = 'none';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
